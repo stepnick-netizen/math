@@ -491,6 +491,9 @@ def rights():
 def why(lang):
     t = lambda uk, en: uk if lang == 'uk' else en
     return {'items': [
+        (t('Математика захищає Україну.', 'Maths helps defend Ukraine.'),
+         t('Перш ніж запустити програму для дрона чи радара, інженери перевіряють і доводять, що їхні формули правильні за будь-яких значень, як тотожність. Одна неперевірена помилка може дорого коштувати.',
+           'Before engineers run the software for a drone or a radar, they check and prove that their formulas work for every value, just like an identity. One unchecked mistake can cost a lot.')),
         (t('Доказ, а не віра на слово.', 'Proof, not just taking someone’s word.'),
          t('Одна підстановка може спростувати твердження, але довести його можна лише міркуванням. Так само з новинами: один факт проти — і заголовок під сумнівом.',
            'One example can disprove a claim, but only reasoning can prove it. It’s the same with news: one fact against it, and the headline is in doubt.')),

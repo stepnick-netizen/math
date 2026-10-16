@@ -639,6 +639,9 @@ def rights():
 def why(lang):
     t = lambda uk, en: uk if lang == 'uk' else en
     return {'items': [
+        (t('Математика захищає Україну.', 'Maths helps defend Ukraine.'),
+         t('Щоб збити ракету чи дрон, система протиповітряної оборони за частки секунди рахує напрямок і кут перехоплення. Помилка в 1° на відстані 10 км — це вже 175 м убік. Точні кути захищають наше небо.',
+           'To shoot down a missile or a drone, an air defence system works out the direction and angle of interception in a split second. An error of 1° at 10 km is already 175 m off target. Accurate angles protect our sky.')),
         (t('Кути навколо тебе.', 'Angles are all around you.'),
          t('Будівельники, штурмани й розробники ігор щодня рахують кути. Знаєш один кут на прямій — знаєш і сусідній.',
            'Builders, navigators and game designers work with angles every day. Know one angle on a straight line, and you know its partner.')),

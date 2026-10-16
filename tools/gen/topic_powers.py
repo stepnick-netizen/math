@@ -664,6 +664,9 @@ def rights():
 def why(lang):
     t = lambda uk, en: uk if lang == 'uk' else en
     return {'items': [
+        (t('Математика захищає Україну.', 'Maths helps defend Ukraine.'),
+         t('Шифри, якими захищають зв’язок наших військових, побудовані на величезних степенях: такі числа не перебере навіть найшвидший комп’ютер. Українські математики й програмісти сьогодні допомагають країні вистояти.',
+           'The codes that protect our soldiers’ messages are built on enormous powers: numbers so big that even the fastest computer can’t try them all. Today Ukrainian mathematicians and programmers help the country hold on.')),
         (t('Чутки ростуть як степінь.', 'Rumours grow like powers.'),
          t('Якщо кожен перешле новину двом друзям, за 10 кроків її отримають 2¹⁰ = 1024 людини. Перш ніж пересилати, перевір, чи це правда.',
            'If everyone forwards a story to two friends, after 10 steps 2¹⁰ = 1024 people get it. Before you forward something, check that it’s true.')),
