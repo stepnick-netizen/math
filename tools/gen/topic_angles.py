@@ -639,9 +639,9 @@ def rights():
 def why(lang):
     t = lambda uk, en: uk if lang == 'uk' else en
     return {'items': [
-        (t('Математика захищає Україну.', 'Maths helps defend Ukraine.'),
-         t('Щоб збити ракету чи дрон, система протиповітряної оборони за частки секунди рахує напрямок і кут перехоплення. Помилка в 1° на відстані 10 км — це вже 175 м убік. Точні кути захищають наше небо.',
-           'To shoot down a missile or a drone, an air defence system works out the direction and angle of interception in a split second. An error of 1° at 10 km is already 175 m off target. Accurate angles protect our sky.')),
+        (t('Математика — це менше годин у сховищі.', 'Maths means fewer hours in the shelter.'),
+         t('Під час тривоги система ППО за частки секунди рахує, звідки летить ракета чи дрон і під яким кутом її перехопити. Помилка в 1° на відстані 10 км — це вже 175 м убік. Чим точніше рахують інженери, тим раніше відбій і тим менше часу ти й твої друзі проводите в укритті. Колись нове таке рішення можеш придумати й ти.',
+           'During an air raid, air defence works out in a split second where a missile or drone is coming from and at what angle to intercept it. An error of 1° at 10 km is already 175 m off target. The more precisely engineers calculate, the sooner the all-clear comes and the less time you and your friends spend in the shelter. One day you might come up with the next solution yourself.')),
         (t('Кути навколо тебе.', 'Angles are all around you.'),
          t('Будівельники, штурмани й розробники ігор щодня рахують кути. Знаєш один кут на прямій — знаєш і сусідній.',
            'Builders, navigators and game designers work with angles every day. Know one angle on a straight line, and you know its partner.')),
