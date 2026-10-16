@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+
+<title>Пропорції з Понею і Булею</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: meadow page, hero with the two guinea pigs, tab strip, one level per tab; level = work area + task card */
+:root{
+  --bg:#EEF3E4; --paper:#FFFFFF; --ink:#26301F; --muted:#5F6B55; --line:#D3DCC5; --shadow:rgba(38,48,31,.12);
+  --yarn:#D9486F; --plum:#7A59C2; --hay:#D99A1E; --leaf:#4F8A3C; --sky:#3E7FB8; --marker:#FFE24A; --marker-ink:#2A2300;
+  --good:#2F8A4C; --bad:#C2413B; --cell:#F4F7EE;
+  --display:'Comfortaa','Nunito',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --hand:'Caveat','Comic Sans MS',cursive;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171C14; --paper:#222A1D; --ink:#EDF2E3; --muted:#A8B49B; --line:#3A4532; --shadow:rgba(0,0,0,.35);
+  --yarn:#F07898; --plum:#B79CFF; --hay:#F0BE4E; --leaf:#7DBA62; --sky:#7AB3E6; --marker:#E8C93A; --marker-ink:#1D1800;
+  --good:#6CCB86; --bad:#F07A72; --cell:#2C3526; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171C14; --paper:#222A1D; --ink:#EDF2E3; --muted:#A8B49B; --line:#3A4532; --shadow:rgba(0,0,0,.35);
+  --yarn:#F07898; --plum:#B79CFF; --hay:#F0BE4E; --leaf:#7DBA62; --sky:#7AB3E6; --marker:#E8C93A; --marker-ink:#1D1800;
+  --good:#6CCB86; --bad:#F07A72; --cell:#2C3526; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 60px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,6vw,46px)}
+h2{font-size:clamp(22px,4vw,30px)}
+h3{font-size:19px}
+p{margin:0}
+a{color:var(--sky);font-weight:700}
+.hand{font-family:var(--hand);font-size:24px;line-height:1.2}
+
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;padding-block:8px 18px}
+.hero-text{flex:1 1 320px;min-width:0;display:grid;gap:8px}
+.hero-text h1 span{color:var(--yarn)}
+.hero-text p{color:var(--muted);max-width:56ch}
+.pigs{display:flex;gap:6px;align-items:flex-end;flex:0 1 auto}
+.pig-box{display:grid;justify-items:center}
+.pig{width:120px;max-width:100%;height:auto}
+.pig-name{font-family:var(--hand);font-size:24px;margin-top:-4px}
+.stars{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:800;color:var(--muted)}
+.star{font-size:26px;color:var(--line);transition:color .3s}
+.star.on{color:var(--hay)}
+.diploma{margin-top:6px;padding:14px 18px;border:2px dashed var(--hay);border-radius:14px;background:var(--paper)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px 22px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:5}
+.tab{font:700 15px var(--body);border:2px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--yarn);background:var(--yarn);color:var(--paper)}
+.tab:focus-visible,button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+.panel{display:grid;gap:22px}
+.lead{max-width:62ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 0 var(--shadow);min-width:0}
+
+/* proportion typography */
+.e{color:var(--yarn);font-weight:800}.m{color:var(--plum);font-weight:800}
+.pr{font-family:var(--display);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(24px,5vw,32px);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:.3em;align-items:center}
+.fr{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-size:.8em}
+.fr>span+span{border-top:2px solid currentColor;padding-top:2px;min-width:1em;text-align:center}
+.mark{background:var(--marker);color:var(--marker-ink);border-radius:6px;padding:0 .3em}
+.lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.lesson{display:grid;gap:10px;align-content:start}
+.lesson.key{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.lesson.key .e,.lesson.key .m{color:inherit}
+.lesson.wide{grid-column:1/-1}
+.num{font-weight:800;color:var(--muted);font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.lesson.key .num{color:var(--marker-ink)}
+.ex{font-variant-numeric:tabular-nums;background:var(--cell);border-radius:10px;padding:8px 12px;font-weight:600}
+.lesson.key .ex{background:rgba(255,255,255,.45)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-weight:700}
+ol.swaps{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.note{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.note .pig{width:90px}
+
+/* levels */
+.level{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:760px){.level{grid-template-columns:1fr}}
+.stage{display:grid;gap:12px;justify-items:center;text-align:center}
+.scale{width:100%;max-width:420px;height:auto}
+.task{display:grid;gap:12px}
+.step{font-weight:800;color:var(--muted);font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+label.lab{font-weight:700;font-size:15px}
+input.ans{font:700 18px var(--body);width:110px;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+input.ans.ie{border-color:var(--yarn)}input.ans.im{border-color:var(--plum)}
+.btn{font:800 16px var(--body);border:0;border-radius:12px;padding:10px 16px;cursor:pointer;background:var(--leaf);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--muted);border:2px solid var(--line)}
+.btn.opt{background:var(--paper);color:var(--ink);border:2px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.fb{min-height:1.5em;font-weight:700}
+.fb.good{color:var(--good)}
+.fb.bad{color:var(--bad)}
+.hint{color:var(--muted);font-size:15px;border-left:3px solid var(--hay);padding-left:10px}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.9);opacity:.3}100%{transform:none;opacity:1}}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--line)}
+.dot.on{background:var(--leaf)}.dot.cur{outline:2px solid var(--leaf);outline-offset:2px}
+.recipe{display:grid;gap:10px;justify-items:start;text-align:left;width:100%}
+.recipe .big{justify-content:flex-start}
+
+/* cards */
+.cards{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:nowrap;font:700 24px var(--display)}
+.pc{width:clamp(48px,14vw,68px);height:clamp(64px,18vw,86px);flex:none;border-radius:12px;background:var(--paper);border:3px solid var(--c);color:var(--c);font:700 26px var(--display);cursor:pointer;display:grid;place-items:center;box-shadow:0 3px 0 var(--shadow);font-variant-numeric:tabular-nums;padding:0}
+.pc.sel{transform:translateY(-6px);background:var(--c);color:var(--paper)}
+.pc:disabled{cursor:default}
+.pc input{width:100%;font:700 24px var(--display);text-align:center;border:0;background:transparent;color:var(--c)}
+.slots{display:flex;gap:10px;flex-wrap:wrap}
+.slot{width:54px;height:64px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:700 30px var(--display);color:var(--yarn);background:var(--paper)}
+.slot.open{border-style:solid;border-color:var(--yarn)}
+.reveal{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+.reveal .pig{width:100px}.cat{width:120px;height:auto}
+
+.rep{display:grid;gap:18px}
+.rep ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.rep li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.rep li span:first-child{min-width:0}
+.st{font-weight:800;font-size:15px}
+.st.ok{color:var(--good)}.st.mid{color:var(--hay)}.st.no{color:var(--muted)}.st.bad{color:var(--bad)}
+#reportText{width:100%;font:15px/1.5 var(--body);padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}</style></head>
+<body><nav class="site-home"><a href="../index.html">← Усі теми</a></nav>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <h1 data-t="h1"></h1>
+      <p data-t="intro"></p>
+      <p style="font-size:15px" data-t="langLink"></p>
+      <div class="stars" aria-live="polite">
+        <span data-t="yourStars"></span>
+        <span class="star" id="st-p">★</span>
+        <span class="star" id="st-k">★</span>
+        <span class="star" id="st-c">★</span>
+        <button class="btn ghost" id="resetAll" style="padding:4px 12px;font-size:14px"></button>
+      </div>
+      <div class="diploma" id="diploma" hidden><h3 data-t="dipH"></h3><p data-t="dipP"></p></div>
+    </div>
+    <div class="pigs" id="heroPigs"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="learn" id="t-learn" data-t="tabLearn"></button>
+    <button class="tab" role="tab" data-tab="p" id="t-p" data-t="tabP"></button>
+    <button class="tab" role="tab" data-tab="k" id="t-k" data-t="tabK"></button>
+    <button class="tab" role="tab" data-tab="c" id="t-c" data-t="tabC"></button>
+    <button class="tab" role="tab" data-tab="report" id="t-report" data-t="tabR"></button>
+  </nav>
+
+  <section class="panel" id="p-learn"></section>
+
+  <section class="panel" id="p-p" hidden>
+    <div class="lead"><h2 data-t="pH"></h2><p style="margin-top:8px" data-t="pIntro"></p></div>
+    <div class="level">
+      <div class="card stage"><div id="scaleProp" class="big"></div><div id="scale"></div></div>
+      <div class="card task" id="pTask"></div>
+    </div>
+    <div><button class="btn ghost" id="pReset" data-t="pReset"></button></div>
+  </section>
+
+  <section class="panel" id="p-k" hidden>
+    <div class="lead"><h2 data-t="kH"></h2><p style="margin-top:8px" data-t="kIntro"></p></div>
+    <div class="card task" id="kTask"></div>
+    <div><button class="btn ghost" id="kReset" data-t="kReset"></button></div>
+  </section>
+
+  <section class="panel" id="p-c" hidden>
+    <div class="lead"><h2 data-t="cH"></h2><p style="margin-top:8px" data-t="cIntro"></p></div>
+    <div class="slots" id="slots"></div>
+    <div class="level">
+      <div class="card stage" id="cStage"></div>
+      <div class="card task" id="cTask"></div>
+    </div>
+    <div><button class="btn ghost" id="cReset" data-t="cReset"></button></div>
+  </section>
+
+  <section class="panel" id="p-report" hidden>
+    <div class="lead"><h2 data-t="rH"></h2><p style="margin-top:8px" data-t="rIntro"></p></div>
+    <div class="card" id="reportCard"></div>
+    <div class="row"><button class="btn" id="copyReport" data-t="copy"></button><span class="fb" id="copyFb" aria-live="polite"></span></div>
+    <textarea id="reportText" readonly hidden rows="14" aria-label="Report text"></textarea>
+  </section>
+</div>
+
+<script>
+const LANG='uk';
+const UK=LANG==='uk';
+const KEY='ponya-bulya-proportions-'+LANG+'-v1';
+const $=s=>document.querySelector(s);
+const tr=o=>o[LANG];
+const num=v=>{const x=parseFloat(String(v).replace(',','.').trim());return isNaN(x)?null:x};
+const fmt=v=>typeof v==='number'?(UK?String(v).replace('.',','):String(v)):v;
+const DIV=UK?':':'÷', MUL=UK?'·':'×';
+const fr=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+// a : b = c : d with outer terms pink, inner terms violet
+const prop=(p)=>`<span class="pr"><span class="e">${fmt(p[0])}</span> : <span class="m">${fmt(p[1])}</span> = <span class="m">${fmt(p[2])}</span> : <span class="e">${fmt(p[3])}</span></span>`;
+
+const S={
+uk:{
+  h1:'Пропорції з <span>Понею</span> і <span>Булею</span>',
+  intro:'Поня і Буля знову кличуть на допомогу! Спершу прочитай урок, потім пройди три рівні: зважуй пропорції на терезах, готуй салат на кухні і з’ясуй, хто вночі переставив картки.',
+  langLink:'<a href="../proportions/en.html">English version</a>',
+  yourStars:'Твої зірки:', resetAll:'Почати все спочатку', resetSure:'Точно? Натисни ще раз',
+  dipH:'Диплом знавця пропорцій',
+  dipP:'Усі три рівні пройдено! Поня і Буля урочисто вітають тебе. Тепер ти знаходиш невідомий член пропорції швидше, ніж Буля знаходить моркву.',
+  tabLearn:'Урок', tabP:'1. Терези', tabK:'2. Кухня', tabC:'3. Картки', tabR:'Мій звіт',
+  pH:'Рівень 1. Чесні терези',
+  pIntro:'У Булі є чарівні терези. На ліву чашу кладуть добуток <span class="e">крайніх</span> членів, на праву — добуток <span class="m">середніх</span>. Якщо терези в рівновазі, це справжня пропорція.',
+  pReset:'Почати терези заново',
+  kH:'Рівень 2. Кухня Поні',
+  kIntro:'Поня готує частування і в’яже шарфик, а кількості треба перерахувати. У кожному завданні сховався невідомий член пропорції. Знайди його!',
+  kReset:'Почати кухню заново',
+  cH:'Рівень 3. Хто переставив картки?',
+  cIntro:'Увечері Поня виклала з карток пропорцію <span class="pr">10 : 40 = 6 : 24</span>. Уранці картки лежали інакше! Виконуй завдання: кожне правильне відкриває одну літеру імені того, хто грався картками вночі.',
+  cReset:'Почати розслідування заново',
+  rH:'Мій звіт', rIntro:'Тут видно, що вже пройдено. Натисни кнопку, скопіюй звіт і надішли його вчителеві чи батькам у месенджер.',
+  copy:'Скопіювати звіт', copied:'Скопійовано! Встав звіт у повідомлення.', copyFail:'Автоматично скопіювати не вийшло. Текст звіту виділено нижче: скопіюй його вручну.',
+  task:(i,n)=>`Завдання ${i} з ${n}`, check:'Перевірити', hint:'Підказка: ', typeNum:'Впиши число.',
+  done:'Рівень пройдено',
+  outer:'крайні', inner:'середні',
+  // level 1
+  pProdQ:'Порахуй добуток крайніх і добуток середніх, щоб покласти їх на терези.',
+  pProdE:'Добуток крайніх', pProdM:'Добуток середніх',
+  pProdBad:'Не зовсім. Перевір множення.',
+  pProdHint:(p)=>`крайні — це <span class="e">${fmt(p[0])}</span> і <span class="e">${fmt(p[3])}</span>, середні — <span class="m">${fmt(p[1])}</span> і <span class="m">${fmt(p[2])}</span>. Перемнож кожну пару.`,
+  pYesNoQ:'Це пропорція?', yes:'Так, пропорція', no:'Ні, не пропорція',
+  pYesNoQ2:'Подивись на запис і виріши: це пропорція? Терези покажуть відповідь, коли ти відповіси.',
+  pOkYes:(L,R)=>`Правильно! ${fmt(L)} = ${fmt(R)}, терези в рівновазі. Це пропорція.`,
+  pOkNo:(L,R)=>`Правильно! ${fmt(L)} ≠ ${fmt(R)}, терези перехилились. Це не пропорція.`,
+  pBadYN:'Ой, ні. Порахуй добутки і порівняй їх.',
+  pYNHint:(p)=>`порахуй ${fmt(p[0])} ${MUL} ${fmt(p[3])} і ${fmt(p[1])} ${MUL} ${fmt(p[2])}. Якщо вийшло однаково, це пропорція.`,
+  pDoneH:'Терези перевірено!', pDoneP:'Ти знаєш головний секрет пропорцій: добуток крайніх дорівнює добутку середніх. Перша зірка твоя.', toK:'На кухню',
+  scaleQ:'?',
+  // level 2
+  kAnswer:'Відповідь:',
+  kBad:'Поня хитає головою. Спробуй ще раз.',
+  kSetup:(p)=>`склади пропорцію: ${prop(p)}`,
+  kRule:(p,i)=>{const k=p.map(fmt);return (i===0||i===3)
+    ? `x — <span class="e">крайній</span> член. Помнож середні і поділи на відомий крайній: (${k[1]} ${MUL} ${k[2]}) ${DIV} ${i===0?k[3]:k[0]}.`
+    : `x — <span class="m">середній</span> член. Помнож крайні і поділи на відомий середній: (${k[0]} ${MUL} ${k[3]}) ${DIV} ${i===1?k[2]:k[1]}.`},
+  kGood:(p,a)=>`Так! Перевірка: добутки рівні, отже x = ${fmt(a)}.`,
+  kDoneH:'Частування готове!', kDoneP:'Салат нарізано, фарби змішано, шарфик зв’язано. Друга зірка твоя.', toC:'До розслідування',
+  // level 3
+  cTap:'Натисни одну картку, потім іншу, і вони обміняються місцями.',
+  cBack:'Повернути як було',
+  cNotProp:(L,R)=>`Добутки не рівні (${fmt(L)} і ${fmt(R)}), це вже не пропорція.`,
+  cOtherProp:'Це теж пропорція, але в завданні просили інакше переставити. Прочитай ще раз.',
+  cSame:'Картки ще лежать як було. Поміняй їх місцями.',
+  cGood:'Доказ знайдено!',
+  cNumQ:'Яке число було на зжованій картці?',
+  cDoneH:'Справу закрито!',
+  cDoneP:'Це сусідський кіт Мурко! Моркву він не чіпав, він просто любить ганяти картки лапою. Свинки пробачили йому і навчили складати похідні пропорції. Третя зірка твоя!',
+  toR:'Подивитися мій звіт',
+  // report
+  notTried:'ще без спроб', first:'з першої спроби', nth:(n)=>`з ${n}-ї спроби`, withHint:', з підказкою', notYet:(n)=>`поки не вийшло (спроб: ${n})`,
+  repStars:(s)=>`Зірки: ${s} з 3.`, repSum:(a,b,c,d)=>`Розв’язано ${a} з ${b} задач, з першої спроби: ${c}. Підказка знадобилась у задачах: ${d}.`,
+  repDates:(a,b)=>`Початок: ${a}. Остання спроба: ${b}.`, notStarted:'ще не почато', complete:'пройдено',
+  repHead:'Ось мій звіт про пропорції (Поня і Буля)', locale:'uk-UA',
+  lvP:'Терези', lvK:'Кухня', lvC:'Картки', rowTask:'Завдання', rowClue:'Доказ'
+},
+en:{
+  h1:'Proportions with <span>Ponya</span> and <span>Bulya</span>',
+  intro:'Ponya and Bulya need your help again! Read the lesson first, then play three levels: weigh proportions on the scales, cook in the kitchen and find out who moved the number cards in the night.',
+  langLink:'<a href="../proportions/en.html">Українська версія</a>',
+  yourStars:'Your stars:', resetAll:'Start everything again', resetSure:'Sure? Tap again',
+  dipH:'Proportions Expert Certificate',
+  dipP:'All three levels complete! Ponya and Bulya officially congratulate you. You can now find a missing number in a proportion faster than Bulya can find a carrot.',
+  tabLearn:'Lesson', tabP:'1. Scales', tabK:'2. Kitchen', tabC:'3. Cards', tabR:'My report',
+  pH:'Level 1. The honest scales',
+  pIntro:'Bulya has magic scales. The left pan holds the product of the <span class="e">outer</span> numbers, the right pan holds the product of the <span class="m">inner</span> numbers. If the scales balance, it\'s a true proportion.',
+  pReset:'Start the scales again',
+  kH:'Level 2. Ponya\'s kitchen',
+  kIntro:'Ponya is making treats and knitting a scarf, and the amounts need working out again. Every task hides a missing number in a proportion. Find it!',
+  kReset:'Start the kitchen again',
+  cH:'Level 3. Who moved the cards?',
+  cIntro:'Last night Ponya laid out the proportion <span class="pr">10 : 40 = 6 : 24</span> with number cards. In the morning the cards had moved! Every task you solve reveals one letter of the name of whoever played with the cards.',
+  cReset:'Restart the investigation',
+  rH:'My report', rIntro:'Here\'s everything you\'ve done so far. Tap the button, copy your report and send it to your teacher or parents in a message.',
+  copy:'Copy my report', copied:'Copied! Paste it into a message.', copyFail:'Couldn\'t copy automatically. The report text is selected below: copy it yourself.',
+  task:(i,n)=>`Task ${i} of ${n}`, check:'Check', hint:'Hint: ', typeNum:'Type in a number.',
+  done:'Level complete',
+  outer:'outer', inner:'inner',
+  pProdQ:'Work out the product of the outer numbers and the product of the inner numbers, so you can put them on the scales.',
+  pProdE:'Outer numbers multiplied', pProdM:'Inner numbers multiplied',
+  pProdBad:'Not quite. Check your multiplication.',
+  pProdHint:(p)=>`the outer numbers are <span class="e">${fmt(p[0])}</span> and <span class="e">${fmt(p[3])}</span>, the inner ones are <span class="m">${fmt(p[1])}</span> and <span class="m">${fmt(p[2])}</span>. Multiply each pair.`,
+  pYesNoQ:'Is it a proportion?', yes:'Yes, it is', no:'No, it isn\'t',
+  pYesNoQ2:'Look at it and decide: is it a proportion? The scales will show you once you answer.',
+  pOkYes:(L,R)=>`Correct! ${fmt(L)} = ${fmt(R)}, the scales balance. It's a proportion.`,
+  pOkNo:(L,R)=>`Correct! ${fmt(L)} ≠ ${fmt(R)}, the scales tip. It isn't a proportion.`,
+  pBadYN:'Oops, no. Work out the two products and compare them.',
+  pYNHint:(p)=>`work out ${fmt(p[0])} ${MUL} ${fmt(p[3])} and ${fmt(p[1])} ${MUL} ${fmt(p[2])}. If they're equal, it's a proportion.`,
+  pDoneH:'Scales checked!', pDoneP:'You know the big secret of proportions: the outer numbers multiplied equal the inner numbers multiplied. Your first star!', toK:'Into the kitchen',
+  scaleQ:'?',
+  kAnswer:'Answer:',
+  kBad:'Ponya shakes her head. Try again.',
+  kSetup:(p)=>`write the proportion: ${prop(p)}`,
+  kRule:(p,i)=>{const k=p.map(fmt);return (i===0||i===3)
+    ? `x is an <span class="e">outer</span> number. Multiply the inner numbers and divide by the other outer one: (${k[1]} ${MUL} ${k[2]}) ${DIV} ${i===0?k[3]:k[0]}.`
+    : `x is an <span class="m">inner</span> number. Multiply the outer numbers and divide by the other inner one: (${k[0]} ${MUL} ${k[3]}) ${DIV} ${i===1?k[2]:k[1]}.`},
+  kGood:(p,a)=>`Yes! The products match, so x = ${fmt(a)}.`,
+  kDoneH:'The treats are ready!', kDoneP:'The salad is chopped, the paints are mixed and the scarf is knitted. Your second star!', toC:'On to the mystery',
+  cTap:'Tap one card, then another, and they swap places.',
+  cBack:'Put them back',
+  cNotProp:(L,R)=>`The products aren't equal (${fmt(L)} and ${fmt(R)}), so it's no longer a proportion.`,
+  cOtherProp:'That\'s a proportion too, but the task asked for a different swap. Read it again.',
+  cSame:'The cards haven\'t moved yet. Swap two of them.',
+  cGood:'Clue found!',
+  cNumQ:'What number was on the chewed card?',
+  cDoneH:'Case closed!',
+  cDoneP:'It was Murko, the neighbour\'s cat! He didn\'t touch the carrots, he just loves batting cards about with his paw. The guinea pigs forgave him and taught him how to swap proportions properly. Your third star!',
+  toR:'See my report',
+  notTried:'not tried yet', first:'first try', nth:(n)=>`on attempt ${n}`, withHint:', with a hint', notYet:(n)=>`not solved yet (${n} ${n===1?'attempt':'attempts'})`,
+  repStars:(s)=>`Stars: ${s} of 3.`, repSum:(a,b,c,d)=>`Solved ${a} of ${b} problems, ${c} on the first try. Hints used on ${d}.`,
+  repDates:(a,b)=>`Started: ${a}. Last attempt: ${b}.`, notStarted:'not started yet', complete:'complete',
+  repHead:'Here is my proportions report (Ponya and Bulya)', locale:'en-GB',
+  lvP:'Scales', lvK:'Kitchen', lvC:'Cards', rowTask:'Task', rowClue:'Clue'
+}}[LANG];
+
+document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=S[el.dataset.t]});
+$('#resetAll').textContent=S.resetAll;
+
+/* ---------- lesson ---------- */
+const LESSON={
+uk:`
+  <div class="lead"><h2>Урок: що таке пропорція</h2><p style="margin-top:8px">Шість коротких кроків. Прочитай по черзі, а потім вирушай на рівні.</p></div>
+  <div class="lessons">
+    <div class="card lesson"><span class="num">Крок 1</span><h3>Відношення</h3>
+      <p><b>Відношення</b> двох чисел — це їхня частка. Читаємо «один відноситься до двох».</p>
+      <div class="big">1 : 2 = 0,5</div>
+      <p>Воно показує, у скільки разів одне число більше за інше або яку частину становить. Тут 1 — половина від 2.</p></div>
+    <div class="card lesson"><span class="num">Крок 2</span><h3>Пропорція — рівність двох відношень</h3>
+      <div class="big">${fr(4,7)} : ${fr(8,7)} = ${fr(4,7)} · ${fr(7,8)} = 0,5</div>
+      <p>Обидва відношення дорівнюють 0,5, тож їх можна з’єднати знаком «=»:</p>
+      <div class="big"><span class="mark">1 : 2</span> = <span class="mark">${fr(4,7)} : ${fr(8,7)}</span></div></div>
+    <div class="card lesson wide"><span class="num">Крок 3</span><h3>Крайні й середні члени</h3>
+      <div class="big">${prop(['a','b','c','d'])}</div>
+      <div class="legend"><span class="e">● крайні: a і d, стоять по краях</span><span class="m">● середні: b і c, стоять посередині</span></div>
+      <p class="hand">Буля каже: крайні — як ми з Понею на краях дивана, а середні вмостилися посередині між нами!</p></div>
+    <div class="card lesson key wide"><span class="num">Крок 4 · головне правило</span><h3>Основна властивість пропорції</h3>
+      <div class="big">якщо a : b = c : d, то a · d = b · c</div>
+      <p><b>Добуток крайніх дорівнює добутку середніх.</b> Так можна перевірити, чи це справді пропорція.</p>
+      <div class="ex">10 : 40 = 6 : 24 → 10 · 24 = 240 і 40 · 6 = 240 ✔</div></div>
+    <div class="card lesson"><span class="num">Крок 5</span><h3>Невідомий крайній член</h3>
+      <p><b>= добуток середніх : відомий крайній</b></p>
+      <div class="big">${prop([5,8,15,'y'])}</div>
+      <div class="ex">y = (8 · 15) : 5 = 120 : 5 = 24</div></div>
+    <div class="card lesson"><span class="num">Крок 5</span><h3>Невідомий середній член</h3>
+      <p><b>= добуток крайніх : відомий середній</b></p>
+      <div class="big">${prop([12,'x',4,5])}</div>
+      <div class="ex">x = (12 · 5) : 4 = 60 : 4 = 15</div></div>
+    <div class="card lesson wide"><span class="num">Крок 6</span><h3>Похідні пропорції</h3>
+      <p>З однієї пропорції можна отримати ще три. Добутки при цьому не змінюються, тому рівність не ламається. З ${prop([10,40,6,24])}:</p>
+      <ol class="swaps">
+        <li>переставили крайні: ${prop([24,40,6,10])}</li>
+        <li>переставили середні: ${prop([10,6,40,24])}</li>
+        <li>переставили і ті, і ті: ${prop([24,6,40,10])}</li>
+      </ol></div>
+  </div>
+  <div class="note"><div class="notePig"></div><p class="hand">Поня каже: коли знайдеш невідоме число, підстав його назад і перевір добутки. Так ніколи не помилишся!</p></div>
+  <div><button class="btn" data-go="p">До першого рівня</button></div>`,
+en:`
+  <div class="lead"><h2>Lesson: what is a proportion?</h2><p style="margin-top:8px">Six short steps. Read them in order, then head off to the levels.</p></div>
+  <div class="lessons">
+    <div class="card lesson"><span class="num">Step 1</span><h3>Ratio</h3>
+      <p>A <b>ratio</b> compares two numbers by dividing one by the other. We read it as "one to two".</p>
+      <div class="big">1 : 2 = 0.5</div>
+      <p>It tells you how many times bigger one number is, or what fraction of the other it is. Here 1 is half of 2.</p></div>
+    <div class="card lesson"><span class="num">Step 2</span><h3>A proportion is two equal ratios</h3>
+      <div class="big">${fr(4,7)} : ${fr(8,7)} = ${fr(4,7)} × ${fr(7,8)} = 0.5</div>
+      <p>Both ratios equal 0.5, so we can join them with an equals sign:</p>
+      <div class="big"><span class="mark">1 : 2</span> = <span class="mark">${fr(4,7)} : ${fr(8,7)}</span></div></div>
+    <div class="card lesson wide"><span class="num">Step 3</span><h3>Outer and inner numbers</h3>
+      <div class="big">${prop(['a','b','c','d'])}</div>
+      <div class="legend"><span class="e">● outer numbers (extremes): a and d, at the ends</span><span class="m">● inner numbers (means): b and c, in the middle</span></div>
+      <p class="hand">Bulya says: the outer ones are like me and Ponya at each end of the sofa, and the inner ones squeeze in between us!</p></div>
+    <div class="card lesson key wide"><span class="num">Step 4 · the big rule</span><h3>The key property of a proportion</h3>
+      <div class="big">if a : b = c : d, then a × d = b × c</div>
+      <p><b>The outer numbers multiplied equal the inner numbers multiplied.</b> This is called cross-multiplying, and it tells you whether something really is a proportion.</p>
+      <div class="ex">10 : 40 = 6 : 24 → 10 × 24 = 240 and 40 × 6 = 240 ✔</div></div>
+    <div class="card lesson"><span class="num">Step 5</span><h3>A missing outer number</h3>
+      <p><b>= inner numbers multiplied ÷ the other outer number</b></p>
+      <div class="big">${prop([5,8,15,'y'])}</div>
+      <div class="ex">y = (8 × 15) ÷ 5 = 120 ÷ 5 = 24</div></div>
+    <div class="card lesson"><span class="num">Step 5</span><h3>A missing inner number</h3>
+      <p><b>= outer numbers multiplied ÷ the other inner number</b></p>
+      <div class="big">${prop([12,'x',4,5])}</div>
+      <div class="ex">x = (12 × 5) ÷ 4 = 60 ÷ 4 = 15</div></div>
+    <div class="card lesson wide"><span class="num">Step 6</span><h3>Swapping to make new proportions</h3>
+      <p>From one proportion you can make three more. The products stay the same, so the equation still holds. From ${prop([10,40,6,24])}:</p>
+      <ol class="swaps">
+        <li>swap the outer numbers: ${prop([24,40,6,10])}</li>
+        <li>swap the inner numbers: ${prop([10,6,40,24])}</li>
+        <li>swap both pairs: ${prop([24,6,40,10])}</li>
+      </ol></div>
+  </div>
+  <div class="note"><div class="notePig"></div><p class="hand">Ponya says: once you've found the missing number, put it back in and check the products. Then you'll never go wrong!</p></div>
+  <div><button class="btn" data-go="p">Go to level 1</button></div>`}[LANG];
+$('#p-learn').innerHTML=LESSON;
+
+/* ---------- characters ---------- */
+const PONYA=['#F6E9D7','#D9843A'], BULYA=['#F1ECE6','#5E4030'];
+function pig([base,patch],cls='pig'){
+  return `<svg viewBox="0 0 150 100" class="${cls}" aria-hidden="true">
+  <ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/>
+  <ellipse cx="38" cy="86" rx="10" ry="5" fill="${patch}"/>
+  <ellipse cx="98" cy="87" rx="10" ry="5" fill="${patch}"/>
+  <ellipse cx="66" cy="58" rx="56" ry="32" fill="${base}"/>
+  <ellipse cx="42" cy="52" rx="28" ry="25" fill="${patch}"/>
+  <ellipse cx="110" cy="56" rx="28" ry="26" fill="${base}"/>
+  <ellipse cx="98" cy="33" rx="11" ry="9" fill="${patch}"/>
+  <ellipse cx="118" cy="40" rx="12" ry="10" fill="${patch}" opacity=".55"/>
+  <circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+  <circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/>
+  <ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/>
+  <ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/>
+  </svg>`;
+}
+function cat(){
+  return `<svg viewBox="0 0 140 120" class="cat" aria-hidden="true">
+  <ellipse cx="70" cy="112" rx="50" ry="6" fill="var(--shadow)"/>
+  <path d="M112 100 C135 95 132 60 118 58" stroke="#8A8F98" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <ellipse cx="72" cy="86" rx="40" ry="26" fill="#9AA0A8"/>
+  <path d="M38 32 L44 8 L58 26 Z" fill="#9AA0A8"/><path d="M82 26 L96 8 L102 32 Z" fill="#9AA0A8"/>
+  <circle cx="70" cy="46" r="32" fill="#A7ADB5"/>
+  <path d="M44 14 L47 24 L53 26 Z" fill="#E8A7B4"/><path d="M96 14 L93 24 L87 26 Z" fill="#E8A7B4"/>
+  <ellipse cx="58" cy="44" rx="6" ry="7" fill="#7CC36E"/><ellipse cx="82" cy="44" rx="6" ry="7" fill="#7CC36E"/>
+  <ellipse cx="58" cy="45" rx="2" ry="5" fill="#1d1a17"/><ellipse cx="82" cy="45" rx="2" ry="5" fill="#1d1a17"/>
+  <path d="M66 56 L74 56 L70 61 Z" fill="#E58F9F"/>
+  <path d="M70 61 Q64 67 60 63 M70 61 Q76 67 80 63" stroke="#4a4e55" stroke-width="2" fill="none"/>
+  <path d="M40 56 L56 58 M40 62 L56 61 M100 56 L84 58 M100 62 L84 61" stroke="#4a4e55" stroke-width="1.5"/>
+  <path d="M50 30 L54 38 M70 22 L70 32 M90 30 L86 38" stroke="#7E848C" stroke-width="4" stroke-linecap="round"/>
+  </svg>`;
+}
+$('#heroPigs').innerHTML=`<div class="pig-box">${pig(PONYA)}<span class="pig-name">${UK?'Поня':'Ponya'}</span></div><div class="pig-box" style="transform:scaleX(-1)">${pig(BULYA)}<span class="pig-name" style="transform:scaleX(-1)">${UK?'Буля':'Bulya'}</span></div>`;
+document.querySelectorAll('.notePig').forEach(n=>n.innerHTML=pig(PONYA));
+
+/* ---------- state ---------- */
+const fresh=()=>({tab:'learn',p:0,pDone:false,k:0,kDone:false,c:0,cDone:false,log:{},firstAt:null,lastAt:null});
+let state=fresh();
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state=Object.assign(state,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function rec(key,ok,hint){const e=state.log[key]||(state.log[key]={t:0,h:false,ok:false});if(e.ok)return;e.t++;if(hint)e.h=true;if(ok)e.ok=true;if(!state.firstAt)state.firstAt=Date.now();state.lastAt=Date.now();save()}
+function clearLog(p){Object.keys(state.log).forEach(k=>{if(k[0]===p)delete state.log[k]})}
+
+const tabs=['learn','p','k','c','report'];
+function show(t){
+  state.tab=t;save();if(t==='report')renderReport();
+  tabs.forEach(x=>{$('#p-'+x).hidden=x!==t;$('#t-'+x).setAttribute('aria-selected',x===t)});
+}
+const go=t=>{show(t);window.scrollTo({top:0})};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>show(b.dataset.tab));
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});
+function stars(){
+  $('#st-p').classList.toggle('on',state.pDone);$('#st-k').classList.toggle('on',state.kDone);$('#st-c').classList.toggle('on',state.cDone);
+  $('#diploma').hidden=!(state.pDone&&state.kDone&&state.cDone);
+}
+const dots=(n,i)=>`<div class="dots">${Array.from({length:n},(_,j)=>`<span class="dot ${j<i?'on':''} ${j===i?'cur':''}"></span>`).join('')}</div>`;
+const eq=(a,b)=>a!==null&&Math.abs(a-b)<1e-9;
+
+/* ---------- level 1: scales ---------- */
+const pTasks=[
+  {p:[2,5,6,15],prod:true},
+  {p:[3,4,6,9],prod:true},
+  {p:[12,16,3,4],prod:true},
+  {p:[10,40,6,24]},
+  {p:[7,3,21,10]},
+  {p:[0.5,2,3,12]}
+];
+let pStage=0, pShown=false;
+function scaleSVG(L,R,known){
+  const th=known?(eq(L,R)?0:(L>R?-9:9)):0, rad=th*Math.PI/180, cx=150, cy=40, len=104;
+  const lx=cx-len*Math.cos(rad), ly=cy-len*Math.sin(rad), rx=cx+len*Math.cos(rad), ry=cy+len*Math.sin(rad);
+  const pan=(x,y,val,col,lab)=>`<g>
+    <line x1="${x}" y1="${y}" x2="${x-32}" y2="${y+56}" stroke="var(--muted)" stroke-width="2"/>
+    <line x1="${x}" y1="${y}" x2="${x+32}" y2="${y+56}" stroke="var(--muted)" stroke-width="2"/>
+    <path d="M${x-42} ${y+56} Q${x} ${y+80} ${x+42} ${y+56} Z" fill="var(--cell)" stroke="${col}" stroke-width="3"/>
+    <text x="${x}" y="${y+50}" text-anchor="middle" font-family="Comfortaa,Nunito,sans-serif" font-weight="700" font-size="22" fill="${col}">${known?fmt(val):S.scaleQ}</text>
+    <text x="${x}" y="${y+96}" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="${col}">${lab}</text></g>`;
+  return `<svg viewBox="0 0 300 210" class="scale" role="img" aria-label="${known?fmt(L)+' / '+fmt(R):'?'}">
+    <rect x="105" y="190" width="90" height="12" rx="6" fill="var(--hay)"/>
+    <rect x="145" y="40" width="10" height="152" rx="4" fill="var(--hay)"/>
+    <line x1="${lx}" y1="${ly}" x2="${rx}" y2="${ry}" stroke="var(--ink)" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="8" fill="var(--leaf)"/>
+    ${pan(lx,ly,L,'var(--yarn)',S.outer)}${pan(rx,ry,R,'var(--plum)',S.inner)}
+  </svg>`;
+}
+function drawScale(known){
+  const t=pTasks[Math.min(state.p,pTasks.length-1)], p=t.p;
+  const done=state.pDone;
+  const P=done?[10,40,6,24]:p;
+  $('#scaleProp').innerHTML=prop(P);
+  $('#scale').innerHTML=scaleSVG(P[0]*P[3],P[1]*P[2],known||done);
+}
+function renderP(){
+  const box=$('#pTask');
+  if(state.pDone||state.p>=pTasks.length){
+    state.pDone=true;save();stars();drawScale(true);
+    box.innerHTML=`<div class="step">${S.done}</div><h3>${S.pDoneH}</h3><p>${S.pDoneP}</p><div class="row"><button class="btn" data-go="k">${S.toK}</button></div>`;
+    return;
+  }
+  const t=pTasks[state.p], key='p'+state.p;
+  let html=`<div class="step">${S.task(state.p+1,pTasks.length)}</div>${dots(pTasks.length,state.p)}`;
+  if(t.prod&&pStage===0){
+    html+=`<p>${S.pProdQ}</p>
+      <div class="row"><label class="lab e" for="pe">${S.pProdE}</label><input class="ans ie" id="pe" inputmode="decimal" placeholder="?"></div>
+      <div class="row"><label class="lab m" for="pm">${S.pProdM}</label><input class="ans im" id="pm" inputmode="decimal" placeholder="?"></div>
+      <div class="row"><button class="btn" id="pCheck">${S.check}</button></div>`;
+  }else{
+    html+=`<p>${t.prod?S.pYesNoQ:S.pYesNoQ2}</p>
+      <div class="row"><button class="btn opt" data-yn="1">${S.yes}</button><button class="btn opt" data-yn="0">${S.no}</button></div>`;
+  }
+  html+=`<div class="fb" id="pFb" aria-live="polite"></div><div class="hint" id="pHint" hidden></div>`;
+  box.innerHTML=html;
+  const fb=$('#pFb'), L=t.p[0]*t.p[3], R=t.p[1]*t.p[2];
+  const hint=h=>{const el=$('#pHint');el.hidden=false;el.innerHTML=S.hint+h};
+  if(t.prod&&pStage===0){
+    const check=()=>{
+      const a=num($('#pe').value), b=num($('#pm').value);
+      fb.className='fb pop';
+      if(a===null||b===null){fb.classList.add('bad');fb.textContent=S.typeNum;return}
+      if(eq(a,L)&&eq(b,R)){pStage=1;pShown=true;drawScale(true);renderP();return}
+      rec(key,false,true);fb.classList.add('bad');fb.textContent=S.pProdBad;hint(S.pProdHint(t.p));
+    };
+    $('#pCheck').onclick=check;
+    box.querySelectorAll('input').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')check()});
+  }else{
+    box.querySelectorAll('[data-yn]').forEach(b=>b.onclick=()=>{
+      const said=b.dataset.yn==='1', truth=eq(L,R);
+      fb.className='fb pop';
+      if(said===truth){
+        rec(key,true,false);drawScale(true);fb.classList.add('good');fb.textContent=truth?S.pOkYes(L,R):S.pOkNo(L,R);
+        box.querySelectorAll('[data-yn]').forEach(x=>x.disabled=true);
+        setTimeout(()=>{state.p++;pStage=0;pShown=false;save();drawScale(false);renderP()},1700);
+      }else{rec(key,false,true);fb.classList.add('bad');fb.textContent=S.pBadYN;hint(S.pYNHint(t.p))}
+    });
+  }
+}
+function startP(){pStage=0;pShown=false;drawScale(false);renderP()}
+$('#pReset').onclick=()=>{state.p=0;state.pDone=false;clearLog('p');save();stars();startP()};
+
+/* ---------- level 2: kitchen ---------- */
+const kTasks=[
+  {p:[12,'x',4,5],ans:15,show:true,text:{uk:'Перше — приклад з уроку. Знайди x.',en:'The first one is an example from the lesson. Find x.'}},
+  {p:[5,8,15,'x'],ans:24,show:true,text:{uk:'І ще один приклад з уроку. Знайди x.',en:'One more example from the lesson. Find x.'}},
+  {p:[2,6,5,'x'],ans:15,unit:{uk:'скибочок',en:'slices'},text:{uk:'Для двох свинок Поня кладе в салат 6 скибочок огірка. До них прийшли гості, і тепер свинок п’ять. Скільки скибочок огірка треба?',en:'For two guinea pigs, Ponya puts 6 slices of cucumber in the salad. Some friends have come round and now there are five guinea pigs. How many slices of cucumber are needed?'}},
+  {p:[3,24,'x',40],ans:5,unit:{uk:'морквин',en:'carrots'},text:{uk:'З 3 морквин виходить 24 кружечки. Скільки морквин треба нарізати, щоб вийшло 40 кружечків?',en:'3 carrots make 24 carrot rounds. How many carrots do you need to chop to make 40 rounds?'}},
+  {p:[3,5,12,'x'],ans:20,unit:{uk:'крапель',en:'drops'},text:{uk:'Для бузкового фону до портрета свинок змішують 3 краплі червоної фарби і 5 крапель синьої. Скільки крапель синьої треба на 12 крапель червоної?',en:'To paint a lilac background for the guinea pigs\' portrait, you mix 3 drops of red paint with 5 drops of blue. How many drops of blue do you need for 12 drops of red?'}},
+  {p:[4,10,'x',25],ans:10,unit:{uk:'рядів',en:'rows'},text:{uk:'Шарфик для Булі: 4 ряди — це 10 см. Скільки рядів треба зв’язати, щоб шарфик був 25 см завдовжки?',en:'Bulya\'s scarf: 4 rows make 10 cm. How many rows do you need to knit for a scarf 25 cm long?'}}
+];
+let kTries=0;
+function renderK(){
+  const box=$('#kTask');
+  if(state.kDone||state.k>=kTasks.length){
+    state.kDone=true;save();stars();
+    box.innerHTML=`<div class="note">${pig(PONYA)}<div class="task"><div class="step">${S.done}</div><h3>${S.kDoneH}</h3><p>${S.kDoneP}</p><div class="row"><button class="btn" data-go="c">${S.toC}</button></div></div></div>`;
+    return;
+  }
+  const t=kTasks[state.k], key='k'+state.k, xi=t.p.indexOf('x');
+  box.innerHTML=`<div class="step">${S.task(state.k+1,kTasks.length)}</div>${dots(kTasks.length,state.k)}
+    <div class="recipe"><p>${tr(t.text)}</p>${t.show?`<div class="big">${prop(t.p)}</div>`:''}</div>
+    <div class="row"><label class="lab" for="kAns">${t.show?'x =':S.kAnswer}</label><input class="ans" id="kAns" inputmode="decimal" placeholder="?">${t.unit?`<b>${tr(t.unit)}</b>`:''}<button class="btn" id="kCheck">${S.check}</button></div>
+    <div class="fb" id="kFb" aria-live="polite"></div><div class="hint" id="kHint" hidden></div>`;
+  const check=()=>{
+    const v=num($('#kAns').value), fb=$('#kFb');
+    fb.className='fb pop';
+    if(v===null){fb.classList.add('bad');fb.textContent=S.typeNum;return}
+    if(eq(v,t.ans)){
+      rec(key,true,false);fb.classList.add('good');fb.textContent=S.kGood(t.p,t.ans);$('#kCheck').disabled=true;
+      setTimeout(()=>{state.k++;kTries=0;save();renderK()},1300);return;
+    }
+    kTries++;rec(key,false,true);fb.classList.add('bad');fb.textContent=S.kBad;
+    const h=$('#kHint');h.hidden=false;
+    h.innerHTML=S.hint+((t.show||kTries>=2)?S.kRule(t.p,xi):S.kSetup(t.p));
+  };
+  $('#kCheck').onclick=check;$('#kAns').onkeydown=e=>{if(e.key==='Enter')check()};
+}
+$('#kReset').onclick=()=>{state.k=0;state.kDone=false;kTries=0;clearLog('k');save();stars();renderK()};
+
+/* ---------- level 3: cards ---------- */
+const NAME=UK?['М','У','Р','К','О']:['M','U','R','K','O'];
+const ORIG=[10,40,6,24];
+const cTasks=[
+  {type:'swap',target:[24,40,6,10],text:{uk:'Спершу перевіримо, що вміє Поня. Поміняй місцями <span class="e">крайні</span> члени.',en:'First, let\'s see what Ponya can do. Swap the <span class="e">outer</span> numbers.'}},
+  {type:'swap',target:[10,6,40,24],text:{uk:'Картки знову лежать як увечері. Тепер поміняй місцями <span class="m">середні</span> члени.',en:'The cards are back the way they were. Now swap the <span class="m">inner</span> numbers.'}},
+  {type:'swap',target:[24,6,40,10],text:{uk:'І знову з початку. Поміняй місцями і <span class="e">крайні</span>, і <span class="m">середні</span>.',en:'Back to the start again. Swap <span class="e">both</span> the outer <span class="m">and</span> the inner numbers.'}},
+  {type:'yn',show:[40,10,6,24],truth:false,text:{uk:'А ось як картки лежали вранці. Невідомий гравець поміняв 10 і 40. Це ще пропорція?',en:'This is how the cards were lying in the morning. The mystery player swapped 10 and 40. Is it still a proportion?'},
+   why:{uk:'Ні: 40 · 24 = 960, а 10 · 6 = 60. Міняти можна лише крайні між собою або середні між собою.',en:'No: 40 × 24 = 960, but 10 × 6 = 60. You can only swap the outer numbers with each other, or the inner numbers with each other.'}},
+  {type:'num',show:[24,6,40,'x'],ans:10,text:{uk:'Остання картка погризена: на ній видно лише сліди зубів і пазурів. Поня пам’ятає, що це була похідна пропорція.',en:'The last card has been chewed: all you can see are tooth and claw marks. Ponya remembers it was one of the swapped proportions.'}}
+];
+let cards=[...ORIG], sel=null;
+const posCol=i=>(i===0||i===3)?'var(--yarn)':'var(--plum)';
+function drawCards(t,interactive){
+  const arr=t&&t.show?t.show:cards;
+  $('#cStage').innerHTML=`<div class="cards">${arr.map((v,i)=>{
+    const card=v==='x'
+      ?`<span class="pc" style="--c:${posCol(i)}"><input id="cAns" inputmode="decimal" placeholder="?" aria-label="?"></span>`
+      :`<button class="pc ${sel===i?'sel':''}" style="--c:${posCol(i)}" data-i="${i}" ${interactive?'':'disabled'}>${fmt(v)}</button>`;
+    return card+(i===0||i===2?'<span>:</span>':i===1?'<span>=</span>':'');
+  }).join('')}</div>
+  <div class="legend" style="justify-content:center;font-size:14px"><span class="e">● ${UK?'крайні місця':'outer places'}</span><span class="m">● ${UK?'середні місця':'inner places'}</span></div>
+  ${interactive?`<p style="color:var(--muted);font-size:15px">${S.cTap}</p>`:''}`;
+  if(interactive)$('#cStage').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i;
+    if(sel===null){sel=i}else if(sel===i){sel=null}else{[cards[sel],cards[i]]=[cards[i],cards[sel]];sel=null}
+    drawCards(t,true);
+  });
+}
+function renderC(){
+  const opened=Math.min(state.c,NAME.length);
+  $('#slots').innerHTML=NAME.map((l,i)=>`<div class="slot ${i<opened?'open':''}">${i<opened?l:'?'}</div>`).join('');
+  const box=$('#cTask');
+  if(state.cDone||state.c>=cTasks.length){
+    state.cDone=true;save();stars();
+    $('#cStage').innerHTML=`<div class="reveal">${pig(BULYA)}${cat()}${pig(PONYA)}</div><div class="big" style="justify-content:center">${UK?'Мурко':'Murko'}</div>`;
+    box.innerHTML=`<div class="step">${S.done}</div><h3>${S.cDoneH}</h3><p>${S.cDoneP}</p><div class="row"><button class="btn" data-go="report">${S.toR}</button></div>`;
+    return;
+  }
+  const t=cTasks[state.c], key='c'+state.c;
+  sel=null;
+  let html=`<div class="step">${S.rowClue} ${state.c+1} / ${cTasks.length}</div><p>${tr(t.text)}</p>`;
+  if(t.type==='swap')html+=`<div class="row"><button class="btn" id="cCheck">${S.check}</button><button class="btn ghost" id="cBack">${S.cBack}</button></div>`;
+  if(t.type==='yn')html+=`<div class="row"><button class="btn opt" data-yn="1">${S.yes}</button><button class="btn opt" data-yn="0">${S.no}</button></div>`;
+  if(t.type==='num')html+=`<p><b>${S.cNumQ}</b></p><div class="row"><button class="btn" id="cCheck">${S.check}</button></div>`;
+  html+=`<div class="fb" id="cFb" aria-live="polite"></div><div class="hint" id="cHint" hidden></div>`;
+  box.innerHTML=html;
+  drawCards(t,t.type==='swap');
+  const fb=$('#cFb');
+  const win=msg=>{rec(key,true,false);fb.className='fb pop good';fb.innerHTML=msg||S.cGood;box.querySelectorAll('button').forEach(b=>b.disabled=true);
+    $('#cStage').querySelectorAll('button').forEach(b=>b.disabled=true);
+    setTimeout(()=>{state.c++;cards=[...ORIG];save();renderC()},msg?2600:1200)};
+  const lose=(msg,h)=>{rec(key,false,!!h);fb.className='fb pop bad';fb.innerHTML=msg;if(h){const el=$('#cHint');el.hidden=false;el.innerHTML=S.hint+h}};
+  if(t.type==='swap'){
+    $('#cBack').onclick=()=>{cards=[...ORIG];sel=null;drawCards(t,true)};
+    $('#cCheck').onclick=()=>{
+      const L=cards[0]*cards[3], R=cards[1]*cards[2];
+      if(cards.every((v,i)=>v===t.target[i]))return win();
+      if(cards.every((v,i)=>v===ORIG[i]))return lose(S.cSame);
+      if(!eq(L,R))return lose(S.cNotProp(L,R),UK?'подивись крок 6 в уроці: там показано всі три перестановки.':'step 6 of the lesson shows all three swaps.');
+      lose(S.cOtherProp,UK?'крайні — це рожеві місця (перше й останнє), середні — фіолетові (друге й третє).':'the outer places are pink (first and last), the inner places are violet (second and third).');
+    };
+  }
+  if(t.type==='yn')box.querySelectorAll('[data-yn]').forEach(b=>b.onclick=()=>{
+    if((b.dataset.yn==='1')===t.truth)win(tr(t.why));else lose(S.pBadYN,S.pYNHint(t.show));
+  });
+  if(t.type==='num'){
+    const check=()=>{const v=num($('#cAns').value);if(v===null)return lose(S.typeNum);
+      if(eq(v,t.ans))return win();
+      lose(UK?'Не те число.':'That\'s not the right number.',S.kRule(t.show,3));};
+    $('#cCheck').onclick=check;$('#cAns').onkeydown=e=>{if(e.key==='Enter')check()};
+  }
+}
+$('#cReset').onclick=()=>{state.c=0;state.cDone=false;cards=[...ORIG];clearLog('c');save();stars();renderC()};
+
+/* ---------- report ---------- */
+const plain=p=>p.map(fmt).join(' ').replace(/^(\S+) (\S+) (\S+) (\S+)$/,'$1 : $2 = $3 : $4');
+function fmtDate(ts){return ts?new Date(ts).toLocaleDateString(S.locale):S.notStarted}
+function statusOf(key){
+  const e=state.log[key];
+  if(!e||!e.t)return {cls:'no',txt:S.notTried};
+  const h=e.h?S.withHint:'';
+  if(e.ok)return e.t===1?{cls:'ok',txt:S.first}:{cls:'mid',txt:S.nth(e.t)+h};
+  return {cls:'bad',txt:S.notYet(e.t)+h};
+}
+function reportData(){
+  return [
+    {name:S.lvP,done:state.pDone,rows:pTasks.map((t,i)=>({key:'p'+i,label:`${S.rowTask} ${i+1}: ${plain(t.p)}`}))},
+    {name:S.lvK,done:state.kDone,rows:kTasks.map((t,i)=>({key:'k'+i,label:`${S.rowTask} ${i+1}: ${plain(t.p)}`}))},
+    {name:S.lvC,done:state.cDone,rows:cTasks.map((t,i)=>({key:'c'+i,label:`${S.rowClue} ${i+1}`}))}
+  ];
+}
+function renderReport(){
+  const data=reportData();let solved=0,total=0,first=0,hints=0;
+  data.forEach(l=>l.rows.forEach(r=>{const e=state.log[r.key];total++;if(e&&e.ok){solved++;if(e.t===1)first++}if(e&&e.h)hints++}));
+  const n=[state.pDone,state.kDone,state.cDone].filter(Boolean).length;
+  $('#reportCard').innerHTML=`<div class="rep">
+    <p><b>${S.repStars(n)}</b> ${S.repSum(solved,total,first,hints)}</p>
+    ${data.map(l=>`<div><h3>${l.name}${l.done?` <span class="st ok">${S.complete}</span>`:''}</h3><ul>${l.rows.map(r=>{const s=statusOf(r.key);return `<li><span>${r.label}</span><span class="st ${s.cls}">${s.txt}</span></li>`}).join('')}</ul></div>`).join('')}
+    <p class="hint">${S.repDates(fmtDate(state.firstAt),fmtDate(state.lastAt))}</p></div>`;
+  const lines=[S.repHead,S.repStars(n),S.repSum(solved,total,first,hints),''];
+  data.forEach(l=>{lines.push(`${l.name}${l.done?` (${S.complete})`:''}:`);l.rows.forEach(r=>lines.push(`• ${r.label}: ${statusOf(r.key).txt}`));lines.push('')});
+  lines.push(S.repDates(fmtDate(state.firstAt),fmtDate(state.lastAt)));
+  $('#reportText').value=lines.join('\n');
+}
+$('#copyReport').onclick=()=>{
+  renderReport();const txt=$('#reportText').value, fb=$('#copyFb');
+  const manual=()=>{const ta=$('#reportText');ta.hidden=false;ta.focus();ta.select();fb.className='fb bad';fb.textContent=S.copyFail};
+  try{navigator.clipboard.writeText(txt).then(()=>{fb.className='fb good pop';fb.textContent=S.copied},manual)}catch(e){manual()}
+};
+
+let armed=false;
+$('#resetAll').onclick=()=>{
+  const b=$('#resetAll');
+  if(!armed){armed=true;b.textContent=S.resetSure;setTimeout(()=>{armed=false;b.textContent=S.resetAll},4000);return}
+  armed=false;b.textContent=S.resetAll;state=fresh();cards=[...ORIG];kTries=0;save();
+  show('learn');startP();renderK();renderC();stars();window.scrollTo({top:0});
+};
+show(tabs.includes(state.tab)?state.tab:'learn');
+startP();renderK();renderC();stars();
+</script>
+
+
+</body></html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Математика з Понею і Булею</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>:root{--bg:#EEF3E4;--paper:#FFFFFF;--ink:#26301F;--muted:#5F6B55;--line:#D3DCC5;--shadow:rgba(38,48,31,.12);
+--yarn:#D9486F;--plum:#7A59C2;--hay:#D99A1E;--leaf:#4F8A3C;--sky:#3E7FB8;--marker:#FFE24A;--marker-ink:#2A2300;--cell:#F4F7EE;
+--good:#2F8A4C;--bad:#C2413B;
+--display:'Comfortaa','Nunito',system-ui,sans-serif;--body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;--hand:'Caveat','Comic Sans MS',cursive}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+ padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto;padding-block:24px 56px;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,6.5vw,50px)}h1 span{color:var(--yarn)}
+h2{font-size:clamp(21px,4vw,26px)}
+p{margin:0}
+a{color:var(--sky);font-weight:700}
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px}
+.hero-text{flex:1 1 340px;min-width:0;display:grid;gap:10px}
+.hero-text p{color:var(--muted);max-width:58ch}
+.cast{display:flex;flex-wrap:wrap;gap:2px;align-items:flex-end}
+.cast svg{width:clamp(64px,18vw,96px);height:auto}
+.topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.topic{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 3px 0 var(--shadow);display:grid;gap:12px;align-content:start;min-width:0}
+.top{display:flex;align-items:center;gap:14px}
+.emblem{flex:none;min-width:64px;height:64px;padding:0 10px;border-radius:32px;background:var(--marker);color:var(--marker-ink);display:grid;place-items:center;font:700 22px var(--display);white-space:nowrap}
+.grade{font-weight:800;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.topic p{color:var(--muted);font-size:16px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-block;font:800 15px var(--body);border-radius:12px;padding:9px 14px;text-decoration:none;background:var(--leaf);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);padding:7px 12px}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.how{background:var(--paper);border:2px dashed var(--hay);border-radius:18px;padding:16px 18px;display:grid;gap:8px}
+.how ol{margin:0;padding-left:1.3em;display:grid;gap:4px;max-width:70ch}
+.foot{color:var(--muted);font-size:15px;font-family:var(--hand);font-size:22px}
+</style>
+<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}</style></head>
+<body>
+<div class="wrap">
+ <header class="hero"><div class="hero-text"><h1>Математика з <span>Понею</span> і <span>Булею</span></h1><p>Ігри-уроки і живі шпаргалки для 6–7 класу. Кожна тема — короткий урок зі схемами, три рівні з різними іграми й звіт про пройдене.</p><p style="font-size:15px"><a href="index-en.html">English version</a></p></div>
+ <div class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#D9843A"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#D9843A"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F6E9D7"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#D9843A"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F6E9D7"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#D9843A"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#D9843A" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="74" cy="92" rx="58" ry="6" fill="var(--shadow)"/>
+<path d="M30 70 C6 66 4 36 20 26" stroke="#7D838B" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M14 60 L28 56 M8 46 L22 46 M12 32 L24 38" stroke="#2E3136" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="66" cy="68" rx="42" ry="24" fill="#9AA0A8"/>
+<ellipse cx="44" cy="89" rx="9" ry="5" fill="#2E3136"/><ellipse cx="88" cy="89" rx="9" ry="5" fill="#2E3136"/>
+<path d="M90 30 L94 14 L104 26 Z M118 26 L128 14 L130 30 Z" fill="#7D838B"/>
+<circle cx="110" cy="44" r="24" fill="#B4BAC2"/>
+<path d="M88 42 C96 34 124 34 132 42 C126 52 94 52 88 42 Z" fill="#2E3136"/>
+<circle cx="101" cy="43" r="4" fill="#fff"/><circle cx="119" cy="43" r="4" fill="#fff"/>
+<circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
+<ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
+<path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
+</svg></div></header>
+ <section class="topics"><article class="topic"><div class="top"><span class="emblem">%</span>
+<div><span class="grade">6 клас</span><h2>Відсотки</h2></div></div>
+<p>Бабусин плед на сітці, ярмарок із бюджетом і детектив про зниклу моркву.</p><div class="links"><a class="btn" href="percentages/uk.html">Урок і гра</a></div></article><article class="topic"><div class="top"><span class="emblem">a:b</span>
+<div><span class="grade">6 клас</span><h2>Пропорції</h2></div></div>
+<p>Чесні терези, кухня Поні та загадка карток, які хтось переставив уночі.</p><div class="links"><a class="btn" href="proportions/uk.html">Урок і гра</a><a class="btn ghost" href="proportions/cheatsheet-uk.html">Шпаргалка</a><a class="btn ghost" href="proportions/cheatsheet-uk.pdf">PDF для друку</a></div></article><article class="topic"><div class="top"><span class="emblem">6a³b</span>
+<div><span class="grade">7 клас · алгебра</span><h2>Одночлени</h2></div></div>
+<p>Три світи на вибір: луг зі свинками, космос або цеглинки. Можна вписати своє ім’я й перейменувати героїв.</p><div class="links"><a class="btn" href="monomials/uk.html">Урок і гра</a><a class="btn ghost" href="monomials/cheatsheet-uk.html">Шпаргалка</a><a class="btn ghost" href="monomials/cheatsheet-uk.pdf">PDF для друку</a></div></article></section>
+ <section class="how"><h2>Як цим користуватися</h2><ol><li>Відкривай тему з телефона чи комп’ютера. Реєстрація не потрібна.</li><li>Зірки й прогрес зберігаються в браузері на цьому пристрої. На іншому пристрої гра почнеться спочатку.</li><li>У вкладці «Мій звіт» є кнопка «Скопіювати звіт»: встав текст у повідомлення вчителеві чи батькам.</li></ol></section>
+ <p class="foot">Герої: морські свинки Поня і Буля, кіт Мурко, їжачиха Голочка і єнот Безладко.</p>
+</div>
+</body></html>

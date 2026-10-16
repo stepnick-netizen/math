@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+
+<title>Відсотки з Понею і Булею</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: meadow page, hero with the two guinea pigs, tab strip, one level per tab; level = work area + task card */
+:root{
+  --bg:#EEF3E4; --paper:#FFFFFF; --ink:#26301F; --muted:#5F6B55; --line:#D3DCC5; --shadow:rgba(38,48,31,.12);
+  --yarn:#D9486F; --hay:#D99A1E; --leaf:#4F8A3C; --sky:#3E7FB8;
+  --good:#2F8A4C; --bad:#C2413B; --cell:#F4F7EE;
+  --display:'Comfortaa','Nunito',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --hand:'Caveat','Comic Sans MS',cursive;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171C14; --paper:#222A1D; --ink:#EDF2E3; --muted:#A8B49B; --line:#3A4532; --shadow:rgba(0,0,0,.35);
+  --yarn:#F07898; --hay:#F0BE4E; --leaf:#7DBA62; --sky:#7AB3E6;
+  --good:#6CCB86; --bad:#F07A72; --cell:#2C3526; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171C14; --paper:#222A1D; --ink:#EDF2E3; --muted:#A8B49B; --line:#3A4532; --shadow:rgba(0,0,0,.35);
+  --yarn:#F07898; --hay:#F0BE4E; --leaf:#7DBA62; --sky:#7AB3E6;
+  --good:#6CCB86; --bad:#F07A72; --cell:#2C3526; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;padding:0 16px}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 60px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,6vw,46px)}
+h2{font-size:clamp(22px,4vw,30px)}
+h3{font-size:19px}
+p{margin:0}
+.hand{font-family:var(--hand);font-size:24px;line-height:1.2}
+
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;padding-block:8px 18px}
+.hero-text{flex:1 1 320px;min-width:0;display:grid;gap:8px}
+.hero-text h1 span{color:var(--yarn)}
+.hero-text p{color:var(--muted);max-width:56ch}
+.pigs{display:flex;gap:6px;align-items:flex-end;flex:0 1 auto}
+.pig-box{display:grid;justify-items:center}
+.pig{width:120px;max-width:100%;height:auto}
+.pig-name{font-family:var(--hand);font-size:24px;margin-top:-4px}
+.stars{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:800;color:var(--muted)}
+.star{font-size:26px;color:var(--line);transition:color .3s}
+.star.on{color:var(--hay)}
+.diploma{margin-top:6px;padding:14px 18px;border:2px dashed var(--hay);border-radius:14px;background:var(--paper)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px 22px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:5}
+.tab{font:700 15px var(--body);border:2px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--yarn);background:var(--yarn);color:var(--paper)}
+.tab:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+.panel{display:grid;gap:22px}
+.lead{max-width:62ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 0 var(--shadow)}
+
+/* cheat sheet */
+.minis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
+.mini{display:grid;gap:6px;justify-items:center;text-align:center}
+.mgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;width:100%;max-width:120px;aspect-ratio:1}
+.mgrid i{background:var(--cell);border-radius:2px}
+.mgrid i.on{background:var(--c)}
+.mini b{font-family:var(--display);font-size:20px}
+.mini small{color:var(--muted);font-size:14px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.rule{display:grid;gap:8px;align-content:start}
+.rule .ex{font-variant-numeric:tabular-nums;background:var(--cell);border-radius:10px;padding:8px 12px;font-weight:600}
+.tricks{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--paper);font-weight:600;font-size:15px}
+.note{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.note .pig{width:90px}
+
+/* plaid */
+.level{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:760px){.level{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;width:100%;max-width:440px;aspect-ratio:1;touch-action:none;user-select:none;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;margin-inline:auto}
+.cell{border-radius:5px;background:var(--cell);border:1px solid var(--line);cursor:pointer;transition:background .12s}
+.cell.on{background:var(--c);border-color:var(--c);
+  background-image:radial-gradient(circle at 50% 40%,rgba(255,255,255,.35) 0 22%,transparent 24%)}
+.grid.locked .cell{cursor:default}
+.counter{text-align:center;font-variant-numeric:tabular-nums;color:var(--muted);margin-top:8px;font-weight:600}
+.task{display:grid;gap:12px}
+.step{font-weight:800;color:var(--muted);font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input.ans{font:700 18px var(--body);width:110px;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+.btn{font:800 16px var(--body);border:0;border-radius:12px;padding:10px 16px;cursor:pointer;background:var(--leaf);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--muted);border:2px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.fb{min-height:1.5em;font-weight:700}
+.fb.good{color:var(--good)}
+.fb.bad{color:var(--bad)}
+.hint{color:var(--muted);font-size:15px;border-left:3px solid var(--hay);padding-left:10px}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.9);opacity:.3}100%{transform:none;opacity:1}}
+
+/* shop */
+.wallet{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:baseline}
+.money{font-family:var(--display);font-size:30px;font-variant-numeric:tabular-nums}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.item{display:grid;gap:8px;align-content:start;position:relative}
+.item.bought{border-color:var(--good)}
+.item .tag{position:absolute;top:14px;right:14px;background:var(--yarn);color:var(--paper);font-weight:800;border-radius:8px;padding:2px 8px;font-size:15px}
+.item h3{padding-right:62px}
+.item .desc{color:var(--muted);font-size:15px}
+.item .price{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px}
+.must{font-size:13px;font-weight:800;color:var(--leaf);letter-spacing:.05em;text-transform:uppercase}
+.buy{display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.basket{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+
+/* detective */
+.slots{display:flex;gap:10px;flex-wrap:wrap}
+.slot{width:54px;height:64px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:700 30px var(--display);color:var(--yarn);background:var(--paper)}
+.slot.open{border-style:solid;border-color:var(--yarn)}
+.clue-list{display:grid;gap:6px;color:var(--muted);font-size:15px;padding-left:20px;margin:0}
+.reveal{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.reveal .pig{width:110px}
+
+.rep{display:grid;gap:18px}
+.rep ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.rep li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.rep li span:first-child{min-width:0}
+.st{font-weight:800;font-size:15px}
+.st.ok{color:var(--good)}.st.mid{color:var(--hay)}.st.no{color:var(--muted)}.st.bad{color:var(--bad)}
+#reportText{width:100%;font:15px/1.5 var(--body);padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}</style></head>
+<body><nav class="site-home"><a href="../index.html">← Усі теми</a></nav>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <h1>Відсотки з <span>Понею</span> і <span>Булею</span></h1>
+      <p>Дві морські свинки навчать, що таке відсоток. Спершу подивись шпаргалку, потім пройди три рівні: сплети плед, сходи на ярмарок і розкрий таємницю зниклої моркви.</p>
+      <p style="font-size:15px"><a href="../percentages/en.html" style="color:var(--sky);font-weight:700">English version</a></p>
+      <div class="stars" aria-live="polite">
+        <span>Твої зірки:</span>
+        <span class="star" id="st-plaid" title="Плед">★</span>
+        <span class="star" id="st-shop" title="Ярмарок">★</span>
+        <span class="star" id="st-det" title="Детектив">★</span>
+        <button class="btn ghost" id="resetAll" style="padding:4px 12px;font-size:14px">Почати все спочатку</button>
+      </div>
+      <div class="diploma" id="diploma" hidden>
+        <h3>Диплом знавця відсотків</h3>
+        <p>Усі три рівні пройдено! Поня і Буля офіційно вітають тебе. Тепер ти рахуєш знижки краще за продавців на ярмарку.</p>
+      </div>
+    </div>
+    <div class="pigs" id="heroPigs"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="learn" id="t-learn">Шпаргалка</button>
+    <button class="tab" role="tab" data-tab="plaid" id="t-plaid">1. Плед</button>
+    <button class="tab" role="tab" data-tab="shop" id="t-shop">2. Ярмарок</button>
+    <button class="tab" role="tab" data-tab="det" id="t-det">3. Детектив</button>
+    <button class="tab" role="tab" data-tab="report" id="t-report">Мій звіт</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section class="panel" id="p-learn">
+    <div class="lead">
+      <h2>Що таке відсоток</h2>
+      <p style="margin-top:8px">Відсоток — це одна сота частина. Уяви плед зі 100 петель: одна петля — це <b>1%</b>, десять петель — <b>10%</b>, усі сто — <b>100%</b>, тобто весь плед.</p>
+    </div>
+    <div class="card"><div class="minis" id="minis"></div></div>
+
+    <h2>Три головні дії</h2>
+    <div class="rules">
+      <div class="card rule">
+        <h3>Знайти відсоток від числа</h3>
+        <p>Ділимо на 100 (це 1%), потім множимо на кількість відсотків.</p>
+        <div class="ex">30% від 80 = 80 : 100 × 30 = 24</div>
+      </div>
+      <div class="card rule">
+        <h3>Знайти число за відсотком</h3>
+        <p>Ділимо на кількість відсотків (це 1%), потім множимо на 100.</p>
+        <div class="ex">9 — це 30% числа.<br>9 : 30 × 100 = 30</div>
+      </div>
+      <div class="card rule">
+        <h3>Скільки це відсотків</h3>
+        <p>Ділимо частину на ціле і множимо на 100.</p>
+        <div class="ex">15 з 20 = 15 : 20 × 100 = 75%</div>
+      </div>
+    </div>
+
+    <div class="card" style="display:grid;gap:10px">
+      <h3>Швидкі хитрощі</h3>
+      <div class="tricks">
+        <span class="chip">50% — це половина, ділимо на 2</span>
+        <span class="chip">25% — чверть, ділимо на 4</span>
+        <span class="chip">20% — ділимо на 5</span>
+        <span class="chip">10% — ділимо на 10</span>
+        <span class="chip">1% — ділимо на 100</span>
+        <span class="chip">знижка 30% → платиш 70%</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <div id="notePig"></div>
+      <p class="hand">Поня каже: знак % схожий на дві морквинки, між якими лежить паличка сіна. Отже, сіно ділимо на сто!</p>
+    </div>
+    <div><button class="btn" data-go="plaid">До першого рівня</button></div>
+  </section>
+
+  <!-- PLAID -->
+  <section class="panel" id="p-plaid" hidden>
+    <div class="lead">
+      <h2>Рівень 1. Плед для свинок</h2>
+      <p style="margin-top:8px">Поня і Буля мерзнуть узимку, тож ти в'яжеш їм плед зі 100 петель. Кожна клітинка — одна петля, тобто 1%. Натискай на клітинки (або веди пальцем), щоб їх зафарбувати.</p>
+    </div>
+    <div class="level">
+      <div>
+        <div class="grid" id="grid" aria-label="Плед з 100 клітинок"></div>
+        <div class="counter" id="counter"></div>
+      </div>
+      <div class="card task" id="plaidTask"></div>
+    </div>
+    <div><button class="btn ghost" id="plaidReset">Почати плед заново</button></div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="panel" id="p-shop" hidden>
+    <div class="lead">
+      <h2>Рівень 2. Осінній ярмарок</h2>
+      <p style="margin-top:8px">У тебе 400 гривень. Обов'язково купи будиночок і сіно для Поні й Булі, а на решту обери щось собі. Продавчиня віддасть товар лише тоді, коли ти правильно порахуєш ціну зі знижкою.</p>
+    </div>
+    <div class="card wallet">
+      <div><div class="step">У гаманці</div><div class="money" id="money">400 грн</div></div>
+      <div class="basket" id="basket"></div>
+    </div>
+    <div class="items" id="items"></div>
+    <div class="card task" id="shopFinal" hidden></div>
+    <div><button class="btn ghost" id="shopReset">Почати ярмарок заново</button></div>
+  </section>
+
+  <!-- DETECTIVE -->
+  <section class="panel" id="p-det" hidden>
+    <div class="lead">
+      <h2>Рівень 3. Хто з'їв моркву?</h2>
+      <p style="margin-top:8px">Ранок. Поня прокинулась, а в кошику менше моркви, ніж було ввечері! Розв'язуй задачі: кожна правильна відповідь відкриває одну літеру імені того, хто це зробив.</p>
+    </div>
+    <div class="slots" id="slots"></div>
+    <div class="card task" id="detTask"></div>
+    <div><button class="btn ghost" id="detReset">Почати розслідування заново</button></div>
+  </section>
+
+  <section class="panel" id="p-report" hidden>
+    <div class="lead"><h2>Мій звіт</h2><p style="margin-top:8px">Тут видно, що вже пройдено. Натисни кнопку, скопіюй звіт і надішли його вчителеві чи батькам у месенджер.</p></div>
+    <div class="card" id="reportCard"></div>
+    <div class="row"><button class="btn" id="copyReport">Скопіювати звіт</button><span class="fb" id="copyFb" aria-live="polite"></span></div>
+    <textarea id="reportText" readonly hidden rows="14" aria-label="Report text"></textarea>
+  </section>
+</div>
+
+<script>
+const KEY='ponya-bulya-v1';
+const $=s=>document.querySelector(s);
+const num=v=>{const x=parseFloat(String(v).replace(',','.').replace('%','').replace(/грн/i,'').trim());return isNaN(x)?null:x};
+
+let state={tab:'learn',plaid:0,plaidDone:false,bought:[],shopDone:false,det:0,detDone:false,log:{},firstAt:null,lastAt:null};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state=Object.assign(state,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function rec(key,ok,hint){const e=state.log[key]||(state.log[key]={t:0,h:false,ok:false});if(e.ok)return;e.t++;if(hint)e.h=true;if(ok)e.ok=true;if(!state.firstAt)state.firstAt=Date.now();state.lastAt=Date.now();save()}
+function clearLog(p){Object.keys(state.log).forEach(k=>{if(k[0]===p)delete state.log[k]})}
+
+/* ---------- guinea pigs ---------- */
+const PONYA=['#F6E9D7','#D9843A'], BULYA=['#F1ECE6','#5E4030'];
+function pig([base,patch],cls='pig'){
+  return `<svg viewBox="0 0 150 100" class="${cls}" aria-hidden="true">
+  <ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/>
+  <ellipse cx="38" cy="86" rx="10" ry="5" fill="${patch}"/>
+  <ellipse cx="98" cy="87" rx="10" ry="5" fill="${patch}"/>
+  <ellipse cx="66" cy="58" rx="56" ry="32" fill="${base}"/>
+  <ellipse cx="42" cy="52" rx="28" ry="25" fill="${patch}"/>
+  <ellipse cx="110" cy="56" rx="28" ry="26" fill="${base}"/>
+  <ellipse cx="98" cy="33" rx="11" ry="9" fill="${patch}"/>
+  <ellipse cx="118" cy="40" rx="12" ry="10" fill="${patch}" opacity=".55"/>
+  <circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+  <circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/>
+  <ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/>
+  <ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/>
+  </svg>`;
+}
+$('#heroPigs').innerHTML=`<div class="pig-box">${pig(PONYA)}<span class="pig-name">Поня</span></div><div class="pig-box" style="transform:scaleX(-1)">${pig(BULYA)}<span class="pig-name" style="transform:scaleX(-1)">Буля</span></div>`;
+$('#notePig').innerHTML=pig(PONYA);
+
+/* ---------- tabs ---------- */
+const tabs=['learn','plaid','shop','det','report'];
+function show(t){
+  state.tab=t;save();if(t==='report')renderReport();
+  tabs.forEach(x=>{$('#p-'+x).hidden=x!==t;$('#t-'+x).setAttribute('aria-selected',x===t)});
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>show(b.dataset.tab));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{show(b.dataset.go);window.scrollTo({top:0})});
+
+function stars(){
+  $('#st-plaid').classList.toggle('on',state.plaidDone);
+  $('#st-shop').classList.toggle('on',state.shopDone);
+  $('#st-det').classList.toggle('on',state.detDone);
+  $('#diploma').hidden=!(state.plaidDone&&state.shopDone&&state.detDone);
+}
+
+/* ---------- cheat sheet minis ---------- */
+const minis=[[1,'--yarn','одна петля'],[10,'--hay','десята частина'],[25,'--leaf','чверть'],[50,'--sky','половина'],[100,'--yarn','усе ціле']];
+$('#minis').innerHTML=minis.map(([n,c,t])=>`<div class="mini"><div class="mgrid" style="--c:var(${c})">${Array.from({length:100},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</div><b>${n}%</b><small>${t}</small></div>`).join('');
+
+/* ---------- level 1: plaid ---------- */
+const plaidTasks=[
+  {type:'paint',n:30,c:'--yarn',text:'Поня хоче, щоб 30% петель пледа були рожеві. Зафарбуй рівно стільки клітинок.'},
+  {type:'paint',n:50,c:'--hay',text:'Буля просить, щоб половина пледа була кольору сіна. Скільки це відсотків? Зафарбуй.',hint:'Половина від 100 клітинок — це 50 клітинок.'},
+  {type:'read',n:42,c:'--sky',seed:7,text:'Бабуся вже почала в\'язати синій плед. Яка частина пледа готова? Порахуй зафарбовані клітинки і впиши відповідь у відсотках.',hint:'Порахуй по рядах: у кожному ряду 10 клітинок, і кожна клітинка — це 1%.'},
+  {type:'paint',n:25,c:'--leaf',text:'Зелена смужка, як конюшина, має займати чверть пледа. Зафарбуй.',hint:'Чверть — це одна з чотирьох рівних частин. 100 : 4 = ?'},
+  {type:'read',n:64,c:'--yarn',seed:3,text:'Поня порвала плед і вигризла кілька петель. Скільки відсотків пледа залишилось рожевими?',hint:'Зручно рахувати порожні клітинки і відняти їх від 100.'},
+  {type:'paint',n:12,c:'--sky',text:'На маленькому пледі для Булі вишите сердечко, яке займає 12%. Зафарбуй його.'}
+];
+let cells=Array(100).fill(false), drag=false, dragMode=true, plaidTries=0;
+const grid=$('#grid');
+grid.innerHTML=Array.from({length:100},(_,i)=>`<div class="cell" data-i="${i}"></div>`).join('');
+const cellEls=[...grid.children];
+function pattern(n,seed){
+  const idx=[...Array(100).keys()];let s=seed;
+  for(let i=99;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}
+  const set=new Set(idx.slice(0,n));return Array.from({length:100},(_,i)=>set.has(i));
+}
+function drawGrid(){
+  cellEls.forEach((el,i)=>el.classList.toggle('on',cells[i]));
+  const k=cells.filter(Boolean).length;
+  const t=plaidTasks[state.plaid];
+  $('#counter').textContent=(t&&t.type==='read'&&!state.plaidDone)?'Порахуй сама, скільки клітинок зафарбовано':`Зафарбовано ${k} петель зі 100, тобто ${k}%`;
+}
+function setCell(el){if(grid.classList.contains('locked'))return;const i=+el.dataset.i;cells[i]=dragMode;drawGrid()}
+grid.addEventListener('pointerdown',e=>{
+  const el=e.target.closest('.cell');if(!el||grid.classList.contains('locked'))return;
+  drag=true;dragMode=!cells[+el.dataset.i];setCell(el);
+});
+grid.addEventListener('pointermove',e=>{
+  if(!drag)return;const el=document.elementFromPoint(e.clientX,e.clientY);
+  if(el&&el.classList.contains('cell'))setCell(el);
+});
+window.addEventListener('pointerup',()=>drag=false);
+
+function renderPlaid(){
+  const box=$('#plaidTask');
+  if(state.plaidDone||state.plaid>=plaidTasks.length){
+    state.plaidDone=true;save();stars();
+    grid.classList.add('locked');grid.style.setProperty('--c','var(--yarn)');
+    cells=Array.from({length:100},(_,i)=>((i%10)+Math.floor(i/10))%3===0);drawGrid();
+    $('#counter').textContent='Плед готовий';
+    box.innerHTML=`<div class="step">Рівень пройдено</div><h3>Плед готовий!</h3><p>Поня і Буля загорнулись у теплий плед. Ти отримуєш першу зірку.</p><div class="row"><button class="btn" data-go2="shop">На ярмарок</button><button class="btn ghost" id="plaidAgain">Сплести ще раз</button></div>`;
+    box.querySelector('[data-go2]').onclick=()=>{show('shop');window.scrollTo({top:0})};
+    $('#plaidAgain').onclick=()=>{state.plaid=0;state.plaidDone=false;clearLog('p');save();stars();startPlaidTask();};
+    return;
+  }
+  const t=plaidTasks[state.plaid];
+  box.innerHTML=`<div class="step">Завдання ${state.plaid+1} з ${plaidTasks.length}</div>
+    <p>${t.text}</p>
+    ${t.type==='read'?`<div class="row"><input class="ans" id="plaidAns" inputmode="decimal" aria-label="Відповідь у відсотках" placeholder="?"><b>%</b></div>`:''}
+    <div class="row"><button class="btn" id="plaidCheck">Перевірити</button>${t.type==='paint'?'<button class="btn ghost" id="plaidClear">Очистити</button>':''}</div>
+    <div class="fb" id="plaidFb" aria-live="polite"></div><div class="hint" id="plaidHint" hidden></div>`;
+  $('#plaidCheck').onclick=checkPlaid;
+  if(t.type==='paint')$('#plaidClear').onclick=()=>{cells.fill(false);drawGrid()};
+  if(t.type==='read')$('#plaidAns').onkeydown=e=>{if(e.key==='Enter')checkPlaid()};
+}
+function startPlaidTask(){
+  plaidTries=0;
+  const t=plaidTasks[state.plaid];
+  if(t){grid.style.setProperty('--c',`var(${t.c})`);
+    cells=t.type==='read'?pattern(t.n,t.seed):Array(100).fill(false);
+    grid.classList.toggle('locked',t.type==='read');}
+  drawGrid();renderPlaid();
+}
+function checkPlaid(){
+  const t=plaidTasks[state.plaid], fb=$('#plaidFb');
+  let ok,msg;
+  if(t.type==='paint'){
+    const k=cells.filter(Boolean).length;ok=k===t.n;
+    msg=ok?'Правильно! Саме так.':(k<t.n?`Ще не все: бракує ${t.n-k} петель.`:`Забагато на ${k-t.n} петель.`);
+  }else{
+    const v=num($('#plaidAns').value);ok=v===t.n;
+    msg=ok?`Так, ${t.n}%!`:(v===null?'Впиши число.':'Не зовсім. Порахуй ще раз по рядах.');
+  }
+  fb.className='fb pop '+(ok?'good':'bad');fb.textContent=msg;rec('p'+state.plaid,ok,!ok&&!!t.hint);
+  if(!ok){plaidTries++;if(t.hint&&plaidTries>=1){const h=$('#plaidHint');h.hidden=false;h.textContent='Підказка: '+t.hint}return}
+  $('#plaidCheck').disabled=true;
+  setTimeout(()=>{state.plaid++;save();startPlaidTask()},900);
+}
+
+/* ---------- level 2: shop ---------- */
+const BUDGET=400;
+const goods=[
+  {id:'house',name:'Дерев\'яний будиночок',desc:'Для двох свинок, з круглим віконцем',price:200,off:40,must:true},
+  {id:'hay',name:'Мішок лугового сіна',desc:'Пахне літом, вистачить на місяць',price:80,off:25,must:true},
+  {id:'carrot',name:'Морквяні чипси',desc:'Улюблені ласощі Булі',price:50,off:10},
+  {id:'yarn',name:'Клубок м\'якої пряжі',desc:'Ніжно-рожева, для шарфика',price:60,off:50},
+  {id:'brush',name:'Набір пензликів',desc:'Шість пензликів для акварелі',price:90,off:20},
+  {id:'book',name:'Книжка про морських свинок',desc:'З ілюстраціями і порадами',price:150,off:30}
+];
+const salePrice=g=>g.price*(100-g.off)/100;
+const spent=()=>state.bought.reduce((s,id)=>s+salePrice(goods.find(g=>g.id===id)),0);
+let openItem=null, shopTries={};
+function renderShop(){
+  const left=BUDGET-spent();
+  $('#money').textContent=`${left} грн`;
+  $('#basket').innerHTML=state.bought.length?`<div class="step">У кошику</div>`+state.bought.map(id=>{const g=goods.find(x=>x.id===id);return `<span>${g.name} — ${salePrice(g)} грн</span>`}).join(''):`<span style="color:var(--muted)">Кошик поки порожній</span>`;
+  $('#items').innerHTML=goods.map(g=>{
+    const b=state.bought.includes(g.id);
+    return `<div class="card item ${b?'bought':''}">
+      <span class="tag">−${g.off}%</span>
+      ${g.must?'<span class="must">Для Поні й Булі</span>':''}
+      <h3>${g.name}</h3><p class="desc">${g.desc}</p>
+      <p class="price">Ціна без знижки: ${g.price} грн</p>
+      ${b?`<p class="fb good">Куплено за ${salePrice(g)} грн</p>`:
+        openItem===g.id?`<div class="buy"><label for="ans-${g.id}">Скільки коштує зі знижкою?</label>
+          <div class="row"><input class="ans" id="ans-${g.id}" inputmode="decimal" placeholder="?"><b>грн</b><button class="btn" data-pay="${g.id}">Заплатити</button></div>
+          <div class="fb" id="fb-${g.id}" aria-live="polite"></div><div class="hint" id="hint-${g.id}" hidden></div></div>`:
+        `<div><button class="btn" data-open="${g.id}">Купити</button></div>`}
+    </div>`}).join('');
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{openItem=b.dataset.open;renderShop();const i=$('#ans-'+openItem);if(i)i.focus()});
+  document.querySelectorAll('[data-pay]').forEach(b=>{
+    b.onclick=()=>pay(b.dataset.pay);
+    $('#ans-'+b.dataset.pay).onkeydown=e=>{if(e.key==='Enter')pay(b.dataset.pay)};
+  });
+  renderShopFinal();
+}
+function pay(id){
+  const g=goods.find(x=>x.id===id), v=num($('#ans-'+id).value), fb=$('#fb-'+id), right=salePrice(g);
+  fb.className='fb pop';
+  if(v===null){fb.classList.add('bad');fb.textContent='Впиши суму.';return}
+  if(v!==right){
+    shopTries[id]=(shopTries[id]||0)+1;rec('s-'+id,false,true);fb.classList.add('bad');
+    fb.textContent=v===g.price*g.off/100?'Це розмір знижки. А скільки треба заплатити?':'Продавчиня хитає головою. Спробуй ще раз.';
+    const h=$('#hint-'+id);h.hidden=false;
+    h.textContent=shopTries[id]<2?`Підказка: спочатку знайди знижку: ${g.price} : 100 × ${g.off}. Потім відніми її від ціни.`:`Підказка: знижка ${g.off}% означає, що ти платиш ${100-g.off}% ціни: ${g.price} : 100 × ${100-g.off}.`;
+    return;
+  }
+  rec('s-'+id,true,false);
+  if(right>BUDGET-spent()){fb.classList.add('bad');fb.textContent=`Пораховано правильно, але не вистачає ${right-(BUDGET-spent())} грн. Обери щось інше.`;return}
+  state.bought.push(id);openItem=null;save();renderShop();
+}
+function renderShopFinal(){
+  const box=$('#shopFinal');
+  const ready=state.bought.includes('house')&&state.bought.includes('hay');
+  box.hidden=!ready;if(!ready)return;
+  if(state.shopDone){
+    box.innerHTML=`<div class="step">Рівень пройдено</div><h3>Ярмарок підкорено!</h3><p>Будиночок і сіно вже вдома, а ти отримуєш другу зірку.</p><div class="row"><button class="btn" id="toDet">До детективу</button></div>`;
+    $('#toDet').onclick=()=>{show('det');window.scrollTo({top:0})};
+    return;
+  }
+  box.innerHTML=`<div class="step">Останнє питання ярмарку</div>
+    <p>Подарунки для свинок куплено! Коли закінчиш покупки, порахуй: скільки відсотків від 400 грн витрачено?</p>
+    <div class="row"><input class="ans" id="shopAns" inputmode="decimal" placeholder="?"><b>%</b><button class="btn" id="shopCheck">Перевірити</button></div>
+    <div class="fb" id="shopFb" aria-live="polite"></div><div class="hint" id="shopHint" hidden></div>`;
+  const check=()=>{
+    const v=num($('#shopAns').value), right=spent()/BUDGET*100, fb=$('#shopFb');
+    fb.className='fb pop';
+    const okF=v!==null&&Math.abs(v-right)<=0.5;if(v!==null)rec('s-final',okF,!okF);if(okF){state.shopDone=true;save();stars();renderShopFinal();return}
+    fb.classList.add('bad');fb.textContent=v===null?'Впиши число.':'Не зовсім.';
+    const h=$('#shopHint');h.hidden=false;h.textContent=`Підказка: витрачено ${spent()} грн. Скільки це відсотків: ${spent()} : 400 × 100. Можна округлити до цілого.`;
+  };
+  $('#shopCheck').onclick=check;$('#shopAns').onkeydown=e=>{if(e.key==='Enter')check()};
+}
+$('#shopReset').onclick=()=>{state.bought=[];state.shopDone=false;clearLog('s');openItem=null;shopTries={};save();stars();renderShop()};
+
+/* ---------- level 3: detective ---------- */
+const NAME=['Б','У','Л','Я'];
+const clues=[
+  {text:'Увечері в кошику було 20 морквин. Уранці залишилось 15. Скільки відсотків моркви зникло?',ans:25,unit:'%',hint:'Зникло 20 − 15 = 5 морквин. Тепер: 5 : 20 × 100.',found:'Зникла чверть моркви. Хтось добре поснідав!'},
+  {text:'Біля кошика 50 слідів. 40% із них — маленькі сліди лапок. Скільки маленьких слідів?',ans:20,unit:'',hint:'50 : 100 × 40.',found:'Маленькі лапки. Отже, це хтось зі свинок, а не кіт.'},
+  {text:'На підлозі 9 помаранчевих крихт. Це лише 30% усіх крихт, решта в тирсі. Скільки крихт було всього?',ans:30,unit:'',hint:'9 — це 30%. Тоді 1% — це 9 : 30. А 100%?',found:'Цілий слід із крихт веде до одного будиночка...'},
+  {text:'Сусідський кіт — головний свідок. З 10 годин ночі він спав 80% часу. Скільки годин він не спав і все бачив?',ans:2,unit:'год',hint:'Якщо спав 80%, то не спав 100% − 80% = 20%. Знайди 20% від 10.',found:'Кіт каже, що бачив щось кругленьке з темною плямою на спинці...'},
+];
+const finalClue={text:'Але кіт бачив ще дещо! Буля з\'їла 3 морквини, а Поня — 2. Яку частку зниклої моркви з\'їла Буля? Відповідь у відсотках.',ans:60,unit:'%',hint:'Усього з\'їли 3 + 2 = 5 морквин. Буля з\'їла 3 з 5: 3 : 5 × 100.'};
+let detTries=0;
+function renderDet(){
+  const opened=Math.min(state.det,4);
+  $('#slots').innerHTML=NAME.map((l,i)=>`<div class="slot ${i<opened?'open':''}">${i<opened?l:'?'}</div>`).join('');
+  const box=$('#detTask');
+  if(state.detDone){
+    box.innerHTML=`<div class="step">Справу закрито</div>
+      <div class="reveal">${pig(BULYA)}${pig(PONYA)}</div>
+      <h3>Буля з'їла 60% моркви, Поня — 40%</h3>
+      <p>Хрумкали обидві, просто Буля трохи більше. Покарання одне: намалювати їм портрет із морквиною. Ти отримуєш третю зірку!</p><div class="row"><button class="btn" onclick="show('report');window.scrollTo({top:0})">Подивитися мій звіт</button></div>`;
+    return;
+  }
+  let c,label;
+  if(state.det<clues.length){c=clues[state.det];label=`Доказ ${state.det+1} з 5`}
+  else{c=finalClue;label='Доказ 5 з 5'}
+  const prev=state.det>0&&state.det<=clues.length?`<p class="hand">${state.det===4?'Винуватицю знайдено: це БУЛЯ! Але чи була вона сама?':clues[state.det-1].found}</p>`:'';
+  box.innerHTML=`${prev}<div class="step">${label}</div><p>${c.text}</p>
+    <div class="row"><input class="ans" id="detAns" inputmode="decimal" placeholder="?">${c.unit?`<b>${c.unit}</b>`:''}<button class="btn" id="detCheck">Перевірити</button></div>
+    <div class="fb" id="detFb" aria-live="polite"></div><div class="hint" id="detHint" hidden></div>`;
+  const check=()=>{
+    const v=num($('#detAns').value), fb=$('#detFb');
+    fb.className='fb pop';
+    if(v!==null)rec('d'+state.det,v===c.ans,v!==c.ans);if(v===c.ans){fb.classList.add('good');fb.textContent='Доказ знайдено!';$('#detCheck').disabled=true;
+      setTimeout(()=>{state.det++;if(state.det>clues.length)state.detDone=true;detTries=0;save();stars();renderDet()},800);return}
+    detTries++;fb.classList.add('bad');fb.textContent=v===null?'Впиши число.':'Слід веде не туди. Спробуй ще.';
+    const h=$('#detHint');h.hidden=false;h.textContent='Підказка: '+c.hint;
+  };
+  $('#detCheck').onclick=check;$('#detAns').onkeydown=e=>{if(e.key==='Enter')check()};
+}
+$('#detReset').onclick=()=>{state.det=0;state.detDone=false;clearLog('d');detTries=0;save();stars();renderDet()};
+
+/* ---------- start ---------- */
+/* ---------- report ---------- */
+function fmtDate(ts){return ts?new Date(ts).toLocaleDateString('uk-UA'):'ще не почато'}
+function statusOf(key){
+  const e=state.log[key];
+  if(!e||!e.t)return {cls:'no',txt:'ще без спроб'};
+  const h=e.h?', з підказкою':'';
+  if(e.ok)return e.t===1?{cls:'ok',txt:'з першої спроби'}:{cls:'mid',txt:`з ${e.t}-ї спроби${h}`};
+  return {cls:'bad',txt:`поки не вийшло (спроб: ${e.t})${h}`};
+}
+function reportData(){
+  return [
+    {name:'Плед',done:state.plaidDone,rows:plaidTasks.map((t,i)=>({key:'p'+i,label:`Завдання ${i+1}: ${t.type==='paint'?`зафарбувати ${t.n}%`:'визначити відсоток за малюнком'}`}))},
+    {name:'Ярмарок',done:state.shopDone,rows:goods.filter(g=>g.must||state.log['s-'+g.id]).map(g=>({key:'s-'+g.id,label:`${g.name}: ціна зі знижкою ${g.off}%`})).concat([{key:'s-final',label:'Скільки відсотків бюджету витрачено'}])},
+    {name:'Детектив',done:state.detDone,rows:clues.concat([finalClue]).map((c,i)=>({key:'d'+i,label:`Доказ ${i+1}`}))}
+  ];
+}
+function renderReport(){
+  const data=reportData();let solved=0,total=0,first=0,hints=0;
+  data.forEach(l=>l.rows.forEach(r=>{const e=state.log[r.key];total++;if(e&&e.ok){solved++;if(e.t===1)first++}if(e&&e.h)hints++}));
+  const nStars=[state.plaidDone,state.shopDone,state.detDone].filter(Boolean).length;
+  $('#reportCard').innerHTML=`<div class="rep">
+    <p><b>Зірки: ${nStars} з 3.</b> Розв'язано ${solved} з ${total} задач, з першої спроби: ${first}. Підказка знадобилась у задачах: ${hints}.</p>
+    ${data.map(l=>`<div><h3>${l.name}${l.done?' <span class="st ok">пройдено</span>':''}</h3><ul>${l.rows.map(r=>{const s=statusOf(r.key);return `<li><span>${r.label}</span><span class="st ${s.cls}">${s.txt}</span></li>`}).join('')}</ul></div>`).join('')}
+    <p class="hint">Початок: ${fmtDate(state.firstAt)}. Остання спроба: ${fmtDate(state.lastAt)}.</p></div>`;
+  const lines=['Ось мій звіт про відсотки (Поня і Буля)',`Зірки: ${nStars} з 3`,`Розв'язано ${solved} з ${total} задач, з першої спроби: ${first}, з підказкою: ${hints}`,''];
+  data.forEach(l=>{lines.push(`${l.name}${l.done?' (пройдено)':''}:`);l.rows.forEach(r=>lines.push(`• ${r.label}: ${statusOf(r.key).txt}`));lines.push('')});
+  lines.push(`Початок: ${fmtDate(state.firstAt)}. Остання спроба: ${fmtDate(state.lastAt)}.`);
+  $('#reportText').value=lines.join('\n');
+}
+$('#copyReport').onclick=()=>{
+  renderReport();const txt=$('#reportText').value, fb=$('#copyFb');
+  const manual=()=>{const ta=$('#reportText');ta.hidden=false;ta.focus();ta.select();fb.className='fb bad';fb.textContent='Автоматично скопіювати не вийшло. Текст звіту виділено нижче: скопіюй його вручну.'};
+  try{navigator.clipboard.writeText(txt).then(()=>{fb.className='fb good pop';fb.textContent='Скопійовано! Встав звіт у повідомлення.'},manual)}catch(e){manual()}
+};
+
+$('#plaidReset').onclick=()=>{state.plaid=0;state.plaidDone=false;clearLog('p');save();stars();startPlaidTask()};
+let armed=false;
+$('#resetAll').onclick=()=>{
+  const b=$('#resetAll');
+  if(!armed){armed=true;b.textContent='Точно? Натисни ще раз';setTimeout(()=>{armed=false;b.textContent='Почати все спочатку'},4000);return}
+  armed=false;b.textContent='Почати все спочатку';
+  state={tab:'learn',plaid:0,plaidDone:false,bought:[],shopDone:false,det:0,detDone:false,log:{},firstAt:null,lastAt:null};
+  openItem=null;shopTries={};save();show('learn');startPlaidTask();renderShop();renderDet();stars();window.scrollTo({top:0});
+};
+show(tabs.includes(state.tab)?state.tab:'learn');
+startPlaidTask();renderShop();renderDet();stars();
+</script>
+
+
+</body></html>

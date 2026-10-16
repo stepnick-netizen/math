@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+
+<title>Percentages with Ponya and Bulya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: meadow page, hero with the two guinea pigs, tab strip, one level per tab; level = work area + task card */
+:root{
+  --bg:#EEF3E4; --paper:#FFFFFF; --ink:#26301F; --muted:#5F6B55; --line:#D3DCC5; --shadow:rgba(38,48,31,.12);
+  --yarn:#D9486F; --hay:#D99A1E; --leaf:#4F8A3C; --sky:#3E7FB8;
+  --good:#2F8A4C; --bad:#C2413B; --cell:#F4F7EE;
+  --display:'Comfortaa','Nunito',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --hand:'Caveat','Comic Sans MS',cursive;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171C14; --paper:#222A1D; --ink:#EDF2E3; --muted:#A8B49B; --line:#3A4532; --shadow:rgba(0,0,0,.35);
+  --yarn:#F07898; --hay:#F0BE4E; --leaf:#7DBA62; --sky:#7AB3E6;
+  --good:#6CCB86; --bad:#F07A72; --cell:#2C3526; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171C14; --paper:#222A1D; --ink:#EDF2E3; --muted:#A8B49B; --line:#3A4532; --shadow:rgba(0,0,0,.35);
+  --yarn:#F07898; --hay:#F0BE4E; --leaf:#7DBA62; --sky:#7AB3E6;
+  --good:#6CCB86; --bad:#F07A72; --cell:#2C3526; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;padding:0 16px}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 60px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,6vw,46px)}
+h2{font-size:clamp(22px,4vw,30px)}
+h3{font-size:19px}
+p{margin:0}
+a{color:var(--sky);font-weight:700}
+.hand{font-family:var(--hand);font-size:24px;line-height:1.2}
+
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;padding-block:8px 18px}
+.hero-text{flex:1 1 320px;min-width:0;display:grid;gap:8px}
+.hero-text h1 span{color:var(--yarn)}
+.hero-text p{color:var(--muted);max-width:56ch}
+.lang{font-size:15px}
+.pigs{display:flex;gap:6px;align-items:flex-end;flex:0 1 auto}
+.pig-box{display:grid;justify-items:center}
+.pig{width:120px;max-width:100%;height:auto}
+.pig-name{font-family:var(--hand);font-size:24px;margin-top:-4px}
+.stars{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:800;color:var(--muted)}
+.star{font-size:26px;color:var(--line);transition:color .3s}
+.star.on{color:var(--hay)}
+.diploma{margin-top:6px;padding:14px 18px;border:2px dashed var(--hay);border-radius:14px;background:var(--paper)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px 22px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:5}
+.tab{font:700 15px var(--body);border:2px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--yarn);background:var(--yarn);color:var(--paper)}
+.tab:focus-visible,button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+.panel{display:grid;gap:22px}
+.lead{max-width:62ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 0 var(--shadow)}
+
+.minis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
+.mini{display:grid;gap:6px;justify-items:center;text-align:center}
+.mgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;width:100%;max-width:120px;aspect-ratio:1}
+.mgrid i{background:var(--cell);border-radius:2px}
+.mgrid i.on{background:var(--c)}
+.mini b{font-family:var(--display);font-size:20px}
+.mini small{color:var(--muted);font-size:14px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.rule{display:grid;gap:8px;align-content:start}
+.rule .ex{font-variant-numeric:tabular-nums;background:var(--cell);border-radius:10px;padding:8px 12px;font-weight:600}
+.tricks{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--paper);font-weight:600;font-size:15px}
+.note{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.note .pig{width:90px}
+
+.level{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:760px){.level{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;width:100%;max-width:440px;aspect-ratio:1;touch-action:none;user-select:none;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;margin-inline:auto}
+.cell{border-radius:5px;background:var(--cell);border:1px solid var(--line);cursor:pointer;transition:background .12s}
+.cell.on{background:var(--c);border-color:var(--c);
+  background-image:radial-gradient(circle at 50% 40%,rgba(255,255,255,.35) 0 22%,transparent 24%)}
+.grid.locked .cell{cursor:default}
+.counter{text-align:center;font-variant-numeric:tabular-nums;color:var(--muted);margin-top:8px;font-weight:600}
+.task{display:grid;gap:12px}
+.step{font-weight:800;color:var(--muted);font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input.ans{font:700 18px var(--body);width:110px;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+.btn{font:800 16px var(--body);border:0;border-radius:12px;padding:10px 16px;cursor:pointer;background:var(--leaf);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--muted);border:2px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.fb{min-height:1.5em;font-weight:700}
+.fb.good{color:var(--good)}
+.fb.bad{color:var(--bad)}
+.hint{color:var(--muted);font-size:15px;border-left:3px solid var(--hay);padding-left:10px}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.9);opacity:.3}100%{transform:none;opacity:1}}
+
+.wallet{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:baseline}
+.money{font-family:var(--display);font-size:30px;font-variant-numeric:tabular-nums}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.item{display:grid;gap:8px;align-content:start;position:relative}
+.item.bought{border-color:var(--good)}
+.item .tag{position:absolute;top:14px;right:14px;background:var(--yarn);color:var(--paper);font-weight:800;border-radius:8px;padding:2px 8px;font-size:15px}
+.item h3{padding-right:72px}
+.item .desc{color:var(--muted);font-size:15px}
+.item .price{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px}
+.must{font-size:13px;font-weight:800;color:var(--leaf);letter-spacing:.05em;text-transform:uppercase}
+.buy{display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.basket{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+
+.slots{display:flex;gap:10px;flex-wrap:wrap}
+.slot{width:54px;height:64px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:700 30px var(--display);color:var(--yarn);background:var(--paper)}
+.slot.open{border-style:solid;border-color:var(--yarn)}
+.reveal{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.reveal .pig{width:110px}
+
+.rep{display:grid;gap:18px}
+.rep ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.rep li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.rep li span:first-child{min-width:0}
+.st{font-weight:800;font-size:15px}
+.st.ok{color:var(--good)}.st.mid{color:var(--hay)}.st.no{color:var(--muted)}.st.bad{color:var(--bad)}
+#reportText{width:100%;font:15px/1.5 var(--body);padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}</style></head>
+<body><nav class="site-home"><a href="../index-en.html">← All topics</a></nav>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <h1>Percentages with <span>Ponya</span> and <span>Bulya</span></h1>
+      <p>Two guinea pigs will show you what a percentage is. Read the cheat sheet first, then play three levels: knit a blanket, shop at the autumn fair and solve the mystery of the missing carrots.</p>
+      <p class="lang"><a href="../percentages/uk.html">Українська версія</a></p>
+      <div class="stars" aria-live="polite">
+        <span>Your stars:</span>
+        <span class="star" id="st-plaid" title="Blanket">★</span>
+        <span class="star" id="st-shop" title="Fair">★</span>
+        <span class="star" id="st-det" title="Detective">★</span>
+        <button class="btn ghost" id="resetAll" style="padding:4px 12px;font-size:14px">Start everything again</button>
+      </div>
+      <div class="diploma" id="diploma" hidden>
+        <h3>Percentages Expert Certificate</h3>
+        <p>All three levels complete! Ponya and Bulya officially congratulate you. You can now work out discounts faster than the stallholders at the fair.</p>
+      </div>
+    </div>
+    <div class="pigs" id="heroPigs"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="learn" id="t-learn">Cheat sheet</button>
+    <button class="tab" role="tab" data-tab="plaid" id="t-plaid">1. Blanket</button>
+    <button class="tab" role="tab" data-tab="shop" id="t-shop">2. Fair</button>
+    <button class="tab" role="tab" data-tab="det" id="t-det">3. Detective</button>
+    <button class="tab" role="tab" data-tab="report" id="t-report">My report</button>
+  </nav>
+
+  <section class="panel" id="p-learn">
+    <div class="lead">
+      <h2>What is a percentage?</h2>
+      <p style="margin-top:8px"><i>Per cent</i> means "out of a hundred". Picture a blanket with 100 stitches. One stitch is <b>1%</b>, ten stitches are <b>10%</b>, and all hundred are <b>100%</b>, the whole blanket.</p>
+    </div>
+    <div class="card"><div class="minis" id="minis"></div></div>
+
+    <h2>Three key skills</h2>
+    <div class="rules">
+      <div class="card rule">
+        <h3>Find a percentage of an amount</h3>
+        <p>Divide by 100 to find 1%, then multiply by the percentage.</p>
+        <div class="ex">30% of 80 = 80 ÷ 100 × 30 = 24</div>
+      </div>
+      <div class="card rule">
+        <h3>Find the whole from a percentage</h3>
+        <p>Divide by the percentage to find 1%, then multiply by 100.</p>
+        <div class="ex">9 is 30% of a number.<br>9 ÷ 30 × 100 = 30</div>
+      </div>
+      <div class="card rule">
+        <h3>Write an amount as a percentage</h3>
+        <p>Divide the part by the whole, then multiply by 100.</p>
+        <div class="ex">15 out of 20 = 15 ÷ 20 × 100 = 75%</div>
+      </div>
+    </div>
+
+    <div class="card" style="display:grid;gap:10px">
+      <h3>Quick tricks</h3>
+      <div class="tricks">
+        <span class="chip">50% is a half, divide by 2</span>
+        <span class="chip">25% is a quarter, divide by 4</span>
+        <span class="chip">20%, divide by 5</span>
+        <span class="chip">10%, divide by 10</span>
+        <span class="chip">1%, divide by 100</span>
+        <span class="chip">30% off → you pay 70%</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <div id="notePig"></div>
+      <p class="hand">Ponya says: the % sign is two little zeros with a line between them, just like the 100 in 1/100. Clever, isn't it?</p>
+    </div>
+    <div><button class="btn" data-go="plaid">Go to level 1</button></div>
+  </section>
+
+  <section class="panel" id="p-plaid" hidden>
+    <div class="lead">
+      <h2>Level 1. A blanket for the guinea pigs</h2>
+      <p style="margin-top:8px">Ponya and Bulya get cold in winter, so you're knitting them a blanket with 100 stitches. Each square is one stitch, which is 1%. Tap the squares (or drag your finger) to colour them in.</p>
+    </div>
+    <div class="level">
+      <div>
+        <div class="grid" id="grid" aria-label="Blanket of 100 squares"></div>
+        <div class="counter" id="counter"></div>
+      </div>
+      <div class="card task" id="plaidTask"></div>
+    </div>
+    <div><button class="btn ghost" id="plaidReset">Start the blanket again</button></div>
+  </section>
+
+  <section class="panel" id="p-shop" hidden>
+    <div class="lead">
+      <h2>Level 2. The autumn fair</h2>
+      <p style="margin-top:8px">You have £40. You must buy the wooden hideout and the hay for Ponya and Bulya, then choose something for yourself with what's left. The stallholder only hands things over once you've worked out the sale price correctly.</p>
+    </div>
+    <div class="card wallet">
+      <div><div class="step">In your purse</div><div class="money" id="money">£40</div></div>
+      <div class="basket" id="basket"></div>
+    </div>
+    <div class="items" id="items"></div>
+    <div class="card task" id="shopFinal" hidden></div>
+    <div><button class="btn ghost" id="shopReset">Start the fair again</button></div>
+  </section>
+
+  <section class="panel" id="p-det" hidden>
+    <div class="lead">
+      <h2>Level 3. Who ate the carrots?</h2>
+      <p style="margin-top:8px">It's morning. Ponya wakes up and there are fewer carrots in the basket than last night! Solve the problems: every correct answer reveals one letter of the culprit's name.</p>
+    </div>
+    <div class="slots" id="slots"></div>
+    <div class="card task" id="detTask"></div>
+    <div><button class="btn ghost" id="detReset">Restart the investigation</button></div>
+  </section>
+
+  <section class="panel" id="p-report" hidden>
+    <div class="lead"><h2>My report</h2><p style="margin-top:8px">Here's everything you've done so far. Tap the button, copy your report and send it to your teacher or parents in a message.</p></div>
+    <div class="card" id="reportCard"></div>
+    <div class="row"><button class="btn" id="copyReport">Copy my report</button><span class="fb" id="copyFb" aria-live="polite"></span></div>
+    <textarea id="reportText" readonly hidden rows="14" aria-label="Report text"></textarea>
+  </section>
+</div>
+
+<script>
+const KEY='ponya-bulya-en-v1';
+const $=s=>document.querySelector(s);
+const num=v=>{const x=parseFloat(String(v).replace(',','.').replace('%','').replace('£','').trim());return isNaN(x)?null:x};
+const r2=x=>Math.round(x*100)/100;
+const gbp=x=>'£'+(Number.isInteger(r2(x))?r2(x):r2(x).toFixed(2));
+
+let state={tab:'learn',plaid:0,plaidDone:false,bought:[],shopDone:false,det:0,detDone:false,log:{},firstAt:null,lastAt:null};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state=Object.assign(state,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function rec(key,ok,hint){const e=state.log[key]||(state.log[key]={t:0,h:false,ok:false});if(e.ok)return;e.t++;if(hint)e.h=true;if(ok)e.ok=true;if(!state.firstAt)state.firstAt=Date.now();state.lastAt=Date.now();save()}
+function clearLog(p){Object.keys(state.log).forEach(k=>{if(k[0]===p)delete state.log[k]})}
+
+const PONYA=['#F6E9D7','#D9843A'], BULYA=['#F1ECE6','#5E4030'];
+function pig([base,patch],cls='pig'){
+  return `<svg viewBox="0 0 150 100" class="${cls}" aria-hidden="true">
+  <ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/>
+  <ellipse cx="38" cy="86" rx="10" ry="5" fill="${patch}"/>
+  <ellipse cx="98" cy="87" rx="10" ry="5" fill="${patch}"/>
+  <ellipse cx="66" cy="58" rx="56" ry="32" fill="${base}"/>
+  <ellipse cx="42" cy="52" rx="28" ry="25" fill="${patch}"/>
+  <ellipse cx="110" cy="56" rx="28" ry="26" fill="${base}"/>
+  <ellipse cx="98" cy="33" rx="11" ry="9" fill="${patch}"/>
+  <ellipse cx="118" cy="40" rx="12" ry="10" fill="${patch}" opacity=".55"/>
+  <circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+  <circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/>
+  <ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/>
+  <ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/>
+  </svg>`;
+}
+$('#heroPigs').innerHTML=`<div class="pig-box">${pig(PONYA)}<span class="pig-name">Ponya</span></div><div class="pig-box" style="transform:scaleX(-1)">${pig(BULYA)}<span class="pig-name" style="transform:scaleX(-1)">Bulya</span></div>`;
+$('#notePig').innerHTML=pig(PONYA);
+
+const tabs=['learn','plaid','shop','det','report'];
+function show(t){
+  state.tab=t;save();if(t==='report')renderReport();
+  tabs.forEach(x=>{$('#p-'+x).hidden=x!==t;$('#t-'+x).setAttribute('aria-selected',x===t)});
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>show(b.dataset.tab));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{show(b.dataset.go);window.scrollTo({top:0})});
+
+function stars(){
+  $('#st-plaid').classList.toggle('on',state.plaidDone);
+  $('#st-shop').classList.toggle('on',state.shopDone);
+  $('#st-det').classList.toggle('on',state.detDone);
+  $('#diploma').hidden=!(state.plaidDone&&state.shopDone&&state.detDone);
+}
+
+const minis=[[1,'--yarn','one stitch'],[10,'--hay','a tenth'],[25,'--leaf','a quarter'],[50,'--sky','a half'],[100,'--yarn','the whole thing']];
+$('#minis').innerHTML=minis.map(([n,c,t])=>`<div class="mini"><div class="mgrid" style="--c:var(${c})">${Array.from({length:100},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</div><b>${n}%</b><small>${t}</small></div>`).join('');
+
+/* ---------- level 1: blanket ---------- */
+const plaidTasks=[
+  {type:'paint',n:30,c:'--yarn',text:'Ponya wants 30% of the stitches on her blanket to be pink. Colour in exactly that many squares.'},
+  {type:'paint',n:50,c:'--hay',text:'Bulya wants half the blanket to be the colour of hay. What percentage is that? Colour it in.',hint:'Half of 100 squares is 50 squares.'},
+  {type:'read',n:42,c:'--sky',seed:7,text:'Grandma has started knitting a blue blanket. How much of it is finished? Count the coloured squares and give your answer as a percentage.',hint:'Count row by row: each row has 10 squares, and each square is 1%.'},
+  {type:'paint',n:25,c:'--leaf',text:'A green stripe, like clover, should cover a quarter of the blanket. Colour it in.',hint:'A quarter is one of four equal parts. 100 ÷ 4 = ?'},
+  {type:'read',n:64,c:'--yarn',seed:3,text:'Ponya nibbled the blanket and chewed through some stitches. What percentage of the blanket is still pink?',hint:'It may be quicker to count the empty squares and subtract them from 100.'},
+  {type:'paint',n:12,c:'--sky',text:'Bulya\'s little blanket has an embroidered heart that covers 12% of it. Colour in the heart.'}
+];
+let cells=Array(100).fill(false), drag=false, dragMode=true;
+const grid=$('#grid');
+grid.innerHTML=Array.from({length:100},(_,i)=>`<div class="cell" data-i="${i}"></div>`).join('');
+const cellEls=[...grid.children];
+function pattern(n,seed){
+  const idx=[...Array(100).keys()];let s=seed;
+  for(let i=99;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}
+  const set=new Set(idx.slice(0,n));return Array.from({length:100},(_,i)=>set.has(i));
+}
+function drawGrid(){
+  cellEls.forEach((el,i)=>el.classList.toggle('on',cells[i]));
+  const k=cells.filter(Boolean).length;
+  const t=plaidTasks[state.plaid];
+  $('#counter').textContent=(t&&t.type==='read'&&!state.plaidDone)?'Count the coloured squares yourself':`${k} of 100 stitches coloured, which is ${k}%`;
+}
+function setCell(el){if(grid.classList.contains('locked'))return;cells[+el.dataset.i]=dragMode;drawGrid()}
+grid.addEventListener('pointerdown',e=>{
+  const el=e.target.closest('.cell');if(!el||grid.classList.contains('locked'))return;
+  drag=true;dragMode=!cells[+el.dataset.i];setCell(el);
+});
+grid.addEventListener('pointermove',e=>{
+  if(!drag)return;const el=document.elementFromPoint(e.clientX,e.clientY);
+  if(el&&el.classList.contains('cell'))setCell(el);
+});
+window.addEventListener('pointerup',()=>drag=false);
+
+function renderPlaid(){
+  const box=$('#plaidTask');
+  if(state.plaidDone||state.plaid>=plaidTasks.length){
+    state.plaidDone=true;save();stars();
+    grid.classList.add('locked');grid.style.setProperty('--c','var(--yarn)');
+    cells=Array.from({length:100},(_,i)=>((i%10)+Math.floor(i/10))%3===0);drawGrid();
+    $('#counter').textContent='The blanket is finished';
+    box.innerHTML=`<div class="step">Level complete</div><h3>The blanket is ready!</h3><p>Ponya and Bulya are snuggled up in their warm blanket. You've earned your first star.</p><div class="row"><button class="btn" id="toShop">Off to the fair</button><button class="btn ghost" id="plaidAgain">Knit it again</button></div>`;
+    $('#toShop').onclick=()=>{show('shop');window.scrollTo({top:0})};
+    $('#plaidAgain').onclick=()=>{state.plaid=0;state.plaidDone=false;clearLog('p');save();stars();startPlaidTask();};
+    return;
+  }
+  const t=plaidTasks[state.plaid];
+  box.innerHTML=`<div class="step">Task ${state.plaid+1} of ${plaidTasks.length}</div>
+    <p>${t.text}</p>
+    ${t.type==='read'?`<div class="row"><input class="ans" id="plaidAns" inputmode="decimal" aria-label="Answer as a percentage" placeholder="?"><b>%</b></div>`:''}
+    <div class="row"><button class="btn" id="plaidCheck">Check</button>${t.type==='paint'?'<button class="btn ghost" id="plaidClear">Clear</button>':''}</div>
+    <div class="fb" id="plaidFb" aria-live="polite"></div><div class="hint" id="plaidHint" hidden></div>`;
+  $('#plaidCheck').onclick=checkPlaid;
+  if(t.type==='paint')$('#plaidClear').onclick=()=>{cells.fill(false);drawGrid()};
+  if(t.type==='read')$('#plaidAns').onkeydown=e=>{if(e.key==='Enter')checkPlaid()};
+}
+function startPlaidTask(){
+  const t=plaidTasks[state.plaid];
+  if(t){grid.style.setProperty('--c',`var(${t.c})`);
+    cells=t.type==='read'?pattern(t.n,t.seed):Array(100).fill(false);
+    grid.classList.toggle('locked',t.type==='read');}
+  drawGrid();renderPlaid();
+}
+function checkPlaid(){
+  const t=plaidTasks[state.plaid], fb=$('#plaidFb');
+  let ok,msg;
+  if(t.type==='paint'){
+    const k=cells.filter(Boolean).length;ok=k===t.n;
+    msg=ok?'Correct! Spot on.':(k<t.n?`Not quite: you need ${t.n-k} more.`:`Too many by ${k-t.n}.`);
+  }else{
+    const v=num($('#plaidAns').value);ok=v===t.n;
+    msg=ok?`Yes, ${t.n}%!`:(v===null?'Type in a number.':'Not quite. Count again row by row.');
+  }
+  fb.className='fb pop '+(ok?'good':'bad');fb.textContent=msg;rec('p'+state.plaid,ok,!ok&&!!t.hint);
+  if(!ok){if(t.hint){const h=$('#plaidHint');h.hidden=false;h.textContent='Hint: '+t.hint}return}
+  $('#plaidCheck').disabled=true;
+  setTimeout(()=>{state.plaid++;save();startPlaidTask()},900);
+}
+
+/* ---------- level 2: fair ---------- */
+const BUDGET=40;
+const goods=[
+  {id:'house',name:'Wooden hideout',desc:'Big enough for two guinea pigs, with a round window',price:20,off:40,must:true},
+  {id:'hay',name:'Bag of meadow hay',desc:'Smells of summer and lasts a month',price:8,off:25,must:true},
+  {id:'carrot',name:'Carrot crisps',desc:'Bulya\'s favourite treat',price:5,off:10},
+  {id:'yarn',name:'Ball of soft yarn',desc:'Pale pink, enough for a scarf',price:6,off:50},
+  {id:'brush',name:'Paintbrush set',desc:'Six brushes for watercolours',price:9,off:20},
+  {id:'book',name:'Book about guinea pigs',desc:'Full of illustrations and tips',price:15,off:30}
+];
+const salePrice=g=>r2(g.price*(100-g.off)/100);
+const spent=()=>r2(state.bought.reduce((s,id)=>s+salePrice(goods.find(g=>g.id===id)),0));
+let openItem=null, shopTries={};
+function renderShop(){
+  const left=r2(BUDGET-spent());
+  $('#money').textContent=gbp(left);
+  $('#basket').innerHTML=state.bought.length?`<div class="step">In your basket</div>`+state.bought.map(id=>{const g=goods.find(x=>x.id===id);return `<span>${g.name}: ${gbp(salePrice(g))}</span>`}).join(''):`<span style="color:var(--muted)">Your basket is empty</span>`;
+  $('#items').innerHTML=goods.map(g=>{
+    const b=state.bought.includes(g.id);
+    return `<div class="card item ${b?'bought':''}">
+      <span class="tag">${g.off}% off</span>
+      ${g.must?'<span class="must">For Ponya and Bulya</span>':''}
+      <h3>${g.name}</h3><p class="desc">${g.desc}</p>
+      <p class="price">Full price: ${gbp(g.price)}</p>
+      ${b?`<p class="fb good">Bought for ${gbp(salePrice(g))}</p>`:
+        openItem===g.id?`<div class="buy"><label for="ans-${g.id}">What is the sale price?</label>
+          <div class="row"><b>£</b><input class="ans" id="ans-${g.id}" inputmode="decimal" placeholder="?"><button class="btn" data-pay="${g.id}">Pay</button></div>
+          <div class="fb" id="fb-${g.id}" aria-live="polite"></div><div class="hint" id="hint-${g.id}" hidden></div></div>`:
+        `<div><button class="btn" data-open="${g.id}">Buy</button></div>`}
+    </div>`}).join('');
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{openItem=b.dataset.open;renderShop();const i=$('#ans-'+openItem);if(i)i.focus()});
+  document.querySelectorAll('[data-pay]').forEach(b=>{
+    b.onclick=()=>pay(b.dataset.pay);
+    $('#ans-'+b.dataset.pay).onkeydown=e=>{if(e.key==='Enter')pay(b.dataset.pay)};
+  });
+  renderShopFinal();
+}
+function pay(id){
+  const g=goods.find(x=>x.id===id), v=num($('#ans-'+id).value), fb=$('#fb-'+id), right=salePrice(g), left=r2(BUDGET-spent());
+  fb.className='fb pop';
+  if(v===null){fb.classList.add('bad');fb.textContent='Type in an amount.';return}
+  if(Math.abs(v-right)>0.005){
+    shopTries[id]=(shopTries[id]||0)+1;rec('s-'+id,false,true);fb.classList.add('bad');
+    fb.textContent=Math.abs(v-r2(g.price*g.off/100))<0.005?'That\'s the discount. How much do you actually pay?':'The stallholder shakes her head. Try again.';
+    const h=$('#hint-'+id);h.hidden=false;
+    h.textContent=shopTries[id]<2?`Hint: first find the discount: ${g.price} ÷ 100 × ${g.off}. Then take it away from the full price.`:`Hint: ${g.off}% off means you pay ${100-g.off}% of the price: ${g.price} ÷ 100 × ${100-g.off}.`;
+    return;
+  }
+  rec('s-'+id,true,false);
+  if(right>left+0.001){fb.classList.add('bad');fb.textContent=`Correct, but you're ${gbp(r2(right-left))} short. Choose something else.`;return}
+  state.bought.push(id);openItem=null;save();renderShop();
+}
+function renderShopFinal(){
+  const box=$('#shopFinal');
+  const ready=state.bought.includes('house')&&state.bought.includes('hay');
+  box.hidden=!ready;if(!ready)return;
+  if(state.shopDone){
+    box.innerHTML=`<div class="step">Level complete</div><h3>You've conquered the fair!</h3><p>The hideout and the hay are safely home, and you've earned your second star.</p><div class="row"><button class="btn" id="toDet">On to the mystery</button></div>`;
+    $('#toDet').onclick=()=>{show('det');window.scrollTo({top:0})};
+    return;
+  }
+  box.innerHTML=`<div class="step">Last question at the fair</div>
+    <p>The presents for the guinea pigs are bought! When you've finished shopping, work this out: what percentage of your £40 did you spend?</p>
+    <div class="row"><input class="ans" id="shopAns" inputmode="decimal" placeholder="?"><b>%</b><button class="btn" id="shopCheck">Check</button></div>
+    <div class="fb" id="shopFb" aria-live="polite"></div><div class="hint" id="shopHint" hidden></div>`;
+  const check=()=>{
+    const v=num($('#shopAns').value), right=spent()/BUDGET*100, fb=$('#shopFb');
+    fb.className='fb pop';
+    const okF=v!==null&&Math.abs(v-right)<=0.5;if(v!==null)rec('s-final',okF,!okF);if(okF){state.shopDone=true;save();stars();renderShopFinal();return}
+    fb.classList.add('bad');fb.textContent=v===null?'Type in a number.':'Not quite.';
+    const h=$('#shopHint');h.hidden=false;h.textContent=`Hint: you spent ${gbp(spent())}. As a percentage: ${spent()} ÷ 40 × 100. You can round to the nearest whole number.`;
+  };
+  $('#shopCheck').onclick=check;$('#shopAns').onkeydown=e=>{if(e.key==='Enter')check()};
+}
+$('#shopReset').onclick=()=>{state.bought=[];state.shopDone=false;clearLog('s');openItem=null;shopTries={};save();stars();renderShop()};
+
+/* ---------- level 3: detective ---------- */
+const NAME=['B','U','L','Y','A'];
+const clues=[
+  {text:'When it\'s full, the carrot basket holds 40 carrots. Last night it was 50% full. How many carrots were in it?',ans:20,unit:'',hint:'50% is a half. What is half of 40?',found:'So there were 20 carrots at bedtime. Remember that!'},
+  {text:'In the morning there were only 15 carrots left. What percentage of the carrots went missing?',ans:25,unit:'%',hint:'20 − 15 = 5 carrots went missing. Now work out 5 ÷ 20 × 100.',found:'A quarter of the carrots vanished. Someone had a big breakfast!'},
+  {text:'There are 50 footprints near the basket. 40% of them are tiny paw prints. How many tiny paw prints are there?',ans:20,unit:'',hint:'50 ÷ 100 × 40.',found:'Tiny paws. So it was one of the guinea pigs, not the cat.'},
+  {text:'There are 9 orange crumbs on the floor. That is only 30% of all the crumbs; the rest are hidden in the sawdust. How many crumbs are there altogether?',ans:30,unit:'',hint:'9 is 30%. So 1% is 9 ÷ 30. What is 100%?',found:'A trail of crumbs leads to one particular hideout...'},
+  {text:'The neighbour\'s cat is the key witness. Out of 10 hours of night, he slept for 80% of the time. For how many hours was he awake and watching?',ans:2,unit:'hours',hint:'If he slept 80% of the time, he was awake for 100% − 80% = 20%. Find 20% of 10.',found:''}
+];
+const finalClue={text:'But the cat saw something else! Bulya ate 3 carrots and Ponya ate 2. What percentage of the missing carrots did Bulya eat?',ans:60,unit:'%',hint:'Altogether they ate 3 + 2 = 5 carrots. Bulya ate 3 out of 5: 3 ÷ 5 × 100.'};
+function renderDet(){
+  const opened=Math.min(state.det,NAME.length);
+  $('#slots').innerHTML=NAME.map((l,i)=>`<div class="slot ${i<opened?'open':''}">${i<opened?l:'?'}</div>`).join('');
+  const box=$('#detTask');
+  if(state.detDone){
+    box.innerHTML=`<div class="step">Case closed</div>
+      <div class="reveal">${pig(BULYA)}${pig(PONYA)}</div>
+      <h3>Bulya ate 60% of the carrots and Ponya ate 40%</h3>
+      <p>They were both munching, Bulya just a bit more. Their punishment: you get to draw their portrait holding a carrot. You've earned your third star!</p><div class="row"><button class="btn" onclick="show('report');window.scrollTo({top:0})">See my report</button></div>`;
+    return;
+  }
+  const total=clues.length+1;
+  const c=state.det<clues.length?clues[state.det]:finalClue;
+  const label=`Clue ${state.det+1} of ${total}`;
+  let prev='';
+  if(state.det===clues.length)prev='<p class="hand">Culprit found: it\'s BULYA! But was she working alone?</p>';
+  else if(state.det>0)prev=`<p class="hand">${clues[state.det-1].found}</p>`;
+  box.innerHTML=`${prev}<div class="step">${label}</div><p>${c.text}</p>
+    <div class="row"><input class="ans" id="detAns" inputmode="decimal" placeholder="?">${c.unit?`<b>${c.unit}</b>`:''}<button class="btn" id="detCheck">Check</button></div>
+    <div class="fb" id="detFb" aria-live="polite"></div><div class="hint" id="detHint" hidden></div>`;
+  const check=()=>{
+    const v=num($('#detAns').value), fb=$('#detFb');
+    fb.className='fb pop';
+    if(v!==null)rec('d'+state.det,v===c.ans,v!==c.ans);if(v===c.ans){fb.classList.add('good');fb.textContent='Clue found!';$('#detCheck').disabled=true;
+      setTimeout(()=>{state.det++;if(state.det>clues.length)state.detDone=true;save();stars();renderDet()},800);return}
+    fb.classList.add('bad');fb.textContent=v===null?'Type in a number.':'The trail goes cold. Try again.';
+    const h=$('#detHint');h.hidden=false;h.textContent='Hint: '+c.hint;
+  };
+  $('#detCheck').onclick=check;$('#detAns').onkeydown=e=>{if(e.key==='Enter')check()};
+}
+$('#detReset').onclick=()=>{state.det=0;state.detDone=false;clearLog('d');save();stars();renderDet()};
+
+/* ---------- report ---------- */
+function fmtDate(ts){return ts?new Date(ts).toLocaleDateString('en-GB'):'not started yet'}
+function statusOf(key){
+  const e=state.log[key];
+  if(!e||!e.t)return {cls:'no',txt:'not tried yet'};
+  const h=e.h?', with a hint':'';
+  if(e.ok)return e.t===1?{cls:'ok',txt:'first try'}:{cls:'mid',txt:`on attempt ${e.t}${h}`};
+  return {cls:'bad',txt:`not solved yet (${e.t} ${e.t===1?'attempt':'attempts'})${h}`};
+}
+function reportData(){
+  return [
+    {name:'Blanket',done:state.plaidDone,rows:plaidTasks.map((t,i)=>({key:'p'+i,label:`Task ${i+1}: ${t.type==='paint'?`colour in ${t.n}%`:'read the percentage from the picture'}`}))},
+    {name:'Fair',done:state.shopDone,rows:goods.filter(g=>g.must||state.log['s-'+g.id]).map(g=>({key:'s-'+g.id,label:`${g.name}: sale price, ${g.off}% off`})).concat([{key:'s-final',label:'What percentage of the budget was spent'}])},
+    {name:'Detective',done:state.detDone,rows:clues.concat([finalClue]).map((c,i)=>({key:'d'+i,label:`Clue ${i+1}`}))}
+  ];
+}
+function renderReport(){
+  const data=reportData();let solved=0,total=0,first=0,hints=0;
+  data.forEach(l=>l.rows.forEach(r=>{const e=state.log[r.key];total++;if(e&&e.ok){solved++;if(e.t===1)first++}if(e&&e.h)hints++}));
+  const nStars=[state.plaidDone,state.shopDone,state.detDone].filter(Boolean).length;
+  $('#reportCard').innerHTML=`<div class="rep">
+    <p><b>Stars: ${nStars} of 3.</b> Solved ${solved} of ${total} problems, ${first} on the first try. Hints used on ${hints}.</p>
+    ${data.map(l=>`<div><h3>${l.name}${l.done?' <span class="st ok">complete</span>':''}</h3><ul>${l.rows.map(r=>{const s=statusOf(r.key);return `<li><span>${r.label}</span><span class="st ${s.cls}">${s.txt}</span></li>`}).join('')}</ul></div>`).join('')}
+    <p class="hint">Started: ${fmtDate(state.firstAt)}. Last attempt: ${fmtDate(state.lastAt)}.</p></div>`;
+  const lines=['Here is my percentages report (Ponya and Bulya)',`Stars: ${nStars} of 3`,`Solved ${solved} of ${total} problems, ${first} on the first try, hints used on ${hints}`,''];
+  data.forEach(l=>{lines.push(`${l.name}${l.done?' (complete)':''}:`);l.rows.forEach(r=>lines.push(`• ${r.label}: ${statusOf(r.key).txt}`));lines.push('')});
+  lines.push(`Started: ${fmtDate(state.firstAt)}. Last attempt: ${fmtDate(state.lastAt)}.`);
+  $('#reportText').value=lines.join('\n');
+}
+$('#copyReport').onclick=()=>{
+  renderReport();const txt=$('#reportText').value, fb=$('#copyFb');
+  const manual=()=>{const ta=$('#reportText');ta.hidden=false;ta.focus();ta.select();fb.className='fb bad';fb.textContent="Couldn't copy automatically. The report text is selected below: copy it yourself."};
+  try{navigator.clipboard.writeText(txt).then(()=>{fb.className='fb good pop';fb.textContent='Copied! Paste it into a message.'},manual)}catch(e){manual()}
+};
+
+$('#plaidReset').onclick=()=>{state.plaid=0;state.plaidDone=false;clearLog('p');save();stars();startPlaidTask()};
+let armed=false;
+$('#resetAll').onclick=()=>{
+  const b=$('#resetAll');
+  if(!armed){armed=true;b.textContent='Sure? Tap again';setTimeout(()=>{armed=false;b.textContent='Start everything again'},4000);return}
+  armed=false;b.textContent='Start everything again';
+  state={tab:'learn',plaid:0,plaidDone:false,bought:[],shopDone:false,det:0,detDone:false,log:{},firstAt:null,lastAt:null};
+  openItem=null;shopTries={};save();show('learn');startPlaidTask();renderShop();renderDet();stars();window.scrollTo({top:0});
+};
+show(tabs.includes(state.tab)?state.tab:'learn');
+startPlaidTask();renderShop();renderDet();stars();
+</script>
+
+
+</body></html>
