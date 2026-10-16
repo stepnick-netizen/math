@@ -51,7 +51,7 @@ a{color:var(--sky);font-weight:700}
 .how ol{margin:0;padding-left:1.3em;display:grid;gap:4px;max-width:70ch}
 .foot{color:var(--muted);font-size:15px;font-family:var(--hand);font-size:22px}
 </style>
-<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}.site-copy{max-width:980px;margin:0 auto;padding-block:4px 28px;border-top:1px solid var(--line,#D3DCC5);padding-top:14px;font:14px/1.5 var(--body,system-ui,sans-serif);color:var(--muted,#5F6B55);text-align:center}</style></head>
+<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}.site-copy{max-width:980px;margin:0 auto;padding-block:4px 28px;border-top:1px solid var(--line,#D3DCC5);padding-top:14px;font:14px/1.5 var(--body,system-ui,sans-serif);color:var(--muted,#5F6B55);text-align:center}.site-copy small{display:block;font-size:12px;opacity:.75;margin-top:2px}</style></head>
 <body>
 <div class="wrap">
  <header class="hero"><div class="hero-text"><h1>Математика з <span>Понею</span> і <span>Булею</span></h1><p>Ігри-уроки і живі шпаргалки для 6–7 класу. Кожна тема — короткий урок зі схемами, три рівні з різними іграми й звіт про пройдене.</p><p style="font-size:15px"><a href="index-en.html">English version</a></p></div></header>
@@ -213,6 +213,6 @@ function mark(){var w=P.world||'meadow';bs.forEach(function(b){b.setAttribute('a
 bs.forEach(function(b){b.onclick=function(){P.world=b.dataset.w;try{localStorage.setItem(K,JSON.stringify(P))}catch(e){}mark()}});
 mark()})();
 </script>
-<footer class="site-copy">© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна</footer>
+<footer class="site-copy">© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Зробив Микола Степанов для доньки Варі Степанової</small></footer>
 
 </body></html>
