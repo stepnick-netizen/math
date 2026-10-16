@@ -246,7 +246,7 @@ input.ans{font:700 18px var(--body);width:110px;padding:8px 10px;border:2px soli
   </section>
 
   <section class="panel" id="p-report" hidden>
-    <div class="lead"><h2>Мій звіт</h2><p style="margin-top:8px">Тут видно, що вже пройдено. Натисни кнопку, скопіюй звіт і надішли його вчителеві чи батькам у месенджер.</p></div>
+    <div class="lead"><h2>Мій звіт</h2><p style="margin-top:8px">Тут видно, що вже пройдено. Натисни «Надіслати звіт» і вибери Viber, Telegram чи пошту. Або скопіюй звіт і встав його в повідомлення вчителеві чи батькам.</p></div>
     <div class="card" id="reportCard"></div>
     <div class="row"><button class="btn" id="copyReport">Скопіювати звіт</button><span class="fb" id="copyFb" aria-live="polite"></span></div>
     <textarea id="reportText" readonly hidden rows="14" aria-label="Report text"></textarea>
@@ -552,4 +552,27 @@ startPlaidTask();renderShop();renderDet();stars();
 </script>
 
 
+<script>
+(function(){
+  var cb=document.getElementById('copyReport');
+  if(!cb||typeof renderReport!=='function'||!navigator.share)return;
+  var uk=document.documentElement.lang==='uk';
+  var b=document.createElement('button');
+  b.type='button';b.className='btn';b.id='shareReport';b.style.background='var(--sky)';
+  b.textContent=uk?'Надіслати звіт':'Send my report';
+  cb.parentNode.insertBefore(b,cb);
+  b.onclick=function(){
+    renderReport();
+    var txt=document.getElementById('reportText').value, fb=document.getElementById('copyFb');
+    navigator.share({title:document.title,text:txt}).then(function(){
+      fb.className='fb good pop';
+      fb.textContent=uk?'Готово! Якщо застосунок ще відкритий, натисни там «Надіслати».':'Done! If the app is still open, tap Send there.';
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;
+      fb.className='fb bad';
+      fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
+    });
+  };
+})();
+</script>
 </body></html>

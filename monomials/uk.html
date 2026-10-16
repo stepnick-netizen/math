@@ -531,7 +531,7 @@ uk:{
   cDoneH:'Шарф готовий!',
   cDoneP:'Безладко закутався в смугастий шарф і на радощах сам розклав усі картки по кошиках. Третя зірка твоя!',
   toR:'Подивитися мій звіт',
-  rH:'Мій звіт', rIntro:'Тут видно, що вже пройдено. Натисни кнопку, скопіюй звіт і надішли його вчителеві чи батькам у месенджер.',
+  rH:'Мій звіт', rIntro:'Тут видно, що вже пройдено. Натисни «Надіслати звіт» і вибери Viber, Telegram чи пошту. Або скопіюй звіт і встав його в повідомлення вчителеві чи батькам.',
   copy:'Скопіювати звіт', copied:'Скопійовано! Встав звіт у повідомлення.', copyFail:'Автоматично скопіювати не вийшло. Текст звіту виділено нижче: скопіюй його вручну.',
   task:(i,n)=>`Завдання ${i} з ${n}`, done:'Рівень пройдено',
   notTried:'ще без спроб', first:'з першої спроби', nth:(n)=>`з ${n}-ї спроби`, withHint:', з підказкою', notYet:(n)=>`поки не вийшло (спроб: ${n})`,
@@ -601,7 +601,7 @@ en:{
   cDoneH:'The scarf is finished!',
   cDoneP:'Muddle wrapped himself up in his stripy scarf and was so happy that he sorted all the cards into baskets by himself. Your third star!',
   toR:'See my report',
-  rH:'My report', rIntro:'Here\'s everything you\'ve done so far. Tap the button, copy your report and send it to your teacher or parents in a message.',
+  rH:'My report', rIntro:'Here\'s everything you\'ve done so far. Tap "Send my report" and choose WhatsApp, Viber or email. Or copy the report and paste it into a message to your teacher or parents.',
   copy:'Copy my report', copied:'Copied! Paste it into a message.', copyFail:'Couldn\'t copy automatically. The report text is selected below: copy it yourself.',
   task:(i,n)=>`Task ${i} of ${n}`, done:'Level complete',
   notTried:'not tried yet', first:'first try', nth:(n)=>`on attempt ${n}`, withHint:', with a hint', notYet:(n)=>`not solved yet (${n} ${n===1?'attempt':'attempts'})`,
@@ -755,13 +755,15 @@ function worldText(){
     o.dipH=`Диплом ${me('приборкувача','приборкувачки','приборкувача')} одночленів`;
     const who=me('ти вже пройшов','ти вже пройшла','вже пройдено');
     o.rH=EDITION==='home'?'Мій звіт':'Мій звіт';
-    o.rIntro=`Тут видно, що ${who}. Натисни кнопку, скопіюй звіт і надішли його ${EDITION==='home'?'татові':'вчителеві чи батькам'} у месенджер.`;
+    o.rIntro=EDITION==='home'?`Тут видно, що ${who}. Натисни кнопку, скопіюй звіт і надішли його татові в месенджер.`
+      :`Тут видно, що ${who}. Натисни «Надіслати звіт» і вибери Viber, Telegram чи пошту. Або скопіюй звіт і встав його в повідомлення вчителеві чи батькам.`;
     o.copied=EDITION==='home'?'Скопійовано! Встав звіт у повідомлення.':'Скопійовано! Встав звіт у повідомлення.';
     o.toR=EDITION==='home'?'Подивитися мій звіт':'Подивитися мій звіт';
     o.repHead=[(EDITION==='home'?'Ось мій звіт':'Ось мій звіт')+' про одночлени.',P.name.trim()?`${me('Учень','Учениця','Ім’я')}: ${P.name.trim()}.`:'',`Світ: ${W().label.uk}.`].filter(Boolean).join('\n');
   }else{
     o.rH=EDITION==='home'?'My report':'My report';
-    o.rIntro=`Here's everything you've done so far. Tap the button, copy your report and send it to ${EDITION==='home'?'Dad':'your teacher or parents'} in a message.`;
+    o.rIntro=EDITION==='home'?`Here's everything you've done so far. Tap "Send my report" and choose WhatsApp, Viber or email. Or copy the report and paste it into a message to your teacher or parents.`
+      :`Here's everything you've done so far. Tap "Send my report" and choose WhatsApp, Viber or email. Or copy the report and paste it into a message to your teacher or parents.`;
     o.copied=EDITION==='home'?'Copied! Paste it into a message.':'Copied! Paste it into a message.';
     o.toR=EDITION==='home'?'See my report':'See my report';
     o.repHead=[(EDITION==='home'?'Here is my':'Here is my')+' monomials report.',P.name.trim()?`Name: ${P.name.trim()}.`:'',`World: ${W().label.en}.`].filter(Boolean).join('\n');
@@ -1113,4 +1115,27 @@ renderA();renderB();renderC();stars();
 if(firstVisit){profOpen=true;renderProfile()}
 </script>
 
+<script>
+(function(){
+  var cb=document.getElementById('copyReport');
+  if(!cb||typeof renderReport!=='function'||!navigator.share)return;
+  var uk=document.documentElement.lang==='uk';
+  var b=document.createElement('button');
+  b.type='button';b.className='btn';b.id='shareReport';b.style.background='var(--sky)';
+  b.textContent=uk?'Надіслати звіт':'Send my report';
+  cb.parentNode.insertBefore(b,cb);
+  b.onclick=function(){
+    renderReport();
+    var txt=document.getElementById('reportText').value, fb=document.getElementById('copyFb');
+    navigator.share({title:document.title,text:txt}).then(function(){
+      fb.className='fb good pop';
+      fb.textContent=uk?'Готово! Якщо застосунок ще відкритий, натисни там «Надіслати».':'Done! If the app is still open, tap Send there.';
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;
+      fb.className='fb bad';
+      fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
+    });
+  };
+})();
+</script>
 </body></html>

@@ -223,7 +223,7 @@ uk:{
   cH:'Рівень 3. Хто переставив картки?',
   cIntro:'Увечері Поня виклала з карток пропорцію <span class="pr">10 : 40 = 6 : 24</span>. Уранці картки лежали інакше! Виконуй завдання: кожне правильне відкриває одну літеру імені того, хто грався картками вночі.',
   cReset:'Почати розслідування заново',
-  rH:'Мій звіт', rIntro:'Тут видно, що вже пройдено. Натисни кнопку, скопіюй звіт і надішли його вчителеві чи батькам у месенджер.',
+  rH:'Мій звіт', rIntro:'Тут видно, що вже пройдено. Натисни «Надіслати звіт» і вибери Viber, Telegram чи пошту. Або скопіюй звіт і встав його в повідомлення вчителеві чи батькам.',
   copy:'Скопіювати звіт', copied:'Скопійовано! Встав звіт у повідомлення.', copyFail:'Автоматично скопіювати не вийшло. Текст звіту виділено нижче: скопіюй його вручну.',
   task:(i,n)=>`Завдання ${i} з ${n}`, check:'Перевірити', hint:'Підказка: ', typeNum:'Впиши число.',
   done:'Рівень пройдено',
@@ -285,7 +285,7 @@ en:{
   cH:'Level 3. Who moved the cards?',
   cIntro:'Last night Ponya laid out the proportion <span class="pr">10 : 40 = 6 : 24</span> with number cards. In the morning the cards had moved! Every task you solve reveals one letter of the name of whoever played with the cards.',
   cReset:'Restart the investigation',
-  rH:'My report', rIntro:'Here\'s everything you\'ve done so far. Tap the button, copy your report and send it to your teacher or parents in a message.',
+  rH:'My report', rIntro:'Here\'s everything you\'ve done so far. Tap "Send my report" and choose WhatsApp, Viber or email. Or copy the report and paste it into a message to your teacher or parents.',
   copy:'Copy my report', copied:'Copied! Paste it into a message.', copyFail:'Couldn\'t copy automatically. The report text is selected below: copy it yourself.',
   task:(i,n)=>`Task ${i} of ${n}`, check:'Check', hint:'Hint: ', typeNum:'Type in a number.',
   done:'Level complete',
@@ -710,4 +710,27 @@ startP();renderK();renderC();stars();
 </script>
 
 
+<script>
+(function(){
+  var cb=document.getElementById('copyReport');
+  if(!cb||typeof renderReport!=='function'||!navigator.share)return;
+  var uk=document.documentElement.lang==='uk';
+  var b=document.createElement('button');
+  b.type='button';b.className='btn';b.id='shareReport';b.style.background='var(--sky)';
+  b.textContent=uk?'Надіслати звіт':'Send my report';
+  cb.parentNode.insertBefore(b,cb);
+  b.onclick=function(){
+    renderReport();
+    var txt=document.getElementById('reportText').value, fb=document.getElementById('copyFb');
+    navigator.share({title:document.title,text:txt}).then(function(){
+      fb.className='fb good pop';
+      fb.textContent=uk?'Готово! Якщо застосунок ще відкритий, натисни там «Надіслати».':'Done! If the app is still open, tap Send there.';
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;
+      fb.className='fb bad';
+      fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
+    });
+  };
+})();
+</script>
 </body></html>
