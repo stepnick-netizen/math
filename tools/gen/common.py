@@ -110,7 +110,7 @@ def rights_js(pool, lang):
 def why_js(why, lang, more=''):
     head = 'Навіщо це мені?' if lang == 'uk' else 'Why does this matter?'
     lis = ''.join(f'<li><b>{t}</b> {d}</li>' for t, d in why['items'])
-    ml = ('Чому освіта — наша сила →' if lang == 'uk' else 'Why education is our strength →')
+    ml = ('Ми — козацького роду: наша історія →' if lang == 'uk' else 'Of Cossack kin: our story →')
     mp = f'<p class="why-more"><a href="{more}">{ml}</a></p>' if more else ''
     card = f'<div class="card why-card"><h3>{head}</h3><ul>{lis}</ul>{mp}</div>'
     return ('<script>(function(){var box=document.getElementById("p-learn");if(box){var go=box.querySelectorAll("[data-go]"),last=go[go.length-1];'
