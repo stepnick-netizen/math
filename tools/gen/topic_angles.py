@@ -126,8 +126,8 @@ def cards(lang, world):
         s += hand(x0, 128, cap1, 18, 'm') + hand(x0, 148, cap2, 18, 'm')
         return s
     body = mini(64, 90, '90°', '90°', 'l', 'l', t('прямий →', 'right →'), t('прямий', 'right'))
-    body += mini(190, 50, '50°', '130°', 'p', 'y', t('гострий →', 'acute →'), t('тупий', 'obtuse'))
-    body += mini(316, 110, '110°', '70°', 'y', 'p', t('тупий →', 'obtuse →'), t('гострий', 'acute'))
+    body += mini(190, 130, '130°', '50°', 'y', 'p', t('гострий →', 'acute →'), t('тупий', 'obtuse'))
+    body += mini(316, 70, '70°', '110°', 'p', 'y', t('тупий →', 'obtuse →'), t('гострий', 'acute'))
     s5 = svg(380, 158, body, t('наслідки', 'consequences'))
     out.append(('wide two', t('Три наслідки', 'Three consequences'),
                 t('Кут, суміжний із <b>прямим</b>, — прямий. Із <b>гострим</b> — тупий. Із <b>тупим</b> — гострий.',
