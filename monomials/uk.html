@@ -178,7 +178,13 @@ input.ans.ok{border-color:var(--good)}
 .heroes svg{width:56px;height:auto;flex:none}
 .heroes input{font:700 16px var(--body);padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;min-width:0}
 .pf-tip{font-size:14px;color:var(--muted)}
-.player{font-weight:800;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:3px 12px;font-size:14px}
+.worldbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;background:var(--paper);border:2px dashed var(--yarn);border-radius:16px;padding:12px 14px;max-width:60ch}
+.worldbar .wb-mini{display:flex;flex:none}
+.worldbar .wb-mini svg{width:40px;height:auto}
+.worldbar .wb-text{flex:1 1 220px;min-width:0;display:grid;gap:2px;font-size:15px;line-height:1.4}
+.worldbar .wb-text b{font-family:var(--display);font-size:16px}
+.worldbar .wb-text span{color:var(--muted)}
+.worldbar .btn{background:var(--yarn)}
 /* shelf variants */
 .shelf.capsule .jar .lid{width:20px;height:6px;background:var(--sky);border-radius:6px 6px 0 0}
 .shelf.capsule .jar .body{border-radius:22px;border-color:var(--sky)}
@@ -209,7 +215,7 @@ input.ans.ok{border-color:var(--good)}
         <span class="star" id="st-c">★</span>
         <button class="btn ghost" id="resetAll" style="padding:4px 12px;font-size:14px"></button>
       </div>
-      <div class="row"><button class="btn ghost" id="profBtn" style="padding:6px 14px;font-size:15px"></button><span class="player" id="player" hidden></span></div>
+      <div class="worldbar" id="worldbar"><span class="wb-mini" id="wbMini"></span><div class="wb-text"><b id="wbTitle"></b><span id="wbSub"></span></div><button class="btn" id="profBtn"></button></div>
       <div class="diploma" id="diploma" hidden><h3 data-t="dipH"></h3><p data-t="dipP"></p></div>
     </div>
     <div class="cast" id="heroCast"></div>
@@ -763,15 +769,18 @@ function worldText(){
   return o;
 }
 let S;
-const PS={uk:{profBtn:'Профіль і світ',profH:'Твій профіль',nameL:'Як тебе звати?',namePh:'Ім’я',addrL:'Як до тебе звертатися?',addrM:'Я хлопчик',addrF:'Я дівчинка',addrN:'Не вказувати',worldL:'Вибери світ',heroesL:'Імена героїв (можна змінити)',heroesReset:'Повернути звичні імена',done:'Готово',player:'Грає:',tip:'Профіль зберігається лише в браузері на цьому пристрої. Прогрес у рівнях не зникне, якщо змінити світ.'},
- en:{profBtn:'Profile and world',profH:'Your profile',nameL:'What\'s your name?',namePh:'Name',addrL:'How should we talk to you?',addrM:'I\'m a boy',addrF:'I\'m a girl',addrN:'Rather not say',worldL:'Choose a world',heroesL:'Hero names (you can change them)',heroesReset:'Bring back the usual names',done:'Done',player:'Player:',tip:'Your profile is saved only in the browser on this device. Your progress stays when you change the world.'}}[LANG];
+const PS={uk:{profBtn:'Вибрати світ і ім’я',profBtn2:'Змінити світ або ім’я',wbTitle:w=>`Твій світ: ${w}`,wbNew:'Можна вибрати один із трьох світів (луг, космос, цеглинки), вписати своє ім’я і перейменувати героїв.',wbHas:n=>`Грає: ${n}. Світ, ім’я й героїв можна змінити будь-коли.`,profH:'Твій профіль',nameL:'Як тебе звати?',namePh:'Ім’я',addrL:'Як до тебе звертатися?',addrM:'Я хлопчик',addrF:'Я дівчинка',addrN:'Не вказувати',worldL:'Вибери світ',heroesL:'Імена героїв (можна змінити)',heroesReset:'Повернути звичні імена',done:'Готово',player:'Грає:',tip:'Профіль зберігається лише в браузері на цьому пристрої. Прогрес у рівнях не зникне, якщо змінити світ.'},
+ en:{profBtn:'Choose a world and name',profBtn2:'Change world or name',wbTitle:w=>`Your world: ${w}`,wbNew:'You can pick one of three worlds (meadow, space, bricks), add your name and rename the heroes.',wbHas:n=>`Player: ${n}. You can change the world, your name and the heroes any time.`,profH:'Your profile',nameL:'What\'s your name?',namePh:'Name',addrL:'How should we talk to you?',addrM:'I\'m a boy',addrF:'I\'m a girl',addrN:'Rather not say',worldL:'Choose a world',heroesL:'Hero names (you can change them)',heroesReset:'Bring back the usual names',done:'Done',player:'Player:',tip:'Your profile is saved only in the browser on this device. Your progress stays when you change the world.'}}[LANG];
 function buildS(){S=Object.assign({},BASE[LANG],worldText())}
 function applyTexts(){
   buildS();
   document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=S[el.dataset.t]});
   $('#resetAll').textContent=S.resetAll;
-  $('#profBtn').textContent=PS.profBtn;
-  const pl=$('#player');pl.hidden=!P.name.trim();pl.textContent=`${PS.player} ${P.name.trim()}`;
+  const nm=P.name.trim();
+  $('#profBtn').textContent=nm?PS.profBtn2:PS.profBtn;
+  $('#wbTitle').textContent=PS.wbTitle(W().label[LANG]);
+  $('#wbSub').textContent=nm?PS.wbHas(nm):PS.wbNew;
+  $('#wbMini').innerHTML=Object.values(WORLDS).map(w=>w.roles.messy.svg).join('');
   document.querySelectorAll('[data-world]').forEach(g=>g.hidden=g.dataset.world!==P.world);
 }
 buildS();
