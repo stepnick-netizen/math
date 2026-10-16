@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Освіта — наша сила</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>
+
+/* Layout: meadow page, hero with the cast, tab strip, one level per tab; level = stage card + task card */
+:root{--bg:#EEF3E4;--paper:#FFFFFF;--ink:#26301F;--muted:#5F6B55;--line:#D3DCC5;--shadow:rgba(38,48,31,.12);
+--yarn:#D9486F;--plum:#7A59C2;--hay:#D99A1E;--leaf:#4F8A3C;--sky:#3E7FB8;--marker:#FFE24A;--marker-ink:#2A2300;--cell:#F4F7EE;
+--good:#2F8A4C;--bad:#C2413B;
+--display:'Comfortaa','Nunito',system-ui,sans-serif;--body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;--hand:'Caveat','Comic Sans MS',cursive}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}
+*{box-sizing:border-box}
+/* living cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:14px}
+.box{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px 18px 14px;box-shadow:0 3px 0 var(--shadow);display:grid;gap:8px;align-content:start;min-width:0}
+.box h2{font-family:var(--display);font-size:20px;margin:0;line-height:1.25;padding-right:40px;text-wrap:balance}
+.box p{margin:0}
+.box.two{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:8px 18px}
+.box.two>div{display:grid;gap:8px;align-content:start}
+@media (max-width:680px){.box.two{grid-template-columns:1fr}}
+.wide{grid-column:1/-1}
+.n{position:absolute;top:12px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--leaf);color:#fff;font:700 17px var(--display);display:grid;place-items:center;box-shadow:0 2px 0 var(--shadow)}
+.key{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.key .n{background:var(--yarn)}
+.key .hand{color:var(--marker-ink)}
+.viz{width:100%;height:auto;max-width:440px;justify-self:center;overflow:visible}
+.viz .d{font-family:var(--display);font-weight:700}
+.viz .h{font-family:var(--hand);font-weight:600}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:6px 18px;align-items:center}
+.tail{font-size:15px;color:var(--muted)}
+.key .tail{color:var(--marker-ink)}
+.more{background:var(--cell);border-radius:10px;padding:8px 12px;font-size:15.5px}
+.key .more{background:rgba(255,255,255,.5)}
+.say{display:flex;align-items:center;gap:10px}
+.say .pig{width:72px;height:auto;flex:none}
+.hand{font-family:var(--hand);font-size:22px;line-height:1.2;color:var(--muted)}
+.bubble{position:relative;background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:8px 14px;font-family:var(--hand);font-size:23px;line-height:1.2;max-width:46ch;width:fit-content}
+
+
+</style><style>
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sheet{max-width:900px;margin:0 auto;padding-block:22px 36px;display:grid;gap:16px}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px}
+.htext{display:grid;gap:10px;flex:1 1 300px;min-width:0}
+h1{font-family:var(--display);font-size:clamp(30px,6vw,44px);margin:0;line-height:1.1;text-wrap:balance}h1 span{color:var(--yarn)}
+.cast{display:flex;gap:2px;flex-wrap:wrap;align-items:flex-end}.cast .pig{width:84px;height:auto}
+.final{justify-content:center;flex-wrap:wrap}
+.links{font-size:15px}
+.box,.head,.final{break-inside:avoid}
+
+/* engine: task steps, choice tiles, equation rows, ordering cards, stage drawings */
+.teach{justify-self:start;font:800 12.5px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--plum);background:var(--cell);border:1.5px dashed var(--plum);border-radius:999px;padding:2px 10px}
+.tq{font-size:17px}
+.sp{font-weight:700}
+.stepno{font:800 13px var(--body);color:var(--hay);letter-spacing:.06em;text-transform:uppercase}
+.donesteps{display:grid;gap:4px;background:var(--cell);border-radius:10px;padding:8px 12px}
+.ds{color:var(--good);font-weight:700;font-size:16px}
+.ds .mono,.ds sup{color:inherit}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr));gap:10px}
+.opt{display:grid;justify-items:center;align-content:start;gap:4px;font:700 16px/1.3 var(--body);border:2px solid var(--c);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 8px 12px;cursor:pointer;text-align:center;min-width:0}
+.opt .oi svg{width:70px;height:auto}
+.opt.picked{background:var(--c);color:var(--paper);border-style:solid}
+.opt.badpick{border-style:dashed;opacity:.55}
+.opt:disabled{cursor:default}
+.opts.pills{display:flex;flex-wrap:wrap}
+.opts.pills .opt{border-radius:999px;padding:8px 16px;font-size:17px}
+.opts.big .opt{font:700 26px var(--display);padding:8px 18px;min-width:64px}
+.eqrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 6px;font:700 clamp(22px,5.6vw,28px) var(--display)}
+.eqrow .gap{width:100%;height:0}
+.eqrow .pre{white-space:nowrap}
+.eqrow input.ans{font-size:20px}
+.eqrow input.sup{width:46px;font-size:16px;padding:3px 4px;align-self:flex-start;margin:-4px 2px 0 -2px}
+.eqrow input.wide{width:112px}
+.eqrow .lbl{font:700 17px var(--body);color:var(--muted)}
+.ocard{font:700 16px/1.35 var(--body);border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left}
+.ocard.on{border-color:var(--leaf);background:var(--cell)}
+.ocard b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--leaf);color:var(--paper);font-size:14px;margin-right:6px;vertical-align:1px}
+.oline,.opool{display:grid;gap:8px}
+.oline{border:2px dashed var(--line);border-radius:14px;padding:10px;min-height:56px}
+.mono .b,.big .b,.b{color:var(--plum)}
+sup.e,.e{color:var(--yarn)}
+.stg{width:100%;max-width:380px;height:auto;overflow:visible}
+.stg .d{font-family:var(--display);font-weight:700}
+.stg .h{font-family:var(--hand);font-weight:600}
+.stage .say{justify-content:center}
+.stage .say .pig{width:84px}
+.stage .bubble{font-size:21px}
+.count{font:700 16px var(--display);color:var(--muted)}
+.word{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.word span{width:38px;height:46px;border-radius:10px;border:2px dashed var(--line);display:grid;place-items:center;font:700 24px var(--display);color:var(--muted);background:var(--cell)}
+.word span.on{border:2px solid var(--leaf);background:var(--paper);color:var(--leaf)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.chip{font:700 14px var(--display);background:var(--cell);border-radius:8px;padding:2px 7px;white-space:nowrap}
+.why-card{display:grid;gap:8px;border:2px solid var(--leaf)}.why-card ul{margin:0;padding-left:1.2em;display:grid;gap:6px}.why-card b{color:var(--leaf)}.why-dip{margin-top:6px;font-weight:700}
+.right-chip{display:grid;gap:3px;margin-top:4px;padding:10px 12px;border-left:4px solid var(--sky);background:var(--cell);border-radius:8px;font-size:14.5px;line-height:1.45}.right-chip b{font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--sky)}.right-chip q,.right-chip i{font-style:italic}.right-chip span{color:var(--muted)}
+
+</style><style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}.site-copy{max-width:980px;margin:0 auto;padding-block:4px 28px;border-top:1px solid var(--line,#D3DCC5);padding-top:14px;font:14px/1.5 var(--body,system-ui,sans-serif);color:var(--muted,#5F6B55);text-align:center}.site-copy small{display:block;font-size:12px;opacity:.75;margin-top:2px}</style></head>
+<body><nav class="site-home"><a href="index.html">← Усі теми</a></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah-y" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--yarn)"/></marker><marker id="ah-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--plum)"/></marker><marker id="ah-l" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--leaf)"/></marker><marker id="ah-i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker><marker id="ah-s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--sky)"/></marker><marker id="ah-h" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--hay)"/></marker><marker id="ah-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--bad)"/></marker><marker id="ah-k" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--marker-ink)"/></marker></defs></svg>
+<div class="sheet">
+ <header class="head">
+  <div class="htext"><h1>Освіта — <span>наша сила</span></h1><p class="bubble">Привіт! Ми зібрали справжні історії про країни, які стали сильними завдяки навчанню. І про Україну — бо ми теж така країна.</p><p class="links"><a href="education-en.html">English version</a></p></div>
+  <div class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#D9843A"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#D9843A"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F6E9D7"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#D9843A"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F6E9D7"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#D9843A"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#D9843A" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="74" cy="92" rx="58" ry="6" fill="var(--shadow)"/>
+<path d="M30 70 C6 66 4 36 20 26" stroke="#7D838B" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M14 60 L28 56 M8 46 L22 46 M12 32 L24 38" stroke="#2E3136" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="66" cy="68" rx="42" ry="24" fill="#9AA0A8"/>
+<ellipse cx="44" cy="89" rx="9" ry="5" fill="#2E3136"/><ellipse cx="88" cy="89" rx="9" ry="5" fill="#2E3136"/>
+<path d="M90 30 L94 14 L104 26 Z M118 26 L128 14 L130 30 Z" fill="#7D838B"/>
+<circle cx="110" cy="44" r="24" fill="#B4BAC2"/>
+<path d="M88 42 C96 34 124 34 132 42 C126 52 94 52 88 42 Z" fill="#2E3136"/>
+<circle cx="101" cy="43" r="4" fill="#fff"/><circle cx="119" cy="43" r="4" fill="#fff"/>
+<circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
+<ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
+<path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
+</svg></div>
+ </header>
+ <div class="grid"><section class="box "><span class="n">1</span><h2>Математики скоротили війну</h2><p>Британія, 1939–1945. У Блечлі-Парку математики, серед них Алан Тюрінг, зламали німецький шифр «Енігма» і читали таємні накази ворога.</p><svg viewBox="0 0 320 150" class="viz" role="img" aria-label="−2 роки війни"><text x="160.0" y="82.0" text-anchor="middle" font-size="56" class="d" fill="var(--leaf)">−2 роки</text><text x="160.0" y="124.0" text-anchor="middle" font-size="24" class="h" fill="var(--muted)">війни</text></svg><p class="tail">Історик розвідки Гаррі Гінслі, який сам там працював, оцінив: без цієї роботи Друга світова могла тривати на рік-два довше. Це мільйони врятованих життів.</p></section><section class="box "><span class="n">2</span><h2>Із бідності — до лідерства</h2><p>Південна Корея, зруйнована війною. У 1945 році читати вмів лише кожен п’ятий дорослий. Країна вклалася в школи й університети.</p><svg viewBox="0 0 320 162" class="viz" role="img" aria-label="22% → 88%"><rect x="70.0" y="84.2" width="60.0" height="19.8" rx="4" fill="var(--bad)" stroke="var(--bad)" stroke-width="0"/><rect x="190.0" y="24.8" width="60.0" height="79.2" rx="4" fill="var(--leaf)" stroke="var(--leaf)" stroke-width="0"/><line x1="50.0" y1="104.0" x2="270.0" y2="104.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="100.0" y="74.0" text-anchor="middle" font-size="20" class="d" fill="var(--bad)">22 %</text><text x="220.0" y="16.0" text-anchor="middle" font-size="20" class="d" fill="var(--leaf)">≈ 88 %</text><text x="100.0" y="126.0" text-anchor="middle" font-size="18" class="d" fill="var(--muted)">1945</text><text x="220.0" y="126.0" text-anchor="middle" font-size="18" class="d" fill="var(--muted)">1970</text><text x="160.0" y="152.0" text-anchor="middle" font-size="21" class="h" fill="var(--muted)">дорослі, що вміють читати</text></svg><p class="tail">За 25 років читати вміли майже 9 із 10. Сьогодні Корея — одна з найрозвиненіших технологічних країн світу: телефони, кораблі, комп’ютерні чипи.</p></section><section class="box "><span class="n">3</span><h2>Маленька країна, великий стрибок</h2><p>Естонія, 1996 рік. Програма «Стрибок тигра»: за п’ять років усі школи отримали комп’ютери й інтернет, а вчителі вчилися нового.</p><svg viewBox="0 0 320 148" class="viz" role="img" aria-label="Tiger Leap 1996–2001"><line x1="30.0" y1="70.0" x2="290.0" y2="70.0" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><circle cx="40.0" cy="70.0" r="9.0" fill="var(--sky)" stroke="var(--sky)" stroke-width="0"/><text x="40.0" y="50.0" text-anchor="middle" font-size="18" class="d" fill="var(--sky)">1996</text><text x="40.0" y="100.0" text-anchor="middle" font-size="20" class="h" fill="var(--muted)">старт</text><circle cx="180.0" cy="70.0" r="9.0" fill="var(--sky)" stroke="var(--sky)" stroke-width="0"/><text x="180.0" y="50.0" text-anchor="middle" font-size="18" class="d" fill="var(--sky)">2000</text><text x="180.0" y="100.0" text-anchor="middle" font-size="20" class="h" fill="var(--muted)">комп’ютери</text><circle cx="280.0" cy="70.0" r="9.0" fill="var(--sky)" stroke="var(--sky)" stroke-width="0"/><text x="280.0" y="50.0" text-anchor="middle" font-size="18" class="d" fill="var(--sky)">2001</text><text x="280.0" y="100.0" text-anchor="middle" font-size="20" class="h" fill="var(--muted)">інтернет</text><text x="160.0" y="136.0" text-anchor="middle" font-size="22" class="h" fill="var(--leaf)">у кожній школі країни</text></svg><p class="tail">Ці діти виросли й побудували одну з найцифровіших держав світу.</p></section><section class="box "><span class="n">4</span><h2>Україна — країна, яка вчиться</h2><p>Читати й писати в Україні вміють майже всі дорослі.</p><svg viewBox="0 0 320 160" class="viz" role="img" aria-label="99,97 % дорослих грамотні"><text x="160.0" y="82.0" text-anchor="middle" font-size="56" class="d" fill="var(--leaf)">99,97 %</text><text x="160.0" y="124.0" text-anchor="middle" font-size="24" class="h" fill="var(--muted)">дорослих грамотні</text><text x="160.0" y="148.0" text-anchor="middle" font-size="20" class="h" fill="var(--muted)">за даними 2012 року</text></svg><p class="tail">А ще в Києві в 1950 році запрацювала МЕСМ — одна з перших електронних обчислювальних машин у Європі. Її створила команда Сергія Лебедєва.</p></section><section class="box "><span class="n">5</span><h2>Українка — серед найкращих математиків світу</h2><p>Марина В’язовська народилася в Києві у 1984 році. У 2022 році вона отримала Філдсівську премію — другою жінкою в історії.</p><svg viewBox="0 0 320 160" class="viz" role="img" aria-label="Fields Medal 2022"><circle cx="160.0" cy="70.0" r="52.0" fill="var(--marker)" stroke="var(--hay)" stroke-width="4"/><text x="160.0" y="64.0" text-anchor="middle" font-size="26" class="d" fill="var(--marker-ink)">2022</text><text x="160.0" y="92.0" text-anchor="middle" font-size="18" class="d" fill="var(--marker-ink)">Філдс</text><text x="160.0" y="150.0" text-anchor="middle" font-size="22" class="h" fill="var(--muted)">найвища нагорода математиків</text></svg><p class="tail">Над тим, як найщільніше укласти кулі, математики думали понад 400 років, ще з часів Кеплера. Марина довела відповідь для 8-вимірного простору. А почалося все з математичних олімпіад, у яких вона брала участь школяркою в Києві.</p></section><section class="box "><span class="n">6</span><h2>Освіта захищає сьогодні</h2><p>У 2023 році в Україні запрацював оборонний кластер Brave1. Інженери й програмісти приносять туди свої винаходи.</p><svg viewBox="0 0 320 150" class="viz" role="img" aria-label="1671 розробка за перший рік"><text x="160.0" y="82.0" text-anchor="middle" font-size="56" class="d" fill="var(--yarn)">1671</text><text x="160.0" y="124.0" text-anchor="middle" font-size="24" class="h" fill="var(--muted)">розробка за перший рік</text></svg><p class="tail">Дрони, роботи для розмінування, техніка для евакуації поранених. За кожною розробкою — люди, які колись так само розв’язували задачі в школі.</p></section><section class="box key wide"><span class="n">7</span><h2>Що з цього для тебе</h2><p><b>Країни ставали сильними тоді, коли їхні діти вчилися. Україна — освічена країна, і від нас залежить, щоб так було й далі.</b></p><div class="say"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><p class="hand">Освіту в тебе ніхто не відбере. Кожен урок — навіть в укритті чи онлайн — робить Україну сильнішою. Продовжуймо вчитися!</p></div></section></div>
+</div>
+<footer class="site-copy">© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Зробив Микола Степанов для доньки Варі</small><small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small></footer>
+<script>
+(function(){
+  var cb=document.getElementById('copyReport');
+  if(!cb||typeof renderReport!=='function'||!navigator.share)return;
+  var uk=document.documentElement.lang==='uk';
+  var b=document.createElement('button');
+  b.type='button';b.className='btn';b.id='shareReport';b.style.background='var(--sky)';
+  b.textContent=uk?'Надіслати звіт':'Send my report';
+  cb.parentNode.insertBefore(b,cb);
+  b.onclick=function(){
+    renderReport();
+    var txt=document.getElementById('reportText').value, fb=document.getElementById('copyFb');
+    navigator.share({title:document.title,text:txt}).then(function(){
+      fb.className='fb good pop';
+      fb.textContent=uk?'Готово! Якщо застосунок ще відкритий, натисни там «Надіслати».':'Done! If the app is still open, tap Send there.';
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;
+      fb.className='fb bad';
+      fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
+    });
+  };
+})();
+</script>
+
+<script>
+(function(){
+  /* own devices: open the site with #nostats once to stop counting this browser, #stats to count again */
+  var SK='skipgc', skip=false;
+  try{
+    if(location.hash==='#nostats')localStorage.setItem(SK,'t');
+    if(location.hash==='#stats')localStorage.removeItem(SK);
+    skip=localStorage.getItem(SK)==='t';
+  }catch(e){}
+  var uk=document.documentElement.lang==='uk';
+  if(location.hash==='#nostats'||location.hash==='#stats'){
+    var n=document.createElement('div');
+    n.textContent=skip?(uk?'Статистику на цьому пристрої вимкнено. Ваші відвідування не рахуються.':'Statistics are off on this device. Your visits are not counted.')
+                      :(uk?'Статистику на цьому пристрої знову ввімкнено.':'Statistics are on again on this device.');
+    n.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;padding:12px 16px;border-radius:12px;background:#26301F;color:#fff;font:700 15px system-ui,sans-serif;text-align:center';
+    document.body.appendChild(n);setTimeout(function(){n.remove()},6000);
+  }
+  if(skip){
+    var f=document.querySelector('.site-copy');
+    if(f){var m=document.createElement('small');m.textContent=uk?'(цей пристрій не враховується)':'(this device is not counted)';f.appendChild(m)}
+    window.ponyaTrack=function(){};return;
+  }
+  var gs=document.createElement('script');gs.async=true;gs.src='//gc.zgo.at/count.js';
+  gs.setAttribute('data-goatcounter','https://varia-math.goatcounter.com/count');document.head.appendChild(gs);
+
+  var parts=location.pathname.replace(/\.html$/,'').split('/').filter(Boolean);
+  var page=parts.slice(-2).join('-')||'index';            // e.g. monomials-uk, math-index
+  var queue=[];
+  function send(name){window.goatcounter.count({path:page+'/'+name,title:name,event:true})}
+  function track(name){
+    try{if(window.goatcounter&&window.goatcounter.count)send(name);else queue.push(name)}catch(e){}
+  }
+  gs.onload=function(){var q=queue;queue=[];q.forEach(function(n){try{send(n)}catch(e){}})};
+  window.ponyaTrack=track;
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,a');if(!t)return;
+    if(t.classList.contains('tab')&&t.dataset.tab)track('tab-'+t.dataset.tab);
+    else if(t.id==='copyReport')track('report-copy');
+    else if(t.id==='shareReport')track('report-send');
+    else if(t.dataset&&t.dataset.w)track('world-'+t.dataset.w);
+    else if(t.tagName==='A'&&/\.pdf$/.test(t.getAttribute('href')||''))track('pdf-'+t.getAttribute('href').replace(/\W+/g,'-'));
+  },true);
+
+  /* every task: solved on the first try, solved after mistakes, and the wrong answers typed (numbers only) */
+  if(typeof window.rec==='function'&&typeof state==='object'&&state&&state.log){
+    var orig=window.rec, wrong={}, sentVals={};
+    function typed(){
+      var panel=document.querySelector('.panel:not([hidden])');if(!panel)return '';
+      var vals=[];
+      panel.querySelectorAll('input').forEach(function(i){
+        if(!i.offsetParent||vals.length>=6)return;
+        var v=String(i.value).trim().replace(/[−–]/g,'-').replace(',','.');
+        vals.push(v===''?'_':(/^-?\d{1,6}(\.\d{1,4})?$/.test(v)?v:'x'));
+      });
+      return vals.join(';');
+    }
+    window.rec=function(key,ok,hint){
+      var done=state.log[key]&&state.log[key].ok;
+      if(!done){
+        if(ok)track('task-'+key+(wrong[key]?'-after-mistakes':'-first-try'));
+        else{
+          if(!wrong[key])track('task-'+key+'-mistake');
+          wrong[key]=(wrong[key]||0)+1;
+          var v=typed();
+          if(v&&!sentVals[key+v]){sentVals[key+v]=1;track('typed-'+key+'/'+v)}
+        }
+      }
+      return orig.apply(this,arguments);
+    };
+  }
+
+  /* a level is finished when its star lights up; the diploma appears after all three */
+  document.querySelectorAll('.star').forEach(function(st){
+    new MutationObserver(function(){if(st.classList.contains('on')&&!st.dataset.seen){st.dataset.seen=1;track('level-done-'+st.id.replace('st-',''))}})
+      .observe(st,{attributes:true,attributeFilter:['class']});
+  });
+  var dip=document.getElementById('diploma');
+  if(dip)new MutationObserver(function(){if(!dip.hidden)track('diploma')}).observe(dip,{attributes:true,attributeFilter:['hidden']});
+})();
+</script>
+</body></html>

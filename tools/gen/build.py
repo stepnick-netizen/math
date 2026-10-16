@@ -22,11 +22,11 @@ def build(topic, out):
         other = 'en' if lang == 'uk' else 'uk'
         for kind, edition in (('site', 'school'), ('art', 'home')):
             if kind == 'site':
-                links = {'other': f'../{folder}/{other}.html', 'sheet': f'../{folder}/cheatsheet-{lang}.html'}
+                links = {'other': f'../{folder}/{other}.html', 'sheet': f'../{folder}/cheatsheet-{lang}.html', 'edu': '../education.html' if lang == 'uk' else '../education-en.html'}
                 sheet_links = {'game': f'../{folder}/{lang}.html', 'other': f'../{folder}/cheatsheet-{other}.html',
                                'pdf': f'../{folder}/cheatsheet-{lang}.pdf'}
             else:
-                links = {'other': arts.get(f'game-{other}', '#'), 'sheet': arts.get(f'sheet-{lang}', '')}
+                links = {'other': arts.get(f'game-{other}', '#'), 'sheet': arts.get(f'sheet-{lang}', ''), 'edu': json.loads(p.read_text()).get('education', {}).get(lang, '') if p.exists() else ''}
                 sheet_links = {'game': arts.get(f'game-{lang}', ''), 'other': arts.get(f'sheet-{other}', ''), 'pdf': ''}
             title = TITLE[topic][0 if lang == 'uk' else 1]
             html = common.game_page(kind, lang, edition, title, m.lesson(lang), m.texts(lang, edition), m.levels(lang, edition),

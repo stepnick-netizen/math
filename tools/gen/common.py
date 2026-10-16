@@ -107,10 +107,12 @@ def rights_js(pool, lang):
             'panels.forEach(function(panel,i){place(panel,i);new MutationObserver(function(){place(panel,i)}).observe(panel,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden"]})});})();</script>')
 
 
-def why_js(why, lang):
+def why_js(why, lang, more=''):
     head = 'Навіщо це мені?' if lang == 'uk' else 'Why does this matter?'
     lis = ''.join(f'<li><b>{t}</b> {d}</li>' for t, d in why['items'])
-    card = f'<div class="card why-card"><h3>{head}</h3><ul>{lis}</ul></div>'
+    ml = ('Чому освіта — наша сила →' if lang == 'uk' else 'Why education is our strength →')
+    mp = f'<p class="why-more"><a href="{more}">{ml}</a></p>' if more else ''
+    card = f'<div class="card why-card"><h3>{head}</h3><ul>{lis}</ul>{mp}</div>'
     return ('<script>(function(){var box=document.getElementById("p-learn");if(box){var go=box.querySelectorAll("[data-go]"),last=go[go.length-1];'
             'var host=last?last.parentElement:null;while(host&&host.parentElement!==box)host=host.parentElement;var c=document.createElement("div");'
             'c.innerHTML=' + json.dumps(card, ensure_ascii=False) + ';if(host)box.insertBefore(c.firstChild,host);else box.appendChild(c.firstChild);}'
@@ -193,7 +195,7 @@ def game_page(kind, lang, edition, title, lesson_html, tx, lv, stage_js, links, 
            f'const WORLDS={json.dumps(WORLDS, ensure_ascii=False)};\n'
            f'const TX={json.dumps(tx, ensure_ascii=False)};\nconst LV={json.dumps(lv, ensure_ascii=False)};\n')
     script = f'<script>\n{cfg}{ICONS_JS}\n{stage_js}\n{ENGINE}</script>'
-    tail = why_js(why, lang) + '\n' + rights_js(pool, lang)
+    tail = why_js(why, lang, links.get('edu', '')) + '\n' + rights_js(pool, lang)
     return wrap(kind, lang, title, [BASE_CSS, GAME_CSS + extra_css], body + '\n' + script, tail)
 
 

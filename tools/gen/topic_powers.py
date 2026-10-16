@@ -665,8 +665,8 @@ def why(lang):
     t = lambda uk, en: uk if lang == 'uk' else en
     return {'items': [
         (t('Математика — це менше годин у сховищі.', 'Maths means fewer hours in the shelter.'),
-         t('Шифри, якими захищають зв’язок наших військових, побудовані на величезних степенях: такі числа не перебере навіть найшвидший комп’ютер. Чим точніше рахують інженери, тим раніше відбій і тим менше часу ти й твої друзі проводите в укритті. Колись нове таке рішення можеш придумати й ти.',
-           'The codes that protect our soldiers’ messages are built on enormous powers: numbers so big that even the fastest computer can’t try them all. The more precisely engineers calculate, the sooner the all-clear comes and the less time you and your friends spend in the shelter. One day you might come up with the next solution yourself.')),
+         t('Радар бачить ціль за сотні кілометрів, а комп’ютер ППО щосекунди робить мільйони обчислень — 10⁶ і більше. Що швидший розрахунок, то швидше ціль збито. Чим точніше рахують інженери, тим раніше відбій і тим менше часу ти й твої друзі проводите в укритті. Колись нове таке рішення можеш придумати й ти.',
+           'Radar sees a target hundreds of kilometres away, and an air defence computer does millions of calculations every second: 10⁶ and more. The faster the calculation, the sooner the target is shot down. The more precisely engineers calculate, the sooner the all-clear comes and the less time you and your friends spend in the shelter. One day you might come up with the next solution yourself.')),
         (t('Чутки ростуть як степінь.', 'Rumours grow like powers.'),
          t('Якщо кожен перешле новину двом друзям, за 10 кроків її отримають 2¹⁰ = 1024 людини. Перш ніж пересилати, перевір, чи це правда.',
            'If everyone forwards a story to two friends, after 10 steps 2¹⁰ = 1024 people get it. Before you forward something, check that it’s true.')),
