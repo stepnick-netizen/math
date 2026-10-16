@@ -19,8 +19,8 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
 RESET = ('<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}'
          'html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}'
          'img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>')
-COPY = {'uk': '© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small>',
-        'en': '© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine<small>This site keeps anonymous visit statistics: no cookies and no names.</small>'}
+COPY = {'uk': '© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Зробив Микола Степанов для доньки Варі</small><small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small>',
+        'en': '© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine<small>Made by Mykola Stepanov for his daughter Varia</small><small>This site keeps anonymous visit statistics: no cookies and no names.</small>'}
 HOME = {'uk': '← Усі теми', 'en': '← All topics'}
 
 GAME_CSS = """
