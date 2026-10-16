@@ -71,11 +71,38 @@ def cards(lang):
     html = ''
     for i, (cls, h2, p, sv, tail) in enumerate(out, 1):
         html += f'<section class="box {cls}"><span class="n">{i}</span><h2>{h2}</h2><p>{p}</p>{sv}<p class="tail">{tail}</p></section>'
-    final = t('Освіту в тебе ніхто не відбере. Кожен урок — навіть в укритті чи онлайн — робить Україну сильнішою. Продовжуймо вчитися!',
-              'Nobody can take your education away. Every lesson, even in a shelter or online, makes Ukraine stronger. Let’s keep learning!')
-    key = (f'<section class="box key wide"><span class="n">7</span><h2>{t("Що з цього для тебе", "What this means for you")}</h2>'
-           f'<p><b>{t("Країни ставали сильними тоді, коли їхні діти вчилися. Україна — освічена країна, і від нас залежить, щоб так було й далі.", "Countries grew strong when their children learned. Ukraine is an educated country, and it’s up to us to keep it that way.")}</b></p>'
+    # 7. why the empire feared Ukrainian schools: a timeline
+    ev = [(1863, t('Валуєвський циркуляр', 'Valuev circular')), (1876, t('Емський указ', 'Ems decree')),
+          (1933, t('Голодомор', 'Holodomor')), (1937, t('Розстріляне відродження', 'Executed Renaissance')), (2022, t('велика війна', 'full-scale war'))]
+    b = line(20, 60, 400, 60, 'i', 3)
+    xs = [40, 122, 205, 290, 375]
+    for (yr, cap), x in zip(ev, xs):
+        b += circle(x, 60, 8, 'var(--yarn)', 'y', 0) + text(x, 40, str(yr) if yr != 1933 else '1932–33', 15 if yr != 1933 else 13, 'y', 'd', 'middle')
+        words = cap.split(' ', 1)
+        b += hand(x, 88, words[0], 17, 'm') + (hand(x, 106, words[1], 17, 'm') if len(words) > 1 else '')
+    b += hand(210, 146, t('а ми — тут, вчимося й живемо', 'and we are still here, learning and living'), 23, 'l')
+    sv = svg(420, 158, b, t('спроби знищити Україну', 'attempts to destroy Ukraine'))
+    hist = (f'<section class="box wide"><span class="n">7</span><h2>{t("Чому нас хотіли лишити без мови й шкіл", "Why they tried to take our language and schools")}</h2>'
+            f'<p>{t("Російська імперія, а потім радянська влада не раз намагалися знищити українців: їхню мову, школи, учених і саме життя.", "The Russian Empire, and later the Soviet regime, tried again and again to destroy Ukrainians: their language, their schools, their scholars and their very lives.")}</p>{sv}'
+            '<ul class="tl">'
+            + ''.join(f'<li>{x}</li>' for x in [
+                t('<b>1863.</b> Міністр Валуєв підписав циркуляр, де йшлося, що окремої української мови «не було, немає і бути не може», і заборонив друкувати нею підручники та книжки для народу.',
+                  '<b>1863.</b> Minister Valuev signed a circular claiming that a separate Ukrainian language had never existed and could not exist, and stopped schoolbooks and books for ordinary people being printed in Ukrainian.'),
+                t('<b>1876.</b> Емський указ заборонив навіть ноти з українськими словами й вистави українською.', '<b>1876.</b> The Ems decree banned even sheet music with Ukrainian words and plays in Ukrainian.'),
+                t('<b>1932–1933.</b> Голодомор: штучний голод, влаштований радянською владою, забрав життя мільйонів українців. Україна визнала його геноцидом українського народу.',
+                  '<b>1932–1933.</b> The Holodomor: a famine engineered by the Soviet regime killed millions of Ukrainians. Ukraine recognises it as genocide of the Ukrainian people.'),
+                t('<b>1930-ті.</b> Радянська влада знищила сотні українських письменників, учених і вчителів. Це покоління називають «Розстріляним відродженням».',
+                  '<b>1930s.</b> The Soviet regime killed hundreds of Ukrainian writers, scholars and teachers. This generation is called the Executed Renaissance.'),
+                t('<b>Від 2022.</b> Росія веде повномасштабну війну проти України. За даними МОН на серпень 2025 року, 1779 шкіл пошкоджено, а 226 зруйновано.',
+                  '<b>Since 2022.</b> Russia has been waging a full-scale war against Ukraine. According to Ukraine’s Ministry of Education, by August 2025 1,779 schools had been damaged and 226 destroyed.')])
+            + '</ul>'
+            f'<p class="more">{t("Чому саме мова й школи? Бо освічений народ, який знає свою історію, не скориш. Ось чому навчання для нас — це теж захист.", "Why language and schools? Because a people that is educated and knows its history cannot be conquered. That’s why learning is also a way to defend ourselves.")}</p></section>')
+    final = t('Нас намагалися знищити сотні років — а ми тут: вчимося, творимо, захищаємо одне одного. Україна була, є і буде!',
+              'They tried to destroy us for hundreds of years, and we are still here: learning, creating and protecting each other. Ukraine was, is and will be!')
+    key = (f'<section class="box key wide"><span class="n">8</span><h2>{t("Що з цього для тебе", "What this means for you")}</h2>'
+           f'<p><b>{t("Країни ставали сильними тоді, коли їхні діти вчилися. Україна — освічена країна, і від кожного з нас залежить, щоб так було й далі. Кожен урок, навіть в укритті чи онлайн, робить Україну сильнішою.", "Countries grew strong when their children learned. Ukraine is an educated country, and it’s up to each of us to keep it that way. Every lesson, even in a shelter or online, makes Ukraine stronger.")}</b></p>'
            f'<div class="say">{pig(ROLE_SVG[W]["tidy"])}<p class="hand">{final}</p></div></section>')
+    html += hist
     return html + key
 
 
@@ -85,11 +112,11 @@ def page(kind, lang, links):
     cast = ''.join(pig(ROLE_SVG['meadow'][r], r == 'hostB') for r in ('hostA', 'hostB', 'tidy', 'messy'))
     lk = ' · '.join(f'<a href="{h}">{n}</a>' for n, h in links if h)
     body = (f'<div class="sheet">\n <header class="head">\n  <div class="htext"><h1>{t("Освіта — <span>наша сила</span>", "Education is <span>our strength</span>")}</h1>'
-            f'<p class="bubble">{t("Привіт! Ми зібрали справжні історії про країни, які стали сильними завдяки навчанню. І про Україну — бо ми теж така країна.", "Hi! Here are true stories of countries that became strong by learning. And about Ukraine, because we are that kind of country too.")}</p>'
+            f'<p class="bubble">{t("Привіт! Ми зібрали справжні історії про країни, які стали сильними завдяки навчанню. І про Україну: чому нас хотіли лишити без шкіл і чому ми все одно вчимося.", "Hi! Here are true stories of countries that became strong by learning. And about Ukraine: why others tried to take our schools away, and why we keep learning anyway.")}</p>'
             f'<p class="links">{lk}</p></div>\n  <div class="cast">{cast}</div>\n </header>\n <div class="grid">{cards(lang)}</div>\n</div>')
     if kind == 'site':
         body = body  # wrap() adds the home link and footer
-    return wrap(kind, lang, title, [card_css(), SHEET_CSS + GAME_CSS], body, '')
+    return wrap(kind, lang, title, [card_css(), SHEET_CSS + GAME_CSS + '.tl{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:15.5px}.tl b{color:var(--yarn)}'], body, '')
 
 
 if __name__ == '__main__':
