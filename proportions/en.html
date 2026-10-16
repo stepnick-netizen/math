@@ -710,7 +710,7 @@ startP();renderK();renderC();stars();
 </script>
 
 
-<footer class="site-copy">© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine</footer>
+<footer class="site-copy">© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine<small>This site keeps anonymous visit statistics: no cookies and no names.</small></footer>
 <script>
 (function(){
   var cb=document.getElementById('copyReport');
@@ -732,6 +732,43 @@ startP();renderK();renderC();stars();
       fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
     });
   };
+})();
+</script>
+<script data-goatcounter="https://varia-math.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+(function(){
+  var parts=location.pathname.replace(/\.html$/,'').split('/').filter(Boolean);
+  var page=parts.slice(-2).join('-')||'index';            // e.g. monomials-uk, math-index
+  function track(name){
+    try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:page+'/'+name,title:name,event:true})}catch(e){}
+  }
+  window.ponyaTrack=track;
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,a');if(!t)return;
+    if(t.classList.contains('tab')&&t.dataset.tab)track('tab-'+t.dataset.tab);
+    else if(t.id==='copyReport')track('report-copy');
+    else if(t.id==='shareReport')track('report-send');
+    else if(t.dataset&&t.dataset.w)track('world-'+t.dataset.w);
+    else if(t.tagName==='A'&&/\.pdf$/.test(t.getAttribute('href')||''))track('pdf-'+t.getAttribute('href').replace(/\W+/g,'-'));
+  },true);
+  // a level is finished when its star lights up; the diploma appears after all three
+  document.querySelectorAll('.star').forEach(function(st){
+    new MutationObserver(function(){if(st.classList.contains('on')&&!st.dataset.seen){st.dataset.seen=1;track('level-done-'+st.id.replace('st-',''))}})
+      .observe(st,{attributes:true,attributeFilter:['class']});
+  });
+  var dip=document.getElementById('diploma');
+  if(dip)new MutationObserver(function(){if(!dip.hidden)track('diploma')}).observe(dip,{attributes:true,attributeFilter:['hidden']});
+  // a hint shown: which level and which task
+  var seenHint={};
+  new MutationObserver(function(){
+    document.querySelectorAll('.hint').forEach(function(h){
+      if(h.hidden||!h.offsetParent)return;
+      var panel=h.closest('.panel');if(!panel||panel.id==='p-report'||panel.id==='p-learn')return;
+      var dots=panel.querySelectorAll('.dot'),cur=0;dots.forEach(function(d,i){if(d.classList.contains('cur'))cur=i+1});
+      var key=panel.id+'-task'+cur;
+      if(!seenHint[key]){seenHint[key]=1;track('hint-'+key.replace('p-',''))}
+    });
+  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['hidden'],childList:true});
 })();
 </script>
 </body></html>
