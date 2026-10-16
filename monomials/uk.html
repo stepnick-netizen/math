@@ -867,6 +867,53 @@ function markBuilder(id,letters,ans,got,coefOpts){
 }
 const onEnter=(root,fn)=>root.querySelectorAll('input').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')fn()});
 
+/* ---------- anonymous error types for the teacher (only on the site, where ponyaTrack exists) ---------- */
+const sentErr=new Set();
+function T(name){if(sentErr.has(name))return;sentErr.add(name);try{window.ponyaTrack&&window.ponyaTrack(name)}catch(e){}}
+const near=(a,b)=>a!==null&&b!==null&&b!==undefined&&Math.abs(a-b)<1e-9;
+function coefTag(got,ans,extra){
+  if(near(Math.abs(got),Math.abs(ans))&&!near(got,ans))return 'sign';
+  for(const [tag,v] of extra)if(near(got,v)&&!near(got,ans))return tag;
+  return 'other';
+}
+function expTag(got,ans,extra){
+  for(const [tag,v] of extra)if(got===v&&got!==ans)return tag;
+  return 'other';
+}
+/* level 2, step 1: tidy a messy monomial */
+function errB(i,t,got,cOk,badL){
+  if(!cOk){
+    const nums=t.f.filter(m=>m.c!==null).map(m=>m.c);
+    T(`err-b${i}-coef-`+coefTag(got.c,t.ans.c,[['added',nums.reduce((a,b)=>a+b,0)],['first-only',nums[0]]]));
+  }
+  badL.forEach(l=>{
+    const parts=t.f.filter(m=>m.e&&m.e[l]).map(m=>m.e[l]);
+    const explicit=parts.filter(v=>v>1).reduce((a,b)=>a+b,0);
+    T(`err-b${i}-exp-${l}-`+expTag(got.e[l],t.ans.e[l],[['not-combined',parts[0]],['multiplied',parts.reduce((a,b)=>a*b,1)],['forgot-hidden-1',explicit]]));
+  });
+}
+/* level 2, step 2: coefficient and degree */
+function errBLabel(i,t,k,d,kOk,dOk){
+  if(!kOk)T(`err-b${i}-label-coef-`+(near(k,0)&&near(Math.abs(t.ans.c),1)?'hidden-1-as-0':coefTag(k,t.ans.c,[])));
+  if(!dOk){const ex=t.L.map(l=>t.ans.e[l]);
+    T(`err-b${i}-label-degree-`+expTag(d,degree(t.ans),[['added-coef',degree(t.ans)+Math.abs(t.ans.c)],['counted-letters',t.L.length],['largest-only',Math.max(...ex)],['forgot-hidden-1',ex.filter(v=>v>1).reduce((a,b)=>a+b,0)]]));}
+}
+/* level 3: multiply, power, unknown factor, square/cube */
+function errC(i,t,got,cOk,badL){
+  if(!cOk){let extra=[];
+    if(t.t==='mul')extra=[['added',t.a[0].c+t.a[1].c]];
+    if(t.t==='pow')extra=[['times-n',t.m.c*t.n],['not-powered',t.m.c]];
+    if(t.t==='div')extra=[['multiplied',t.p.c*t.k.c],['subtracted',t.p.c-t.k.c]];
+    if(t.t==='root')extra=[['divided-by-n',t.p.c/t.n],['not-rooted',t.p.c]];
+    T(`err-c${i}-coef-`+coefTag(got.c,t.coefOpts[0],extra));}
+  badL.forEach(l=>{let extra=[];
+    if(t.t==='mul')extra=[['not-combined',t.a[0].e[l]||t.a[1].e[l]],['multiplied',(t.a[0].e[l]||1)*(t.a[1].e[l]||1)]];
+    if(t.t==='pow')extra=[['added',t.m.e[l]+t.n],['not-raised',t.m.e[l]]];
+    if(t.t==='div')extra=[['added',t.p.e[l]+(t.k.e[l]||0)],['divided',t.p.e[l]/(t.k.e[l]||1)],['not-subtracted',t.p.e[l]]];
+    if(t.t==='root')extra=[['subtracted',t.p.e[l]-t.n],['not-divided',t.p.e[l]]];
+    T(`err-c${i}-exp-${l}-`+expTag(got.e[l],t.ans.e[l],extra));});
+}
+
 /* ---------- level 1: baskets ---------- */
 const A=[
   {e:'7x^2y',k:'std',why:{uk:'Одне число спереду, кожна літера по разу. Охайно!',en:'One number at the front, each letter once. Tidy!'},h:{uk:'число 7 стоїть першим? Чи повторюються літери?',en:'does the 7 come first? Does any letter repeat?'}},
@@ -918,7 +965,7 @@ function pickBasket(k){
     $('#aGo').onclick=()=>renderA();$('#aGo').focus();
     return;
   }
-  aTries++;rec(key,false,true);fb.classList.add('bad');fb.textContent=S.aBad;
+  aTries++;T(`err-a${state.a}-${t.k}-as-${k}`);rec(key,false,true);fb.classList.add('bad');fb.textContent=S.aBad;
   hintBox($('#aHint'),aTries>=2?tr(t.h):S.aHint1);
 }
 $('#aReset').onclick=()=>{state.a=0;state.aDone=false;aTries=0;clearLog('a');save();stars();renderA()};
@@ -968,6 +1015,7 @@ function renderB(){
       const got=readBuilder('bb',t.L);
       if(!got){fb.classList.add('bad');fb.textContent=S.typeNum;return}
       const {cOk,badL}=markBuilder('bb',t.L,t.ans,got);
+      if(!(cOk&&!badL.length))errB(state.b,t,got,cOk,badL);
       if(cOk&&!badL.length){fb.classList.add('good');fb.textContent=S.bGoodA;state.bStage=1;save();setTimeout(renderB,900);return}
       rec(key,false,true);fb.classList.add('bad');
       fb.textContent=!cOk&&badL.length?S.badBoth:(!cOk?S.badCoef:S.badExp(badL[0]));
@@ -982,6 +1030,7 @@ function renderB(){
       const k=parseNum($('#bk').value), d=parseNum($('#bd').value);
       if(k===null||d===null){fb.classList.add('bad');fb.textContent=S.typeNum;return}
       const kOk=eq(k,t.ans.c), dOk=eq(d,degree(t.ans));
+      if(!(kOk&&dOk))errBLabel(state.b,t,k,d,kOk,dOk);
       $('#bk').className='ans '+(kOk?'ok':'bad');$('#bd').className='ans '+(dOk?'ok':'bad');
       if(kOk&&dOk){
         rec(key,true,false);fb.classList.add('good');fb.textContent=S.bGood;$('#bCheck').disabled=true;
@@ -1055,6 +1104,7 @@ function renderC(){
     const got=readBuilder('cb',t.L);
     if(!got){fb.classList.add('bad');fb.textContent=S.typeNum;return}
     const {cOk,badL}=markBuilder('cb',t.L,t.ans,got,t.coefOpts);
+    if(!(cOk&&!badL.length))errC(state.c,t,got,cOk,badL);
     if(cOk&&!badL.length){
       rec(key,true,false);fb.classList.add('good');fb.textContent=S.cGood;$('#cCheck').disabled=true;
       state.c++;cTries=0;save();drawScarf();setTimeout(renderC,1400);return;
@@ -1139,15 +1189,41 @@ if(firstVisit){profOpen=true;renderProfile()}
   };
 })();
 </script>
-<script data-goatcounter="https://varia-math.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
 (function(){
+  /* own devices: open the site with #nostats once to stop counting this browser, #stats to count again */
+  var SK='skipgc', skip=false;
+  try{
+    if(location.hash==='#nostats')localStorage.setItem(SK,'t');
+    if(location.hash==='#stats')localStorage.removeItem(SK);
+    skip=localStorage.getItem(SK)==='t';
+  }catch(e){}
+  var uk=document.documentElement.lang==='uk';
+  if(location.hash==='#nostats'||location.hash==='#stats'){
+    var n=document.createElement('div');
+    n.textContent=skip?(uk?'Статистику на цьому пристрої вимкнено. Ваші відвідування не рахуються.':'Statistics are off on this device. Your visits are not counted.')
+                      :(uk?'Статистику на цьому пристрої знову ввімкнено.':'Statistics are on again on this device.');
+    n.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;padding:12px 16px;border-radius:12px;background:#26301F;color:#fff;font:700 15px system-ui,sans-serif;text-align:center';
+    document.body.appendChild(n);setTimeout(function(){n.remove()},6000);
+  }
+  if(skip){
+    var f=document.querySelector('.site-copy');
+    if(f){var m=document.createElement('small');m.textContent=uk?'(цей пристрій не враховується)':'(this device is not counted)';f.appendChild(m)}
+    window.ponyaTrack=function(){};return;
+  }
+  var gs=document.createElement('script');gs.async=true;gs.src='//gc.zgo.at/count.js';
+  gs.setAttribute('data-goatcounter','https://varia-math.goatcounter.com/count');document.head.appendChild(gs);
+
   var parts=location.pathname.replace(/\.html$/,'').split('/').filter(Boolean);
   var page=parts.slice(-2).join('-')||'index';            // e.g. monomials-uk, math-index
+  var queue=[];
+  function send(name){window.goatcounter.count({path:page+'/'+name,title:name,event:true})}
   function track(name){
-    try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:page+'/'+name,title:name,event:true})}catch(e){}
+    try{if(window.goatcounter&&window.goatcounter.count)send(name);else queue.push(name)}catch(e){}
   }
+  gs.onload=function(){var q=queue;queue=[];q.forEach(function(n){try{send(n)}catch(e){}})};
   window.ponyaTrack=track;
+
   document.addEventListener('click',function(e){
     var t=e.target.closest('button,a');if(!t)return;
     if(t.classList.contains('tab')&&t.dataset.tab)track('tab-'+t.dataset.tab);
@@ -1156,24 +1232,42 @@ if(firstVisit){profOpen=true;renderProfile()}
     else if(t.dataset&&t.dataset.w)track('world-'+t.dataset.w);
     else if(t.tagName==='A'&&/\.pdf$/.test(t.getAttribute('href')||''))track('pdf-'+t.getAttribute('href').replace(/\W+/g,'-'));
   },true);
-  // a level is finished when its star lights up; the diploma appears after all three
+
+  /* every task: solved on the first try, solved after mistakes, and the wrong answers typed (numbers only) */
+  if(typeof window.rec==='function'&&typeof state==='object'&&state&&state.log){
+    var orig=window.rec, wrong={}, sentVals={};
+    function typed(){
+      var panel=document.querySelector('.panel:not([hidden])');if(!panel)return '';
+      var vals=[];
+      panel.querySelectorAll('input').forEach(function(i){
+        if(!i.offsetParent||vals.length>=6)return;
+        var v=String(i.value).trim().replace(/[−–]/g,'-').replace(',','.');
+        vals.push(v===''?'_':(/^-?\d{1,6}(\.\d{1,4})?$/.test(v)?v:'x'));
+      });
+      return vals.join(';');
+    }
+    window.rec=function(key,ok,hint){
+      var done=state.log[key]&&state.log[key].ok;
+      if(!done){
+        if(ok)track('task-'+key+(wrong[key]?'-after-mistakes':'-first-try'));
+        else{
+          if(!wrong[key])track('task-'+key+'-mistake');
+          wrong[key]=(wrong[key]||0)+1;
+          var v=typed();
+          if(v&&!sentVals[key+v]){sentVals[key+v]=1;track('typed-'+key+'/'+v)}
+        }
+      }
+      return orig.apply(this,arguments);
+    };
+  }
+
+  /* a level is finished when its star lights up; the diploma appears after all three */
   document.querySelectorAll('.star').forEach(function(st){
     new MutationObserver(function(){if(st.classList.contains('on')&&!st.dataset.seen){st.dataset.seen=1;track('level-done-'+st.id.replace('st-',''))}})
       .observe(st,{attributes:true,attributeFilter:['class']});
   });
   var dip=document.getElementById('diploma');
   if(dip)new MutationObserver(function(){if(!dip.hidden)track('diploma')}).observe(dip,{attributes:true,attributeFilter:['hidden']});
-  // a hint shown: which level and which task
-  var seenHint={};
-  new MutationObserver(function(){
-    document.querySelectorAll('.hint').forEach(function(h){
-      if(h.hidden||!h.offsetParent)return;
-      var panel=h.closest('.panel');if(!panel||panel.id==='p-report'||panel.id==='p-learn')return;
-      var dots=panel.querySelectorAll('.dot'),cur=0;dots.forEach(function(d,i){if(d.classList.contains('cur'))cur=i+1});
-      var key=panel.id+'-task'+cur;
-      if(!seenHint[key]){seenHint[key]=1;track('hint-'+key.replace('p-',''))}
-    });
-  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['hidden'],childList:true});
 })();
 </script>
 </body></html>
