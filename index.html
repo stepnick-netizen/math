@@ -23,8 +23,19 @@ a{color:var(--sky);font-weight:700}
 .hero{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px}
 .hero-text{flex:1 1 340px;min-width:0;display:grid;gap:10px}
 .hero-text p{color:var(--muted);max-width:58ch}
-.cast{display:flex;flex-wrap:wrap;gap:2px;align-items:flex-end}
-.cast svg{width:clamp(64px,18vw,96px);height:auto}
+.hero{gap:10px 28px}
+.worlds{display:grid;gap:12px}
+.worlds>p{color:var(--muted);max-width:62ch}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.world{display:grid;gap:6px;justify-items:center;text-align:center;background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:12px 12px 14px;cursor:pointer;font:inherit;color:var(--ink);box-shadow:0 3px 0 var(--shadow)}
+.world[aria-pressed="true"]{border-color:var(--yarn)}
+.world:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.world .cast{display:flex;justify-content:center;align-items:flex-end}
+.world .cast svg{width:clamp(52px,14vw,68px);height:auto}
+.world b{font:700 20px var(--display)}
+.world .names{font-family:var(--hand);font-size:20px;color:var(--muted);line-height:1.2}
+.world .mine{font:800 12px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--paper);background:var(--yarn);border-radius:999px;padding:3px 10px;visibility:hidden}
+.world[aria-pressed="true"] .mine{visibility:visible}
 .topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
 .topic{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 3px 0 var(--shadow);display:grid;gap:12px;align-content:start;min-width:0}
 .top{display:flex;align-items:center;gap:14px}
@@ -40,11 +51,11 @@ a{color:var(--sky);font-weight:700}
 .how ol{margin:0;padding-left:1.3em;display:grid;gap:4px;max-width:70ch}
 .foot{color:var(--muted);font-size:15px;font-family:var(--hand);font-size:22px}
 </style>
-<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}</style></head>
+<style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}.site-copy{max-width:980px;margin:0 auto;padding-block:4px 28px;border-top:1px solid var(--line,#D3DCC5);padding-top:14px;font:14px/1.5 var(--body,system-ui,sans-serif);color:var(--muted,#5F6B55);text-align:center}</style></head>
 <body>
 <div class="wrap">
- <header class="hero"><div class="hero-text"><h1>Математика з <span>Понею</span> і <span>Булею</span></h1><p>Ігри-уроки і живі шпаргалки для 6–7 класу. Кожна тема — короткий урок зі схемами, три рівні з різними іграми й звіт про пройдене.</p><p style="font-size:15px"><a href="index-en.html">English version</a></p></div>
- <div class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+ <header class="hero"><div class="hero-text"><h1>Математика з <span>Понею</span> і <span>Булею</span></h1><p>Ігри-уроки і живі шпаргалки для 6–7 класу. Кожна тема — короткий урок зі схемами, три рівні з різними іграми й звіт про пройдене.</p><p style="font-size:15px"><a href="index-en.html">English version</a></p></div></header>
+ <section class="worlds"><h2>Обери свій світ</h2><p>Натисни на світ, який подобається. Він збережеться на цьому пристрої, і в одночленах тебе зустрінуть саме ці герої.</p><div class="wgrid"><button type="button" class="world" data-w="meadow" aria-pressed="true"><span class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
 <ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#D9843A"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#D9843A"/>
 <ellipse cx="66" cy="58" rx="56" ry="32" fill="#F6E9D7"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#D9843A"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F6E9D7"/>
 <ellipse cx="98" cy="33" rx="11" ry="9" fill="#D9843A"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#D9843A" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
@@ -78,7 +89,114 @@ a{color:var(--sky);font-weight:700}
 <circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
 <ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
 <path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
-</svg></div></header>
+</svg></span><b>Луг</b><span class="names">Поня, Буля, Голочка, Безладко</span><span class="mine">твій світ</span></button><button type="button" class="world" data-w="space" aria-pressed="false"><span class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="94" rx="40" ry="5" fill="var(--shadow)"/>
+<rect x="40" y="52" width="16" height="30" rx="7" fill="#DDE3EA"/>
+<rect x="52" y="50" width="46" height="40" rx="14" fill="#F4F6F9"/>
+<rect x="52" y="64" width="46" height="7" fill="#D9486F"/>
+<rect x="94" y="54" width="14" height="26" rx="7" fill="#F4F6F9" transform="rotate(-18 101 67)"/>
+<circle cx="106" cy="50" r="6" fill="#DDE3EA"/>
+<rect x="56" y="84" width="16" height="10" rx="4" fill="#9AA3AE"/><rect x="78" y="84" width="16" height="10" rx="4" fill="#9AA3AE"/>
+<circle cx="75" cy="32" r="27" fill="#F4F6F9" stroke="#C9D1DB" stroke-width="2"/>
+<circle cx="75" cy="33" r="19" fill="#F2C9A0"/>
+<path d="M56 30 C58 16 92 14 94 30 C88 22 64 22 56 30 Z" fill="#6B3E26"/>
+<circle cx="68" cy="34" r="2.6" fill="#1d1a17"/><circle cx="82" cy="34" r="2.6" fill="#1d1a17"/>
+<path d="M69 42 Q75 47 81 42" stroke="#1d1a17" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="63" cy="40" rx="3.5" ry="2" fill="#E8949E" opacity=".6"/><ellipse cx="87" cy="40" rx="3.5" ry="2" fill="#E8949E" opacity=".6"/>
+<path d="M58 20 Q66 12 76 12" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/>
+<circle cx="75" cy="5" r="3.5" fill="#D9486F"/><line x1="75" y1="8" x2="75" y2="5" stroke="#9AA3AE" stroke-width="2"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="94" rx="40" ry="5" fill="var(--shadow)"/>
+<rect x="40" y="52" width="16" height="30" rx="7" fill="#DDE3EA"/>
+<rect x="52" y="50" width="46" height="40" rx="14" fill="#F4F6F9"/>
+<rect x="52" y="64" width="46" height="7" fill="#3E7FB8"/>
+<rect x="94" y="54" width="14" height="26" rx="7" fill="#F4F6F9" transform="rotate(-18 101 67)"/>
+<circle cx="106" cy="50" r="6" fill="#DDE3EA"/>
+<rect x="56" y="84" width="16" height="10" rx="4" fill="#9AA3AE"/><rect x="78" y="84" width="16" height="10" rx="4" fill="#9AA3AE"/>
+<circle cx="75" cy="32" r="27" fill="#F4F6F9" stroke="#C9D1DB" stroke-width="2"/>
+<circle cx="75" cy="33" r="19" fill="#C98E62"/>
+<path d="M56 30 C58 16 92 14 94 30 C88 22 64 22 56 30 Z" fill="#2A2A2A"/>
+<circle cx="68" cy="34" r="2.6" fill="#1d1a17"/><circle cx="82" cy="34" r="2.6" fill="#1d1a17"/>
+<path d="M69 42 Q75 47 81 42" stroke="#1d1a17" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="63" cy="40" rx="3.5" ry="2" fill="#E8949E" opacity=".6"/><ellipse cx="87" cy="40" rx="3.5" ry="2" fill="#E8949E" opacity=".6"/>
+<path d="M58 20 Q66 12 76 12" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/>
+<circle cx="75" cy="5" r="3.5" fill="#3E7FB8"/><line x1="75" y1="8" x2="75" y2="5" stroke="#9AA3AE" stroke-width="2"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="95" rx="34" ry="4" fill="var(--shadow)"/>
+<path d="M60 84 L66 92 L84 92 L90 84 Z" fill="#7AB3E6" opacity=".7"/>
+<line x1="75" y1="16" x2="75" y2="6" stroke="#9AA3AE" stroke-width="3"/><circle cx="75" cy="6" r="5" fill="#D99A1E"/>
+<circle cx="75" cy="52" r="34" fill="#DDE3EA" stroke="#B5BFCB" stroke-width="2"/>
+<rect x="52" y="34" width="46" height="30" rx="12" fill="#26323F"/>
+<path d="M62 50 Q66 44 70 50 M80 50 Q84 44 88 50" stroke="#7DE0B0" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M68 57 Q75 61 82 57" stroke="#7DE0B0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M66 72 L75 76 L66 80 Z M84 72 L75 76 L84 80 Z" fill="#D9486F"/><circle cx="75" cy="76" r="3" fill="#B8345A"/>
+<rect x="34" y="46" width="8" height="18" rx="4" fill="#B5BFCB"/><rect x="108" y="46" width="8" height="18" rx="4" fill="#B5BFCB"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="94" rx="44" ry="5" fill="var(--shadow)"/>
+<line x1="60" y1="36" x2="54" y2="16" stroke="#5BB85B" stroke-width="5" stroke-linecap="round"/>
+<line x1="75" y1="34" x2="75" y2="10" stroke="#5BB85B" stroke-width="5" stroke-linecap="round"/>
+<line x1="90" y1="36" x2="96" y2="16" stroke="#5BB85B" stroke-width="5" stroke-linecap="round"/>
+<circle cx="54" cy="14" r="8" fill="#fff"/><circle cx="75" cy="9" r="8" fill="#fff"/><circle cx="96" cy="14" r="8" fill="#fff"/>
+<circle cx="55" cy="15" r="3.5" fill="#1d1a17"/><circle cx="76" cy="10" r="3.5" fill="#1d1a17"/><circle cx="95" cy="15" r="3.5" fill="#1d1a17"/>
+<path d="M36 90 C30 60 46 34 75 34 C104 34 120 60 114 90 Q104 84 96 90 Q86 84 75 90 Q64 84 54 90 Q44 84 36 90 Z" fill="#6CCB6C"/>
+<path d="M40 66 C26 62 22 52 26 46" stroke="#6CCB6C" stroke-width="8" fill="none" stroke-linecap="round"/>
+<path d="M110 66 C124 62 128 52 124 46" stroke="#6CCB6C" stroke-width="8" fill="none" stroke-linecap="round"/>
+<ellipse cx="75" cy="64" rx="12" ry="8" fill="#2E6B2E"/><ellipse cx="75" cy="61" rx="7" ry="3" fill="#E58F9F"/>
+<circle cx="58" cy="52" r="4" fill="#4FA34F"/><circle cx="94" cy="56" r="3" fill="#4FA34F"/><circle cx="66" cy="78" r="3" fill="#4FA34F"/>
+</svg></span><b>Космос</b><span class="names">Зоря, Сокіл, Орбі, Плюх</span><span class="mine">твій світ</span></button><button type="button" class="world" data-w="bricks" aria-pressed="false"><span class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="95" rx="34" ry="4" fill="var(--shadow)"/>
+<rect x="60" y="78" width="13" height="16" rx="2" fill="#3E4A5A"/><rect x="77" y="78" width="13" height="16" rx="2" fill="#3E4A5A"/>
+<rect x="56" y="50" width="38" height="30" rx="4" fill="#D9486F"/>
+<rect x="44" y="52" width="12" height="22" rx="3" fill="#D9486F"/><rect x="94" y="52" width="12" height="22" rx="3" fill="#D9486F"/>
+<rect x="44" y="72" width="12" height="7" rx="2" fill="#F2C9A0"/><rect x="94" y="72" width="12" height="7" rx="2" fill="#F2C9A0"/>
+<rect x="66" y="58" width="18" height="4" rx="1" fill="#fff" opacity=".7"/>
+<rect x="48" y="30" width="9" height="16" rx="2" fill="#6B3E26"/><rect x="93" y="30" width="9" height="16" rx="2" fill="#6B3E26"/>
+<rect x="56" y="18" width="38" height="34" rx="6" fill="#F2C9A0"/>
+<rect x="56" y="18" width="38" height="9" rx="4" fill="#6B3E26"/>
+<path d="M52 20 Q75 2 98 20 Z" fill="#F0BE4E"/><rect x="50" y="18" width="50" height="5" rx="2" fill="#F0BE4E"/>
+<rect x="65" y="31" width="5" height="6" rx="1.5" fill="#1d1a17"/><rect x="80" y="31" width="5" height="6" rx="1.5" fill="#1d1a17"/>
+<path d="M68 43 Q75 48 82 43" stroke="#1d1a17" stroke-width="2" fill="none" stroke-linecap="round"/>
+<rect x="60" y="39" width="5" height="3" rx="1.5" fill="#E8949E" opacity=".6"/><rect x="85" y="39" width="5" height="3" rx="1.5" fill="#E8949E" opacity=".6"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="95" rx="34" ry="4" fill="var(--shadow)"/>
+<rect x="60" y="78" width="13" height="16" rx="2" fill="#3E4A5A"/><rect x="77" y="78" width="13" height="16" rx="2" fill="#3E4A5A"/>
+<rect x="56" y="50" width="38" height="30" rx="4" fill="#3E7FB8"/>
+<rect x="44" y="52" width="12" height="22" rx="3" fill="#3E7FB8"/><rect x="94" y="52" width="12" height="22" rx="3" fill="#3E7FB8"/>
+<rect x="44" y="72" width="12" height="7" rx="2" fill="#C98E62"/><rect x="94" y="72" width="12" height="7" rx="2" fill="#C98E62"/>
+<rect x="66" y="58" width="18" height="4" rx="1" fill="#fff" opacity=".7"/>
+
+<rect x="56" y="18" width="38" height="34" rx="6" fill="#C98E62"/>
+<rect x="56" y="18" width="38" height="9" rx="4" fill="#2A2A2A"/>
+<path d="M52 20 Q75 2 98 20 Z" fill="#F0BE4E"/><rect x="50" y="18" width="50" height="5" rx="2" fill="#F0BE4E"/>
+<rect x="65" y="31" width="5" height="6" rx="1.5" fill="#1d1a17"/><rect x="80" y="31" width="5" height="6" rx="1.5" fill="#1d1a17"/>
+<path d="M68 43 Q75 48 82 43" stroke="#1d1a17" stroke-width="2" fill="none" stroke-linecap="round"/>
+<rect x="60" y="39" width="5" height="3" rx="1.5" fill="#E8949E" opacity=".6"/><rect x="85" y="39" width="5" height="3" rx="1.5" fill="#E8949E" opacity=".6"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="75" cy="95" rx="34" ry="4" fill="var(--shadow)"/>
+<rect x="62" y="80" width="10" height="14" rx="2" fill="#7A59C2"/><rect x="78" y="80" width="10" height="14" rx="2" fill="#7A59C2"/>
+<rect x="54" y="50" width="42" height="32" rx="4" fill="#9B7EDB"/>
+<rect x="84" y="66" width="16" height="14" rx="3" fill="#F0BE4E"/><path d="M100 76 L118 76" stroke="#F0BE4E" stroke-width="3"/>
+<path d="M104 74 v4 M108 74 v4 M112 74 v4 M116 74 v4" stroke="#7A5A10" stroke-width="1"/>
+<rect x="42" y="52" width="12" height="20" rx="3" fill="#9B7EDB"/>
+<rect x="58" y="14" width="34" height="34" rx="5" fill="#C9D1DB"/>
+<rect x="63" y="22" width="24" height="14" rx="3" fill="#26323F"/>
+<circle cx="70" cy="29" r="2.6" fill="#7DE0B0"/><circle cx="80" cy="29" r="2.6" fill="#7DE0B0"/>
+<circle cx="70" cy="29" r="6" fill="none" stroke="#3E7FB8" stroke-width="1.8"/><circle cx="80" cy="29" r="6" fill="none" stroke="#3E7FB8" stroke-width="1.8"/>
+<rect x="67" y="40" width="16" height="3" rx="1.5" fill="#7A59C2"/>
+<path d="M75 14 L66 6 L66 14 Z M75 14 L84 6 L84 14 Z" fill="#D9486F"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="94" rx="48" ry="5" fill="var(--shadow)"/>
+<rect x="22" y="40" width="9" height="22" rx="3" fill="#C9752D" transform="rotate(-25 26 51)"/>
+<rect x="30" y="50" width="66" height="30" rx="5" fill="#E0954A"/>
+<rect x="34" y="78" width="12" height="15" rx="2" fill="#C9752D"/><rect x="78" y="78" width="12" height="15" rx="2" fill="#C9752D"/>
+<rect x="86" y="26" width="40" height="36" rx="6" fill="#E0954A"/>
+<rect x="84" y="22" width="12" height="22" rx="3" fill="#8A4F1E"/>
+<rect x="118" y="44" width="16" height="14" rx="4" fill="#F4D6B0"/>
+<rect x="128" y="44" width="8" height="7" rx="3" fill="#1d1a17"/>
+<rect x="106" y="36" width="5" height="6" rx="1.5" fill="#1d1a17"/>
+<rect x="36" y="58" width="22" height="16" rx="3" fill="#F4D6B0" opacity=".7"/>
+<rect x="88" y="62" width="30" height="5" rx="2" fill="#D9486F"/><circle cx="104" cy="70" r="3.5" fill="#F0BE4E"/>
+</svg></span><b>Цеглинки</b><span class="names">Майя, Тимко, Рулетка, Пиріжок</span><span class="mine">твій світ</span></button></div></section>
  <section class="topics"><article class="topic"><div class="top"><span class="emblem">%</span>
 <div><span class="grade">6 клас</span><h2>Відсотки</h2></div></div>
 <p>Бабусин плед на сітці, ярмарок із бюджетом і детектив про зниклу моркву.</p><div class="links"><a class="btn" href="percentages/uk.html">Урок і гра</a></div></article><article class="topic"><div class="top"><span class="emblem">a:b</span>
@@ -86,8 +204,15 @@ a{color:var(--sky);font-weight:700}
 <p>Чесні терези, кухня Поні та загадка карток, які хтось переставив уночі.</p><div class="links"><a class="btn" href="proportions/uk.html">Урок і гра</a><a class="btn ghost" href="proportions/cheatsheet-uk.html">Шпаргалка</a><a class="btn ghost" href="proportions/cheatsheet-uk.pdf">PDF для друку</a></div></article><article class="topic"><div class="top"><span class="emblem">6a³b</span>
 <div><span class="grade">7 клас · алгебра</span><h2>Одночлени</h2></div></div>
 <span class="badge">Свій світ і своє ім’я</span><p>Кошики, бирки й шарф — або відсіки й ракета, або ящики й вежа: учень сам обирає світ.</p><div class="links"><a class="btn" href="monomials/uk.html">Урок і гра</a><a class="btn ghost" href="monomials/cheatsheet-uk.html">Шпаргалка</a><a class="btn ghost" href="monomials/cheatsheet-uk.pdf">PDF для друку</a></div></article></section>
- <section class="how"><h2>Як цим користуватися</h2><ol><li>Відкривай тему з телефона чи комп’ютера. Реєстрація не потрібна.</li><li>Зірки й прогрес зберігаються в браузері на цьому пристрої. На іншому пристрої гра почнеться спочатку.</li><li>В одночленах натисни «Вибрати світ і ім’я»: можна вибрати луг, космос або цеглинки, вписати своє ім’я і перейменувати героїв.</li><li>У вкладці «Мій звіт» є кнопка «Скопіювати звіт»: встав текст у повідомлення вчителеві чи батькам.</li></ol></section>
- <p class="foot">Герої: морські свинки Поня і Буля, кіт Мурко, їжачиха Голочка і єнот Безладко.</p>
+ <section class="how"><h2>Як цим користуватися</h2><ol><li>Відкривай тему з телефона чи комп’ютера. Реєстрація не потрібна.</li><li>Зірки й прогрес зберігаються в браузері на цьому пристрої. На іншому пристрої гра почнеться спочатку.</li><li>В одночленах натисни «Вибрати світ і ім’я»: можна вибрати луг, космос або цеглинки, вписати своє ім’я і перейменувати героїв.</li><li>У вкладці «Мій звіт» натисни «Надіслати звіт» і вибери Viber, Telegram чи пошту. Або скопіюй звіт і встав у повідомлення вчителеві чи батькам.</li></ol></section>
 </div>
+<script>
+(function(){var K='ponya-bulya-profile-v1',P={};try{P=JSON.parse(localStorage.getItem(K)||'{}')||{}}catch(e){}
+var bs=document.querySelectorAll('.world');
+function mark(){var w=P.world||'meadow';bs.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.w===w)})}
+bs.forEach(function(b){b.onclick=function(){P.world=b.dataset.w;try{localStorage.setItem(K,JSON.stringify(P))}catch(e){}mark()}});
+mark()})();
+</script>
+<footer class="site-copy">© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна</footer>
 
 </body></html>
