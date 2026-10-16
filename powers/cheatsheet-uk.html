@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Шпаргалка: степені</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>
+
+/* Layout: meadow page, hero with the cast, tab strip, one level per tab; level = stage card + task card */
+:root{--bg:#EEF3E4;--paper:#FFFFFF;--ink:#26301F;--muted:#5F6B55;--line:#D3DCC5;--shadow:rgba(38,48,31,.12);
+--yarn:#D9486F;--plum:#7A59C2;--hay:#D99A1E;--leaf:#4F8A3C;--sky:#3E7FB8;--marker:#FFE24A;--marker-ink:#2A2300;--cell:#F4F7EE;
+--good:#2F8A4C;--bad:#C2413B;
+--display:'Comfortaa','Nunito',system-ui,sans-serif;--body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;--hand:'Caveat','Comic Sans MS',cursive}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}
+*{box-sizing:border-box}
+/* living cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:14px}
+.box{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px 18px 14px;box-shadow:0 3px 0 var(--shadow);display:grid;gap:8px;align-content:start;min-width:0}
+.box h2{font-family:var(--display);font-size:20px;margin:0;line-height:1.25;padding-right:40px;text-wrap:balance}
+.box p{margin:0}
+.box.two{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:8px 18px}
+.box.two>div{display:grid;gap:8px;align-content:start}
+@media (max-width:680px){.box.two{grid-template-columns:1fr}}
+.wide{grid-column:1/-1}
+.n{position:absolute;top:12px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--leaf);color:#fff;font:700 17px var(--display);display:grid;place-items:center;box-shadow:0 2px 0 var(--shadow)}
+.key{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.key .n{background:var(--yarn)}
+.key .hand{color:var(--marker-ink)}
+.viz{width:100%;height:auto;max-width:440px;justify-self:center;overflow:visible}
+.viz .d{font-family:var(--display);font-weight:700}
+.viz .h{font-family:var(--hand);font-weight:600}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:6px 18px;align-items:center}
+.tail{font-size:15px;color:var(--muted)}
+.key .tail{color:var(--marker-ink)}
+.more{background:var(--cell);border-radius:10px;padding:8px 12px;font-size:15.5px}
+.key .more{background:rgba(255,255,255,.5)}
+.say{display:flex;align-items:center;gap:10px}
+.say .pig{width:72px;height:auto;flex:none}
+.hand{font-family:var(--hand);font-size:22px;line-height:1.2;color:var(--muted)}
+.bubble{position:relative;background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:8px 14px;font-family:var(--hand);font-size:23px;line-height:1.2;max-width:46ch;width:fit-content}
+
+
+</style><style>
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sheet{max-width:900px;margin:0 auto;padding-block:22px 36px;display:grid;gap:16px}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px}
+.htext{display:grid;gap:10px;flex:1 1 300px;min-width:0}
+h1{font-family:var(--display);font-size:clamp(30px,6vw,44px);margin:0;line-height:1.1;text-wrap:balance}h1 span{color:var(--yarn)}
+.cast{display:flex;gap:2px;flex-wrap:wrap;align-items:flex-end}.cast .pig{width:84px;height:auto}
+.final{justify-content:center;flex-wrap:wrap}
+.links{font-size:15px}
+.box,.head,.final{break-inside:avoid}
+
+/* engine: task steps, choice tiles, equation rows, ordering cards, stage drawings */
+.teach{justify-self:start;font:800 12.5px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--plum);background:var(--cell);border:1.5px dashed var(--plum);border-radius:999px;padding:2px 10px}
+.tq{font-size:17px}
+.sp{font-weight:700}
+.stepno{font:800 13px var(--body);color:var(--hay);letter-spacing:.06em;text-transform:uppercase}
+.donesteps{display:grid;gap:4px;background:var(--cell);border-radius:10px;padding:8px 12px}
+.ds{color:var(--good);font-weight:700;font-size:16px}
+.ds .mono,.ds sup{color:inherit}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr));gap:10px}
+.opt{display:grid;justify-items:center;align-content:start;gap:4px;font:700 16px/1.3 var(--body);border:2px solid var(--c);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 8px 12px;cursor:pointer;text-align:center;min-width:0}
+.opt .oi svg{width:70px;height:auto}
+.opt.picked{background:var(--c);color:var(--paper);border-style:solid}
+.opt.badpick{border-style:dashed;opacity:.55}
+.opt:disabled{cursor:default}
+.opts.pills{display:flex;flex-wrap:wrap}
+.opts.pills .opt{border-radius:999px;padding:8px 16px;font-size:17px}
+.opts.big .opt{font:700 26px var(--display);padding:8px 18px;min-width:64px}
+.eqrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 6px;font:700 clamp(22px,5.6vw,28px) var(--display)}
+.eqrow .gap{width:100%;height:0}
+.eqrow .pre{white-space:nowrap}
+.eqrow input.ans{font-size:20px}
+.eqrow input.sup{width:46px;font-size:16px;padding:3px 4px;align-self:flex-start;margin:-4px 2px 0 -2px}
+.eqrow input.wide{width:112px}
+.eqrow .lbl{font:700 17px var(--body);color:var(--muted)}
+.ocard{font:700 16px/1.35 var(--body);border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left}
+.ocard.on{border-color:var(--leaf);background:var(--cell)}
+.ocard b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--leaf);color:var(--paper);font-size:14px;margin-right:6px;vertical-align:1px}
+.oline,.opool{display:grid;gap:8px}
+.oline{border:2px dashed var(--line);border-radius:14px;padding:10px;min-height:56px}
+.mono .b,.big .b,.b{color:var(--plum)}
+sup.e,.e{color:var(--yarn)}
+.stg{width:100%;max-width:380px;height:auto;overflow:visible}
+.stg .d{font-family:var(--display);font-weight:700}
+.stg .h{font-family:var(--hand);font-weight:600}
+.stage .say{justify-content:center}
+.stage .say .pig{width:84px}
+.stage .bubble{font-size:21px}
+.count{font:700 16px var(--display);color:var(--muted)}
+.word{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.word span{width:38px;height:46px;border-radius:10px;border:2px dashed var(--line);display:grid;place-items:center;font:700 24px var(--display);color:var(--muted);background:var(--cell)}
+.word span.on{border:2px solid var(--leaf);background:var(--paper);color:var(--leaf)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.chip{font:700 14px var(--display);background:var(--cell);border-radius:8px;padding:2px 7px;white-space:nowrap}
+.why-card{display:grid;gap:8px;border:2px solid var(--leaf)}.why-card ul{margin:0;padding-left:1.2em;display:grid;gap:6px}.why-card b{color:var(--leaf)}.why-dip{margin-top:6px;font-weight:700}
+.right-chip{display:grid;gap:3px;margin-top:4px;padding:10px 12px;border-left:4px solid var(--sky);background:var(--cell);border-radius:8px;font-size:14.5px;line-height:1.45}.right-chip b{font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--sky)}.right-chip q,.right-chip i{font-style:italic}.right-chip span{color:var(--muted)}
+
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.door{display:grid;gap:4px;justify-items:center;align-content:start;border:2px solid var(--c);border-radius:14px;padding:8px 4px;background:var(--paper);min-width:0}
+.door svg{width:60px;height:auto}
+.door b{font:700 22px var(--display);color:var(--c)}
+.door .chip{font-size:12.5px}
+.expcard{font:700 clamp(26px,7vw,36px) var(--display);background:var(--paper);border:3px solid var(--hay);border-radius:16px;padding:12px 20px;box-shadow:0 4px 0 var(--shadow);transform:rotate(-2deg);white-space:nowrap}
+
+</style><style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}.site-copy{max-width:980px;margin:0 auto;padding-block:4px 28px;border-top:1px solid var(--line,#D3DCC5);padding-top:14px;font:14px/1.5 var(--body,system-ui,sans-serif);color:var(--muted,#5F6B55);text-align:center}.site-copy small{display:block;font-size:12px;opacity:.75;margin-top:2px}</style></head>
+<body><nav class="site-home"><a href="../index.html">← Усі теми</a></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah-y" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--yarn)"/></marker><marker id="ah-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--plum)"/></marker><marker id="ah-l" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--leaf)"/></marker><marker id="ah-i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker><marker id="ah-s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--sky)"/></marker><marker id="ah-h" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--hay)"/></marker><marker id="ah-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--bad)"/></marker><marker id="ah-k" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--marker-ink)"/></marker></defs></svg>
+<div class="sheet">
+ <header class="head">
+  <div class="htext"><h1>Степені <span>на одній сторінці</span></h1><p class="bubble">Привіт! Тут усе головне про степені: що це таке і три правила, які роблять складне простим. Стрілочки підкажуть, що куди йде.</p><p class="links"><a href="../powers/uk.html">Урок і гра</a> · <a href="../powers/cheatsheet-en.html">English version</a> · <a href="../powers/cheatsheet-uk.pdf">PDF для друку</a></p></div>
+  <div class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#D9843A"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#D9843A"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F6E9D7"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#D9843A"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F6E9D7"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#D9843A"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#D9843A" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="74" cy="92" rx="58" ry="6" fill="var(--shadow)"/>
+<path d="M30 70 C6 66 4 36 20 26" stroke="#7D838B" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M14 60 L28 56 M8 46 L22 46 M12 32 L24 38" stroke="#2E3136" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="66" cy="68" rx="42" ry="24" fill="#9AA0A8"/>
+<ellipse cx="44" cy="89" rx="9" ry="5" fill="#2E3136"/><ellipse cx="88" cy="89" rx="9" ry="5" fill="#2E3136"/>
+<path d="M90 30 L94 14 L104 26 Z M118 26 L128 14 L130 30 Z" fill="#7D838B"/>
+<circle cx="110" cy="44" r="24" fill="#B4BAC2"/>
+<path d="M88 42 C96 34 124 34 132 42 C126 52 94 52 88 42 Z" fill="#2E3136"/>
+<circle cx="101" cy="43" r="4" fill="#fff"/><circle cx="119" cy="43" r="4" fill="#fff"/>
+<circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
+<ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
+<path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
+</svg></div>
+ </header>
+ <div class="grid"><section class="box "><span class="n">1</span><h2>Що таке степінь</h2><p>Степінь — короткий запис множення однакових множників: <b>aⁿ = a · a · … · a</b> (n разів).</p><svg viewBox="0 0 340 272" class="viz" role="img" aria-label="2⁵ = 2·2·2·2·2 = 32"><text x="64.0" y="86.0" font-size="60" class="d" fill="var(--plum)">2</text><text x="100.5" y="60.8" font-size="36" class="d" fill="var(--yarn)">5</text><text x="52.0" y="150.0" text-anchor="middle" font-size="26" class="h" fill="var(--plum)">основа</text><path d="M77.6 96.0 Q75.8 116.9 58.0 128.0" stroke="var(--plum)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-p)"/><text x="214.0" y="36.0" text-anchor="middle" font-size="26" class="h" fill="var(--yarn)">показник</text><path d="M170.0 34.0 Q144.8 25.6 120.8 36.9" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><circle cx="34.0" cy="196.0" r="18.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="34.0" y="203.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">2</text><text x="58.0" y="202.0" text-anchor="middle" font-size="20" class="d" fill="var(--muted)">·</text><circle cx="82.0" cy="196.0" r="18.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="82.0" y="203.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">2</text><text x="106.0" y="202.0" text-anchor="middle" font-size="20" class="d" fill="var(--muted)">·</text><circle cx="130.0" cy="196.0" r="18.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="130.0" y="203.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">2</text><text x="154.0" y="202.0" text-anchor="middle" font-size="20" class="d" fill="var(--muted)">·</text><circle cx="178.0" cy="196.0" r="18.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="178.0" y="203.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">2</text><text x="202.0" y="202.0" text-anchor="middle" font-size="20" class="d" fill="var(--muted)">·</text><circle cx="226.0" cy="196.0" r="18.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="226.0" y="203.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">2</text><path d="M18 222 Q130 242 242 222" stroke="var(--yarn)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="130.0" y="262.0" text-anchor="middle" font-size="22" class="h" fill="var(--yarn)">5 однакових множників</text><text x="262.0" y="204.0" font-size="26" class="d" fill="var(--ink)">=</text><text x="284.0" y="205.0" font-size="30" class="d" fill="var(--leaf)">32</text><path d="M121.8 54.8 Q158.5 105.8 150.0 168.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-dasharray="5 5" marker-end="url(#ah-y)"/></svg><p class="tail">a¹ = a: один множник — це саме число. Читаємо: «два в п’ятому степені».</p></section><section class="box "><span class="n">2</span><h2>Мінус і дужки</h2><p>Від’ємне число в <b>парному</b> степені стає додатним, у <b>непарному</b> лишається від’ємним.</p><svg viewBox="0 0 340 200" class="viz" role="img" aria-label="(−2)² = 4, (−2)³ = −8, −2² = −4"><text x="20.0" y="52.0" font-size="30" class="d" fill="var(--plum)">(−2)</text><text x="71.0" y="39.4" font-size="18" class="d" fill="var(--yarn)">2</text><text x="91.0" y="52.0" font-size="30" class="d" fill="var(--ink)">=</text><text x="115.0" y="52.0" font-size="30" class="d" fill="var(--leaf)">4</text><text x="332.0" y="48.0" text-anchor="end" font-size="23" class="h" fill="var(--muted)">парний — плюс</text><text x="20.0" y="114.0" font-size="30" class="d" fill="var(--plum)">(−2)</text><text x="71.0" y="101.4" font-size="18" class="d" fill="var(--yarn)">3</text><text x="91.2" y="114.0" font-size="30" class="d" fill="var(--ink)">=</text><text x="115.2" y="114.0" font-size="30" class="d" fill="var(--yarn)">−8</text><text x="332.0" y="110.0" text-anchor="end" font-size="23" class="h" fill="var(--muted)">непарний — мінус</text><text x="20.0" y="176.0" font-size="30" class="d" fill="var(--ink)">−</text><text x="36.4" y="176.0" font-size="30" class="d" fill="var(--plum)">2</text><text x="54.6" y="163.4" font-size="18" class="d" fill="var(--yarn)">2</text><text x="74.6" y="176.0" font-size="30" class="d" fill="var(--ink)">=</text><text x="98.7" y="176.0" font-size="30" class="d" fill="var(--yarn)">−4</text><text x="332.0" y="172.0" text-anchor="end" font-size="23" class="h" fill="var(--muted)">мінус окремо!</text><rect x="14.0" y="144.0" width="54.8" height="44.0" rx="12" fill="none" stroke="var(--hay)" stroke-width="2.5" stroke-dasharray="6 5"/></svg><p class="tail">−2² — це −(2²): степінь стосується лише двійки. Хочеш, щоб і мінуса, — бери в дужки.</p><div class="say"><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><p class="hand">Дужки — як обійми: що всередині, те й у степені.</p></div></section><section class="box key wide two"><div><span class="n">3</span><h2>Головне: множимо степені</h2><p><b>Основа та сама — показники додаємо: aᵐ · aⁿ = aᵐ⁺ⁿ.</b></p><p class="more">Працює лише для однакових основ: 2³ · 5² так не скоротиш.</p><div class="say"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><p class="hand">Однакова основа — збери всіх в одну компанію й порахуй!</p></div></div><svg viewBox="0 0 340 212" class="viz" role="img" aria-label="2³ · 2² = 2⁵"><text x="18.0" y="42.0" font-size="30" class="d" fill="var(--plum)">2</text><text x="36.2" y="29.4" font-size="18" class="d" fill="var(--yarn)">3</text><text x="56.4" y="42.0" font-size="30" class="d" fill="var(--marker-ink)">·</text><text x="71.1" y="42.0" font-size="30" class="d" fill="var(--plum)">2</text><text x="89.3" y="29.4" font-size="18" class="d" fill="var(--yarn)">2</text><text x="109.3" y="42.0" font-size="30" class="d" fill="var(--marker-ink)">=</text><circle cx="32.0" cy="96.0" r="14.0" fill="var(--paper)" stroke="var(--plum)" stroke-width="2.5"/><text x="32.0" y="103.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><circle cx="64.0" cy="96.0" r="14.0" fill="var(--paper)" stroke="var(--plum)" stroke-width="2.5"/><text x="64.0" y="103.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><circle cx="96.0" cy="96.0" r="14.0" fill="var(--paper)" stroke="var(--plum)" stroke-width="2.5"/><text x="96.0" y="103.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><circle cx="146.0" cy="96.0" r="14.0" fill="var(--paper)" stroke="var(--plum)" stroke-width="2.5"/><text x="146.0" y="103.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><circle cx="178.0" cy="96.0" r="14.0" fill="var(--paper)" stroke="var(--plum)" stroke-width="2.5"/><text x="178.0" y="103.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><text x="121.0" y="102.0" text-anchor="middle" font-size="20" class="d" fill="var(--marker-ink)">·</text><path d="M24 118 Q64 140 104 118" stroke="var(--yarn)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M138 118 Q162 136 186 118" stroke="var(--yarn)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="64.0" y="156.0" text-anchor="middle" font-size="22" class="d" fill="var(--yarn)">3</text><text x="162.0" y="152.0" text-anchor="middle" font-size="22" class="d" fill="var(--yarn)">2</text><path d="M204.0 96.0 Q225.0 96.0 246.0 96.0" stroke="var(--marker-ink)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-k)"/><text x="262.0" y="110.0" font-size="40" class="d" fill="var(--plum)">2</text><text x="286.3" y="93.2" font-size="24" class="d" fill="var(--yarn)">5</text><text x="290.0" y="152.0" text-anchor="middle" font-size="26" class="h" fill="var(--leaf)">3 + 2 = 5</text><text x="170.0" y="200.0" text-anchor="middle" font-size="23" class="h" fill="var(--marker-ink)">перевірка: 8 · 4 = 32 = 2⁵ ✓</text></svg></section><section class="box "><span class="n">4</span><h2>Ділимо степені</h2><p>Основа та сама — <b>показники віднімаємо</b>: aᵐ : aⁿ = aᵐ⁻ⁿ (a ≠ 0).</p><svg viewBox="0 0 340 212" class="viz" role="img" aria-label="3⁵ : 3² = 3³ = 27"><text x="77.6" y="38.0" font-size="26" class="d" fill="var(--plum)">3</text><text x="93.7" y="27.1" font-size="15.6" class="d" fill="var(--yarn)">5</text><text x="111.6" y="38.0" font-size="26" class="d" fill="var(--ink)">:</text><text x="124.3" y="38.0" font-size="26" class="d" fill="var(--plum)">3</text><text x="140.4" y="27.1" font-size="15.6" class="d" fill="var(--yarn)">2</text><text x="157.7" y="38.0" font-size="26" class="d" fill="var(--ink)">=</text><text x="178.5" y="38.0" font-size="26" class="d" fill="var(--plum)">3</text><text x="194.6" y="27.1" font-size="15.6" class="d" fill="var(--yarn)">3</text><text x="212.1" y="38.0" font-size="26" class="d" fill="var(--ink)">= 27</text><circle cx="70.0" cy="92.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="70.0" y="99.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><circle cx="110.0" cy="92.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="110.0" y="99.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><circle cx="150.0" cy="92.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="150.0" y="99.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><circle cx="190.0" cy="92.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="190.0" y="99.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><circle cx="230.0" cy="92.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="230.0" y="99.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><line x1="44.0" y1="120.0" x2="256.0" y2="120.0" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><circle cx="130.0" cy="148.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="130.0" y="155.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><circle cx="170.0" cy="148.0" r="15.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="170.0" y="155.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">3</text><line x1="56.0" y1="106.0" x2="84.0" y2="78.0" stroke="var(--bad)" stroke-width="3" stroke-linecap="round"/><line x1="96.0" y1="106.0" x2="124.0" y2="78.0" stroke="var(--bad)" stroke-width="3" stroke-linecap="round"/><line x1="116.0" y1="162.0" x2="144.0" y2="134.0" stroke="var(--bad)" stroke-width="3" stroke-linecap="round"/><line x1="156.0" y1="162.0" x2="184.0" y2="134.0" stroke="var(--bad)" stroke-width="3" stroke-linecap="round"/><path d="M146 76 Q190 60 234 76" stroke="var(--yarn)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="190.0" y="66.0" text-anchor="middle" font-size="18" class="d" fill="var(--yarn)">3</text><text x="290.0" y="104.0" text-anchor="middle" font-size="26" class="h" fill="var(--leaf)">5 − 2 = 3</text><text x="170.0" y="200.0" text-anchor="middle" font-size="23" class="h" fill="var(--muted)">пари згори й знизу скорочуються</text></svg><p class="tail">Перевірка: 243 : 9 = 27.</p><div class="say"><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="74" cy="92" rx="58" ry="6" fill="var(--shadow)"/>
+<path d="M30 70 C6 66 4 36 20 26" stroke="#7D838B" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M14 60 L28 56 M8 46 L22 46 M12 32 L24 38" stroke="#2E3136" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="66" cy="68" rx="42" ry="24" fill="#9AA0A8"/>
+<ellipse cx="44" cy="89" rx="9" ry="5" fill="#2E3136"/><ellipse cx="88" cy="89" rx="9" ry="5" fill="#2E3136"/>
+<path d="M90 30 L94 14 L104 26 Z M118 26 L128 14 L130 30 Z" fill="#7D838B"/>
+<circle cx="110" cy="44" r="24" fill="#B4BAC2"/>
+<path d="M88 42 C96 34 124 34 132 42 C126 52 94 52 88 42 Z" fill="#2E3136"/>
+<circle cx="101" cy="43" r="4" fill="#fff"/><circle cx="119" cy="43" r="4" fill="#fff"/>
+<circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
+<ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
+<path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
+</svg><p class="hand">Скоротив пари — і роботи поменшало!</p></div></section><section class="box "><span class="n">5</span><h2>Степінь степеня</h2><p>Степінь підносимо ще до степеня — <b>показники множимо</b>: (aᵐ)ⁿ = aᵐⁿ.</p><svg viewBox="0 0 340 224" class="viz" role="img" aria-label="(a²)³ = a⁶"><text x="20.0" y="44.0" font-size="30" class="d" fill="var(--ink)">(</text><text x="28.2" y="44.0" font-size="30" class="d" fill="var(--plum)">a</text><text x="49.0" y="31.4" font-size="18" class="d" fill="var(--yarn)">2</text><text x="60.2" y="44.0" font-size="30" class="d" fill="var(--ink)">)</text><text x="69.0" y="31.4" font-size="18" class="d" fill="var(--sky)">3</text><text x="89.2" y="44.0" font-size="30" class="d" fill="var(--ink)">=</text><rect x="26.0" y="70.0" width="70.0" height="50.0" rx="12" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="46.1" y="106.0" font-size="28" class="d" fill="var(--plum)">a</text><text x="65.5" y="94.2" font-size="16.8" class="d" fill="var(--yarn)">2</text><text x="106.0" y="103.0" text-anchor="middle" font-size="22" class="d" fill="var(--muted)">·</text><rect x="116.0" y="70.0" width="70.0" height="50.0" rx="12" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="136.1" y="106.0" font-size="28" class="d" fill="var(--plum)">a</text><text x="155.5" y="94.2" font-size="16.8" class="d" fill="var(--yarn)">2</text><text x="196.0" y="103.0" text-anchor="middle" font-size="22" class="d" fill="var(--muted)">·</text><rect x="206.0" y="70.0" width="70.0" height="50.0" rx="12" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="226.1" y="106.0" font-size="28" class="d" fill="var(--plum)">a</text><text x="245.5" y="94.2" font-size="16.8" class="d" fill="var(--yarn)">2</text><path d="M26 132 Q151 162 276 132" stroke="var(--sky)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="151.0" y="176.0" text-anchor="middle" font-size="24" class="h" fill="var(--sky)">3 рази</text><path d="M286.0 96.0 Q309.2 118.8 300.0 150.0" stroke="var(--ink)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-i)"/><text x="269.8" y="196.0" font-size="38" class="d" fill="var(--plum)">a</text><text x="296.2" y="180.0" font-size="22.8" class="d" fill="var(--yarn)">6</text><text x="196.0" y="214.0" text-anchor="middle" font-size="24" class="h" fill="var(--leaf)">2 · 3 = 6</text></svg><p class="tail">Не плутай: a² · a³ = a⁵ (додаємо), а (a²)³ = a⁶ (множимо).</p></section><section class="box wide two"><div><span class="n">6</span><h2>Степінь добутку</h2><p>Показник за дужкою дістається <b>кожному</b> множнику: (ab)ⁿ = aⁿbⁿ.</p><p class="more">Працює й навпаки: 25² · 4² = (25 · 4)² = 100² = 10&nbsp;000. Однакові показники — збирай під одну дужку.</p><div class="say"><svg viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><p class="hand">Показник за дужкою — як парасолька над усіма.</p></div></div><svg viewBox="0 0 340 234" class="viz" role="img" aria-label="(2·5)³ = 2³·5³ = 1000"><text x="91.1" y="98.0" font-size="40" class="d" fill="var(--ink)">(</text><text x="102.1" y="98.0" font-size="40" class="d" fill="var(--yarn)">2</text><text x="137.3" y="98.0" font-size="40" class="d" fill="var(--ink)">·</text><text x="156.8" y="98.0" font-size="40" class="d" fill="var(--plum)">5</text><text x="182.0" y="98.0" font-size="40" class="d" fill="var(--ink)">)</text><text x="193.7" y="81.2" font-size="24" class="d" fill="var(--sky)">3</text><path d="M204.9 59.9 Q157.9 20.6 113.8 63.2" stroke="var(--sky)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-s)"/><path d="M204.9 59.9 Q186.0 49.1 169.4 63.2" stroke="var(--sky)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-s)"/><text x="262.9" y="44.0" text-anchor="middle" font-size="22" class="h" fill="var(--hay)">парасолька</text><text x="38.9" y="180.0" font-size="26" class="d" fill="var(--yarn)">2</text><text x="54.7" y="169.1" font-size="15.6" class="d" fill="var(--sky)">3</text><text x="72.2" y="180.0" font-size="26" class="d" fill="var(--ink)">·</text><text x="84.9" y="180.0" font-size="26" class="d" fill="var(--plum)">5</text><text x="101.8" y="169.1" font-size="15.6" class="d" fill="var(--sky)">3</text><text x="119.2" y="180.0" font-size="26" class="d" fill="var(--ink)">= 8 · 125 =</text><text x="245.8" y="180.0" font-size="26" class="d" fill="var(--leaf)">1000</text><path d="M113.8 104.0 Q74.0 121.6 46.6 155.3" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><path d="M169.4 104.0 Q137.4 138.8 93.1 155.3" stroke="var(--plum)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-p)"/><text x="170.0" y="224.0" text-anchor="middle" font-size="23" class="h" fill="var(--muted)">перевірка: 10³ = 1000 ✓</text></svg></section><section class="box "><span class="n">7</span><h2>Зведи до однієї основи</h2><p>Різні числа часто — степені однієї основи. Переклади їх, і правила знову працюють.</p><svg viewBox="0 0 340 178" class="viz" role="img" aria-label="2, 4, 8, 16, 32, 64 = 2¹ … 2⁶"><circle cx="30.0" cy="66.0" r="22.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="30.0" y="73.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><text x="20.5" y="124.0" font-size="22" class="d" fill="var(--plum)">2</text><text x="33.9" y="114.8" font-size="13.2" class="d" fill="var(--yarn)">1</text><line x1="30.0" y1="92.0" x2="30.0" y2="104.0" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/><path d="M42.0 40.0 Q58.0 28.8 74.0 40.0" stroke="var(--hay)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="58.0" y="22.0" text-anchor="middle" font-size="19" class="h" fill="var(--hay)">×2</text><circle cx="86.0" cy="66.0" r="22.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="86.0" y="73.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">4</text><text x="75.2" y="124.0" font-size="22" class="d" fill="var(--plum)">2</text><text x="88.6" y="114.8" font-size="13.2" class="d" fill="var(--yarn)">2</text><line x1="86.0" y1="92.0" x2="86.0" y2="104.0" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/><path d="M98.0 40.0 Q114.0 28.8 130.0 40.0" stroke="var(--hay)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="114.0" y="22.0" text-anchor="middle" font-size="19" class="h" fill="var(--hay)">×2</text><circle cx="142.0" cy="66.0" r="22.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="142.0" y="73.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">8</text><text x="131.1" y="124.0" font-size="22" class="d" fill="var(--plum)">2</text><text x="144.5" y="114.8" font-size="13.2" class="d" fill="var(--yarn)">3</text><line x1="142.0" y1="92.0" x2="142.0" y2="104.0" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/><path d="M154.0 40.0 Q170.0 28.8 186.0 40.0" stroke="var(--hay)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="170.0" y="22.0" text-anchor="middle" font-size="19" class="h" fill="var(--hay)">×2</text><circle cx="198.0" cy="66.0" r="22.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="198.0" y="73.0" text-anchor="middle" font-size="16" class="d" fill="var(--plum)">16</text><text x="186.8" y="124.0" font-size="22" class="d" fill="var(--plum)">2</text><text x="200.2" y="114.8" font-size="13.2" class="d" fill="var(--yarn)">4</text><line x1="198.0" y1="92.0" x2="198.0" y2="104.0" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/><path d="M210.0 40.0 Q226.0 28.8 242.0 40.0" stroke="var(--hay)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="226.0" y="22.0" text-anchor="middle" font-size="19" class="h" fill="var(--hay)">×2</text><circle cx="254.0" cy="66.0" r="22.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="254.0" y="73.0" text-anchor="middle" font-size="16" class="d" fill="var(--plum)">32</text><text x="242.9" y="124.0" font-size="22" class="d" fill="var(--plum)">2</text><text x="256.3" y="114.8" font-size="13.2" class="d" fill="var(--yarn)">5</text><line x1="254.0" y1="92.0" x2="254.0" y2="104.0" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/><path d="M266.0 40.0 Q282.0 28.8 298.0 40.0" stroke="var(--hay)" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="282.0" y="22.0" text-anchor="middle" font-size="19" class="h" fill="var(--hay)">×2</text><circle cx="310.0" cy="66.0" r="22.0" fill="var(--cell)" stroke="var(--plum)" stroke-width="2.5"/><text x="310.0" y="73.0" text-anchor="middle" font-size="16" class="d" fill="var(--plum)">64</text><text x="299.3" y="124.0" font-size="22" class="d" fill="var(--plum)">2</text><text x="312.6" y="114.8" font-size="13.2" class="d" fill="var(--yarn)">6</text><line x1="310.0" y1="92.0" x2="310.0" y2="104.0" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/><text x="170.0" y="166.0" text-anchor="middle" font-size="22" class="h" fill="var(--muted)">кожен крок — ще раз помножити на 2</text></svg><p class="more">8² · 4 = (<span class="b">2</span><sup class="e">3</sup>)² · <span class="b">2</span><sup class="e">2</sup> = <span class="b">2</span><sup class="e">6</sup> · <span class="b">2</span><sup class="e">2</sup> = <span class="b">2</span><sup class="e">8</sup> = 256</p><p class="tail">Корисно знати: 9 = 3², 27 = 3³, 49 = 7², 100 = 10², 1000 = 10³.</p></section><section class="box "><span class="n">8</span><h2>Спершу спрости, потім рахуй</h2><p>Не перемножуй велетенські числа. Спершу збери показники, а рахуй уже маленький степінь.</p><svg viewBox="0 0 340 206" class="viz" role="img" aria-label="7⁵·7³:7⁶ = 7² = 49"><text x="103.9" y="40.0" font-size="30" class="d" fill="var(--plum)">7</text><text x="120.9" y="27.4" font-size="18" class="d" fill="var(--yarn)">5</text><text x="141.6" y="40.0" font-size="30" class="d" fill="var(--ink)">·</text><text x="156.2" y="40.0" font-size="30" class="d" fill="var(--plum)">7</text><text x="173.2" y="27.4" font-size="18" class="d" fill="var(--yarn)">3</text><text x="193.4" y="40.0" font-size="30" class="d" fill="var(--ink)">:</text><text x="208.1" y="40.0" font-size="30" class="d" fill="var(--plum)">7</text><text x="225.1" y="27.4" font-size="18" class="d" fill="var(--yarn)">6</text><text x="130.2" y="116.0" font-size="30" class="d" fill="var(--plum)">7</text><text x="147.2" y="103.4" font-size="18" class="d" fill="var(--yarn)">8</text><text x="167.1" y="116.0" font-size="30" class="d" fill="var(--ink)">:</text><text x="181.7" y="116.0" font-size="30" class="d" fill="var(--plum)">7</text><text x="198.7" y="103.4" font-size="18" class="d" fill="var(--yarn)">6</text><text x="114.4" y="192.0" font-size="34" class="d" fill="var(--plum)">7</text><text x="133.7" y="177.7" font-size="20.4" class="d" fill="var(--yarn)">2</text><text x="156.4" y="192.0" font-size="34" class="d" fill="var(--ink)">=</text><text x="183.6" y="192.0" font-size="34" class="d" fill="var(--leaf)">49</text><path d="M170.0 54.0 Q170.0 71.0 170.0 88.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><text x="160.0" y="78.0" text-anchor="end" font-size="23" class="h" fill="var(--yarn)">① 5 + 3 = 8</text><path d="M170.0 130.0 Q170.0 145.0 170.0 160.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><text x="182.0" y="150.0" text-anchor="start" font-size="23" class="h" fill="var(--yarn)">② 8 − 6 = 2</text></svg><div class="say"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#D9843A"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#D9843A"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F6E9D7"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#D9843A"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F6E9D7"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#D9843A"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#D9843A" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><p class="hand">7⁸ — це понад 5 мільйонів. Навіщо, якщо відповідь 49?</p></div></section><section class="box wide two"><div><span class="n">9</span><h2>Степені в житті</h2><p>Склади аркуш навпіл — шарів удвічі більше. Ще раз — знову вдвічі.</p><p class="tail">П’ять складань — 2⁵ = 32 шари. Десять — уже 2¹⁰ = 1024. Так само швидко розлітаються чутки, якщо кожен перекаже двом.</p></div><svg viewBox="0 0 340 204" class="viz" role="img" aria-label="1, 2, 4, 8, 16, 32 шари"><rect x="22.0" y="142.4" width="36.0" height="7.6" rx="3" fill="var(--cell)" stroke="var(--sky)" stroke-width="2"/><text x="40.0" y="174.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">1</text><rect x="74.0" y="138.8" width="36.0" height="11.2" rx="3" fill="var(--cell)" stroke="var(--sky)" stroke-width="2"/><line x1="77.0" y1="144.4" x2="107.0" y2="144.4" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><text x="92.0" y="174.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">2</text><rect x="126.0" y="131.6" width="36.0" height="18.4" rx="3" fill="var(--cell)" stroke="var(--sky)" stroke-width="2"/><line x1="129.0" y1="136.2" x2="159.0" y2="136.2" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="129.0" y1="140.8" x2="159.0" y2="140.8" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="129.0" y1="145.4" x2="159.0" y2="145.4" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><text x="144.0" y="174.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">4</text><rect x="178.0" y="117.2" width="36.0" height="32.8" rx="3" fill="var(--cell)" stroke="var(--sky)" stroke-width="2"/><line x1="181.0" y1="121.3" x2="211.0" y2="121.3" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="181.0" y1="125.4" x2="211.0" y2="125.4" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="181.0" y1="129.5" x2="211.0" y2="129.5" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="181.0" y1="133.6" x2="211.0" y2="133.6" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="181.0" y1="137.7" x2="211.0" y2="137.7" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="181.0" y1="141.8" x2="211.0" y2="141.8" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="181.0" y1="145.9" x2="211.0" y2="145.9" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><text x="196.0" y="174.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">8</text><rect x="230.0" y="88.4" width="36.0" height="61.6" rx="3" fill="var(--cell)" stroke="var(--sky)" stroke-width="2"/><line x1="233.0" y1="92.2" x2="263.0" y2="92.2" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="96.1" x2="263.0" y2="96.1" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="100.0" x2="263.0" y2="100.0" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="103.8" x2="263.0" y2="103.8" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="107.7" x2="263.0" y2="107.7" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="111.5" x2="263.0" y2="111.5" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="115.4" x2="263.0" y2="115.4" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="119.2" x2="263.0" y2="119.2" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="123.1" x2="263.0" y2="123.1" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="126.9" x2="263.0" y2="126.9" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="130.8" x2="263.0" y2="130.8" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="134.6" x2="263.0" y2="134.6" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="138.5" x2="263.0" y2="138.5" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="142.3" x2="263.0" y2="142.3" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="233.0" y1="146.2" x2="263.0" y2="146.2" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><text x="248.0" y="174.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">16</text><rect x="282.0" y="30.8" width="36.0" height="119.2" rx="3" fill="var(--cell)" stroke="var(--sky)" stroke-width="2"/><line x1="285.0" y1="38.2" x2="315.0" y2="38.2" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="45.7" x2="315.0" y2="45.7" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="53.1" x2="315.0" y2="53.1" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="60.6" x2="315.0" y2="60.6" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="68.0" x2="315.0" y2="68.0" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="75.5" x2="315.0" y2="75.5" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="82.9" x2="315.0" y2="82.9" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="90.4" x2="315.0" y2="90.4" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="97.8" x2="315.0" y2="97.8" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="105.3" x2="315.0" y2="105.3" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="112.8" x2="315.0" y2="112.8" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="120.2" x2="315.0" y2="120.2" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="127.7" x2="315.0" y2="127.7" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="135.1" x2="315.0" y2="135.1" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><line x1="285.0" y1="142.6" x2="315.0" y2="142.6" stroke="var(--line)" stroke-width="0.9" stroke-linecap="butt"/><text x="300.0" y="174.0" text-anchor="middle" font-size="18" class="d" fill="var(--plum)">32</text><text x="170.0" y="198.0" text-anchor="middle" font-size="20" class="h" fill="var(--muted)">шарів після 0, 1, 2, 3, 4, 5 складань</text><text x="110.0" y="34.0" text-anchor="middle" font-size="22" class="h" fill="var(--hay)">щоразу вдвічі більше</text></svg></section></div>
+ <div class="say final"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><p class="bubble">Самоперевірка: основа однакова? Множення — додай показники, ділення — відніми, степінь степеня — помнож.</p></div>
+</div>
+<footer class="site-copy">© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small></footer>
+<script>
+(function(){
+  var cb=document.getElementById('copyReport');
+  if(!cb||typeof renderReport!=='function'||!navigator.share)return;
+  var uk=document.documentElement.lang==='uk';
+  var b=document.createElement('button');
+  b.type='button';b.className='btn';b.id='shareReport';b.style.background='var(--sky)';
+  b.textContent=uk?'Надіслати звіт':'Send my report';
+  cb.parentNode.insertBefore(b,cb);
+  b.onclick=function(){
+    renderReport();
+    var txt=document.getElementById('reportText').value, fb=document.getElementById('copyFb');
+    navigator.share({title:document.title,text:txt}).then(function(){
+      fb.className='fb good pop';
+      fb.textContent=uk?'Готово! Якщо застосунок ще відкритий, натисни там «Надіслати».':'Done! If the app is still open, tap Send there.';
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;
+      fb.className='fb bad';
+      fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
+    });
+  };
+})();
+</script>
+
+<script>
+(function(){
+  /* own devices: open the site with #nostats once to stop counting this browser, #stats to count again */
+  var SK='skipgc', skip=false;
+  try{
+    if(location.hash==='#nostats')localStorage.setItem(SK,'t');
+    if(location.hash==='#stats')localStorage.removeItem(SK);
+    skip=localStorage.getItem(SK)==='t';
+  }catch(e){}
+  var uk=document.documentElement.lang==='uk';
+  if(location.hash==='#nostats'||location.hash==='#stats'){
+    var n=document.createElement('div');
+    n.textContent=skip?(uk?'Статистику на цьому пристрої вимкнено. Ваші відвідування не рахуються.':'Statistics are off on this device. Your visits are not counted.')
+                      :(uk?'Статистику на цьому пристрої знову ввімкнено.':'Statistics are on again on this device.');
+    n.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;padding:12px 16px;border-radius:12px;background:#26301F;color:#fff;font:700 15px system-ui,sans-serif;text-align:center';
+    document.body.appendChild(n);setTimeout(function(){n.remove()},6000);
+  }
+  if(skip){
+    var f=document.querySelector('.site-copy');
+    if(f){var m=document.createElement('small');m.textContent=uk?'(цей пристрій не враховується)':'(this device is not counted)';f.appendChild(m)}
+    window.ponyaTrack=function(){};return;
+  }
+  var gs=document.createElement('script');gs.async=true;gs.src='//gc.zgo.at/count.js';
+  gs.setAttribute('data-goatcounter','https://varia-math.goatcounter.com/count');document.head.appendChild(gs);
+
+  var parts=location.pathname.replace(/\.html$/,'').split('/').filter(Boolean);
+  var page=parts.slice(-2).join('-')||'index';            // e.g. monomials-uk, math-index
+  var queue=[];
+  function send(name){window.goatcounter.count({path:page+'/'+name,title:name,event:true})}
+  function track(name){
+    try{if(window.goatcounter&&window.goatcounter.count)send(name);else queue.push(name)}catch(e){}
+  }
+  gs.onload=function(){var q=queue;queue=[];q.forEach(function(n){try{send(n)}catch(e){}})};
+  window.ponyaTrack=track;
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,a');if(!t)return;
+    if(t.classList.contains('tab')&&t.dataset.tab)track('tab-'+t.dataset.tab);
+    else if(t.id==='copyReport')track('report-copy');
+    else if(t.id==='shareReport')track('report-send');
+    else if(t.dataset&&t.dataset.w)track('world-'+t.dataset.w);
+    else if(t.tagName==='A'&&/\.pdf$/.test(t.getAttribute('href')||''))track('pdf-'+t.getAttribute('href').replace(/\W+/g,'-'));
+  },true);
+
+  /* every task: solved on the first try, solved after mistakes, and the wrong answers typed (numbers only) */
+  if(typeof window.rec==='function'&&typeof state==='object'&&state&&state.log){
+    var orig=window.rec, wrong={}, sentVals={};
+    function typed(){
+      var panel=document.querySelector('.panel:not([hidden])');if(!panel)return '';
+      var vals=[];
+      panel.querySelectorAll('input').forEach(function(i){
+        if(!i.offsetParent||vals.length>=6)return;
+        var v=String(i.value).trim().replace(/[−–]/g,'-').replace(',','.');
+        vals.push(v===''?'_':(/^-?\d{1,6}(\.\d{1,4})?$/.test(v)?v:'x'));
+      });
+      return vals.join(';');
+    }
+    window.rec=function(key,ok,hint){
+      var done=state.log[key]&&state.log[key].ok;
+      if(!done){
+        if(ok)track('task-'+key+(wrong[key]?'-after-mistakes':'-first-try'));
+        else{
+          if(!wrong[key])track('task-'+key+'-mistake');
+          wrong[key]=(wrong[key]||0)+1;
+          var v=typed();
+          if(v&&!sentVals[key+v]){sentVals[key+v]=1;track('typed-'+key+'/'+v)}
+        }
+      }
+      return orig.apply(this,arguments);
+    };
+  }
+
+  /* a level is finished when its star lights up; the diploma appears after all three */
+  document.querySelectorAll('.star').forEach(function(st){
+    new MutationObserver(function(){if(st.classList.contains('on')&&!st.dataset.seen){st.dataset.seen=1;track('level-done-'+st.id.replace('st-',''))}})
+      .observe(st,{attributes:true,attributeFilter:['class']});
+  });
+  var dip=document.getElementById('diploma');
+  if(dip)new MutationObserver(function(){if(!dip.hidden)track('diploma')}).observe(dip,{attributes:true,attributeFilter:['hidden']});
+})();
+</script>
+</body></html>

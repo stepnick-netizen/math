@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Cheat sheet: identities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap">
+<style>
+
+/* Layout: meadow page, hero with the cast, tab strip, one level per tab; level = stage card + task card */
+:root{--bg:#EEF3E4;--paper:#FFFFFF;--ink:#26301F;--muted:#5F6B55;--line:#D3DCC5;--shadow:rgba(38,48,31,.12);
+--yarn:#D9486F;--plum:#7A59C2;--hay:#D99A1E;--leaf:#4F8A3C;--sky:#3E7FB8;--marker:#FFE24A;--marker-ink:#2A2300;--cell:#F4F7EE;
+--good:#2F8A4C;--bad:#C2413B;
+--display:'Comfortaa','Nunito',system-ui,sans-serif;--body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;--hand:'Caveat','Comic Sans MS',cursive}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171C14;--paper:#222A1D;--ink:#EDF2E3;--muted:#A8B49B;--line:#3A4532;--shadow:rgba(0,0,0,.35);
+--yarn:#F07898;--plum:#B79CFF;--hay:#F0BE4E;--leaf:#7DBA62;--sky:#7AB3E6;--marker:#E8C93A;--marker-ink:#1D1800;--cell:#2C3526;--good:#6CCB86;--bad:#F07A72;color-scheme:dark}
+*{box-sizing:border-box}
+/* living cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:14px}
+.box{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px 18px 14px;box-shadow:0 3px 0 var(--shadow);display:grid;gap:8px;align-content:start;min-width:0}
+.box h2{font-family:var(--display);font-size:20px;margin:0;line-height:1.25;padding-right:40px;text-wrap:balance}
+.box p{margin:0}
+.box.two{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:8px 18px}
+.box.two>div{display:grid;gap:8px;align-content:start}
+@media (max-width:680px){.box.two{grid-template-columns:1fr}}
+.wide{grid-column:1/-1}
+.n{position:absolute;top:12px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--leaf);color:#fff;font:700 17px var(--display);display:grid;place-items:center;box-shadow:0 2px 0 var(--shadow)}
+.key{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.key .n{background:var(--yarn)}
+.key .hand{color:var(--marker-ink)}
+.viz{width:100%;height:auto;max-width:440px;justify-self:center;overflow:visible}
+.viz .d{font-family:var(--display);font-weight:700}
+.viz .h{font-family:var(--hand);font-weight:600}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:6px 18px;align-items:center}
+.tail{font-size:15px;color:var(--muted)}
+.key .tail{color:var(--marker-ink)}
+.more{background:var(--cell);border-radius:10px;padding:8px 12px;font-size:15.5px}
+.key .more{background:rgba(255,255,255,.5)}
+.say{display:flex;align-items:center;gap:10px}
+.say .pig{width:72px;height:auto;flex:none}
+.hand{font-family:var(--hand);font-size:22px;line-height:1.2;color:var(--muted)}
+.bubble{position:relative;background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:8px 14px;font-family:var(--hand);font-size:23px;line-height:1.2;max-width:46ch;width:fit-content}
+
+
+</style><style>
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sheet{max-width:900px;margin:0 auto;padding-block:22px 36px;display:grid;gap:16px}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px}
+.htext{display:grid;gap:10px;flex:1 1 300px;min-width:0}
+h1{font-family:var(--display);font-size:clamp(30px,6vw,44px);margin:0;line-height:1.1;text-wrap:balance}h1 span{color:var(--yarn)}
+.cast{display:flex;gap:2px;flex-wrap:wrap;align-items:flex-end}.cast .pig{width:84px;height:auto}
+.final{justify-content:center;flex-wrap:wrap}
+.links{font-size:15px}
+.box,.head,.final{break-inside:avoid}
+
+/* engine: task steps, choice tiles, equation rows, ordering cards, stage drawings */
+.teach{justify-self:start;font:800 12.5px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--plum);background:var(--cell);border:1.5px dashed var(--plum);border-radius:999px;padding:2px 10px}
+.tq{font-size:17px}
+.sp{font-weight:700}
+.stepno{font:800 13px var(--body);color:var(--hay);letter-spacing:.06em;text-transform:uppercase}
+.donesteps{display:grid;gap:4px;background:var(--cell);border-radius:10px;padding:8px 12px}
+.ds{color:var(--good);font-weight:700;font-size:16px}
+.ds .mono,.ds sup{color:inherit}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr));gap:10px}
+.opt{display:grid;justify-items:center;align-content:start;gap:4px;font:700 16px/1.3 var(--body);border:2px solid var(--c);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 8px 12px;cursor:pointer;text-align:center;min-width:0}
+.opt .oi svg{width:70px;height:auto}
+.opt.picked{background:var(--c);color:var(--paper);border-style:solid}
+.opt.badpick{border-style:dashed;opacity:.55}
+.opt:disabled{cursor:default}
+.opts.pills{display:flex;flex-wrap:wrap}
+.opts.pills .opt{border-radius:999px;padding:8px 16px;font-size:17px}
+.opts.big .opt{font:700 26px var(--display);padding:8px 18px;min-width:64px}
+.eqrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 6px;font:700 clamp(22px,5.6vw,28px) var(--display)}
+.eqrow .gap{width:100%;height:0}
+.eqrow .pre{white-space:nowrap}
+.eqrow input.ans{font-size:20px}
+.eqrow input.sup{width:46px;font-size:16px;padding:3px 4px;align-self:flex-start;margin:-4px 2px 0 -2px}
+.eqrow input.wide{width:112px}
+.eqrow .lbl{font:700 17px var(--body);color:var(--muted)}
+.ocard{font:700 16px/1.35 var(--body);border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left}
+.ocard.on{border-color:var(--leaf);background:var(--cell)}
+.ocard b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--leaf);color:var(--paper);font-size:14px;margin-right:6px;vertical-align:1px}
+.oline,.opool{display:grid;gap:8px}
+.oline{border:2px dashed var(--line);border-radius:14px;padding:10px;min-height:56px}
+.mono .b,.big .b,.b{color:var(--plum)}
+sup.e,.e{color:var(--yarn)}
+.stg{width:100%;max-width:380px;height:auto;overflow:visible}
+.stg .d{font-family:var(--display);font-weight:700}
+.stg .h{font-family:var(--hand);font-weight:600}
+.stage .say{justify-content:center}
+.stage .say .pig{width:84px}
+.stage .bubble{font-size:21px}
+.count{font:700 16px var(--display);color:var(--muted)}
+.word{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.word span{width:38px;height:46px;border-radius:10px;border:2px dashed var(--line);display:grid;place-items:center;font:700 24px var(--display);color:var(--muted);background:var(--cell)}
+.word span.on{border:2px solid var(--leaf);background:var(--paper);color:var(--leaf)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.chip{font:700 14px var(--display);background:var(--cell);border-radius:8px;padding:2px 7px;white-space:nowrap}
+.why-card{display:grid;gap:8px;border:2px solid var(--leaf)}.why-card ul{margin:0;padding-left:1.2em;display:grid;gap:6px}.why-card b{color:var(--leaf)}.why-dip{margin-top:6px;font-weight:700}
+.right-chip{display:grid;gap:3px;margin-top:4px;padding:10px 12px;border-left:4px solid var(--sky);background:var(--cell);border-radius:8px;font-size:14.5px;line-height:1.45}.right-chip b{font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--sky)}.right-chip q,.right-chip i{font-style:italic}.right-chip span{color:var(--muted)}
+
+.blockcard{display:grid;gap:2px;justify-items:center;background:var(--cell);border:3px solid var(--hay);border-radius:16px;padding:10px 18px;box-shadow:0 4px 0 var(--shadow)}
+.blockcard small{font:700 13px var(--body);color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.blockcard b{font:700 clamp(24px,6vw,30px) var(--display)}
+.stage .chips .chip{font-size:13px}
+.opts.big .opt{font:700 30px var(--display);min-width:72px}
+
+</style><style>.site-home{max-width:980px;margin:0 auto;padding-top:12px;font:700 15px var(--body,system-ui,sans-serif)}.site-home a{color:var(--sky,#3E7FB8);text-decoration:none}.site-home a:hover{text-decoration:underline}.site-copy{max-width:980px;margin:0 auto;padding-block:4px 28px;border-top:1px solid var(--line,#D3DCC5);padding-top:14px;font:14px/1.5 var(--body,system-ui,sans-serif);color:var(--muted,#5F6B55);text-align:center}.site-copy small{display:block;font-size:12px;opacity:.75;margin-top:2px}</style></head>
+<body><nav class="site-home"><a href="../index.html">← All topics</a></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah-y" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--yarn)"/></marker><marker id="ah-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--plum)"/></marker><marker id="ah-l" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--leaf)"/></marker><marker id="ah-i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker><marker id="ah-s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--sky)"/></marker><marker id="ah-h" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--hay)"/></marker><marker id="ah-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--bad)"/></marker><marker id="ah-k" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--marker-ink)"/></marker></defs></svg>
+<div class="sheet">
+ <header class="head">
+  <div class="htext"><h1>Identities and expressions <span>on one page</span></h1><p class="bubble">Hi! Here is the revision before the test: identities, using a "block", the smallest value, comparing powers and proofs.</p><p class="links"><a href="../identities/en.html">Lesson and game</a> · <a href="../identities/cheatsheet-uk.html">Українська версія</a> · <a href="../identities/cheatsheet-en.pdf">PDF to print</a></p></div>
+  <div class="cast"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#D9843A"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#D9843A"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F6E9D7"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#D9843A"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F6E9D7"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#D9843A"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#D9843A" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="74" cy="92" rx="58" ry="6" fill="var(--shadow)"/>
+<path d="M30 70 C6 66 4 36 20 26" stroke="#7D838B" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M14 60 L28 56 M8 46 L22 46 M12 32 L24 38" stroke="#2E3136" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="66" cy="68" rx="42" ry="24" fill="#9AA0A8"/>
+<ellipse cx="44" cy="89" rx="9" ry="5" fill="#2E3136"/><ellipse cx="88" cy="89" rx="9" ry="5" fill="#2E3136"/>
+<path d="M90 30 L94 14 L104 26 Z M118 26 L128 14 L130 30 Z" fill="#7D838B"/>
+<circle cx="110" cy="44" r="24" fill="#B4BAC2"/>
+<path d="M88 42 C96 34 124 34 132 42 C126 52 94 52 88 42 Z" fill="#2E3136"/>
+<circle cx="101" cy="43" r="4" fill="#fff"/><circle cx="119" cy="43" r="4" fill="#fff"/>
+<circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
+<ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
+<path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
+</svg></div>
+ </header>
+ <div class="grid"><section class="box "><span class="n">1</span><h2>Whole expressions</h2><p>A <b>whole expression</b> is built from numbers and letters with +, −, ×, powers and division <b>by a number</b>.</p><svg viewBox="0 0 340 210" class="viz" role="img" aria-label="whole and not whole expressions"><text x="86.0" y="26.0" text-anchor="middle" font-size="23" class="h" fill="var(--leaf)">whole expressions</text><text x="254.0" y="26.0" text-anchor="middle" font-size="23" class="h" fill="var(--bad)">not whole</text><rect x="35.9" y="48.0" width="100.2" height="32.0" rx="10" fill="var(--cell)" stroke="var(--leaf)" stroke-width="2.2"/><text x="86.0" y="70.0" text-anchor="middle" font-size="19" class="d" fill="var(--ink)">3a² − 5b</text><rect x="34.4" y="94.0" width="103.2" height="32.0" rx="10" fill="var(--cell)" stroke="var(--leaf)" stroke-width="2.2"/><text x="86.0" y="116.0" text-anchor="middle" font-size="19" class="d" fill="var(--ink)">(x + 1) ÷ 2</text><rect x="32.8" y="140.0" width="106.5" height="32.0" rx="10" fill="var(--cell)" stroke="var(--leaf)" stroke-width="2.2"/><text x="86.0" y="162.0" text-anchor="middle" font-size="19" class="d" fill="var(--ink)">0.5m³ + 7</text><rect x="221.7" y="48.0" width="64.6" height="32.0" rx="10" fill="var(--cell)" stroke="var(--bad)" stroke-width="2.2" stroke-dasharray="6 4"/><text x="254.0" y="70.0" text-anchor="middle" font-size="19" class="d" fill="var(--ink)">5 ÷ x</text><rect x="198.7" y="94.0" width="110.5" height="32.0" rx="10" fill="var(--cell)" stroke="var(--bad)" stroke-width="2.2" stroke-dasharray="6 4"/><text x="254.0" y="116.0" text-anchor="middle" font-size="19" class="d" fill="var(--ink)">7 ÷ (a + b)</text><rect x="216.3" y="140.0" width="75.4" height="32.0" rx="10" fill="var(--cell)" stroke="var(--bad)" stroke-width="2.2" stroke-dasharray="6 4"/><text x="254.0" y="162.0" text-anchor="middle" font-size="19" class="d" fill="var(--ink)">a² ÷ b</text><line x1="170.0" y1="44.0" x2="170.0" y2="170.0" stroke="line" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/><text x="170.0" y="200.0" text-anchor="middle" font-size="21" class="h" fill="var(--muted)">divide by a letter: not whole any more</text></svg><p class="tail">A monomial is the simplest whole expression: multiplication only.</p></section><section class="box "><span class="n">2</span><h2>An identity</h2><p>An <b>identity</b> is an equation that is true for <b>every</b> value of the letters. For example, 2(a + 3) = 2a + 6.</p><svg viewBox="0 0 340 212" class="viz" role="img" aria-label="2(a + 3) = 2a + 6"><text x="50.0" y="34.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">a</text><text x="150.0" y="34.0" text-anchor="middle" font-size="20" class="d" fill="var(--ink)">2(a + 3)</text><text x="260.0" y="34.0" text-anchor="middle" font-size="20" class="d" fill="var(--ink)">2a + 6</text><line x1="16.0" y1="46.0" x2="324.0" y2="46.0" stroke="line" stroke-width="2" stroke-linecap="round"/><text x="50.0" y="80.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">1</text><text x="150.0" y="80.0" text-anchor="middle" font-size="20" class="d" fill="var(--yarn)">8</text><text x="260.0" y="80.0" text-anchor="middle" font-size="20" class="d" fill="var(--yarn)">8</text><text x="205.0" y="80.0" text-anchor="middle" font-size="20" class="d" fill="var(--leaf)">=</text><text x="50.0" y="118.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">2</text><text x="150.0" y="118.0" text-anchor="middle" font-size="20" class="d" fill="var(--yarn)">10</text><text x="260.0" y="118.0" text-anchor="middle" font-size="20" class="d" fill="var(--yarn)">10</text><text x="205.0" y="118.0" text-anchor="middle" font-size="20" class="d" fill="var(--leaf)">=</text><text x="50.0" y="156.0" text-anchor="middle" font-size="20" class="d" fill="var(--plum)">5</text><text x="150.0" y="156.0" text-anchor="middle" font-size="20" class="d" fill="var(--yarn)">16</text><text x="260.0" y="156.0" text-anchor="middle" font-size="20" class="d" fill="var(--yarn)">16</text><text x="205.0" y="156.0" text-anchor="middle" font-size="20" class="d" fill="var(--leaf)">=</text><text x="170.0" y="200.0" text-anchor="middle" font-size="23" class="h" fill="var(--leaf)">the same for any a!</text></svg><p class="tail">In UK textbooks an identity is written with the sign ≡.</p><div class="say"><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" style="transform:scaleX(-1)" aria-hidden="true">
+<ellipse cx="72" cy="90" rx="56" ry="6" fill="var(--shadow)"/><ellipse cx="38" cy="86" rx="10" ry="5" fill="#5E4030"/><ellipse cx="98" cy="87" rx="10" ry="5" fill="#5E4030"/>
+<ellipse cx="66" cy="58" rx="56" ry="32" fill="#F1ECE6"/><ellipse cx="42" cy="52" rx="28" ry="25" fill="#5E4030"/><ellipse cx="110" cy="56" rx="28" ry="26" fill="#F1ECE6"/>
+<ellipse cx="98" cy="33" rx="11" ry="9" fill="#5E4030"/><ellipse cx="118" cy="40" rx="12" ry="10" fill="#5E4030" opacity=".55"/><circle cx="116" cy="50" r="5" fill="#1d1a17"/>
+<circle cx="117.6" cy="48.4" r="1.6" fill="#ffffff"/><ellipse cx="135" cy="62" rx="4.5" ry="3.4" fill="#E58F9F"/><ellipse cx="124" cy="67" rx="6" ry="3" fill="#F2A7B4" opacity=".6"/></svg><p class="hand">A table is only a check. You prove it by changing the expression.</p></div></section><section class="box key wide two"><div><span class="n">3</span><h2>Key rule: how to prove an identity</h2><p><b>Change one side step by step until it looks exactly like the other.</b> ① Expand the brackets. ② Collect like terms.</p><div class="say"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><p class="hand">Step by step, no jumps, and nobody can doubt it!</p></div></div><svg viewBox="0 0 340 202" class="viz" role="img" aria-label="3(x − y) + 2(x + y) − x = 4x − y"><text x="55.3" y="36.0" font-size="24" class="d" fill="var(--marker-ink)">3(x − y) + 2(x + y) − x</text><text x="54.1" y="106.0" font-size="24" class="d" fill="var(--marker-ink)">3x − 3y + 2x + 2y − x</text><text x="126.8" y="176.0" font-size="30" class="d" fill="var(--yarn)">4x</text><text x="171.9" y="176.0" font-size="30" class="d" fill="var(--marker-ink)">−</text><text x="197.1" y="176.0" font-size="30" class="d" fill="var(--plum)">y</text><path d="M170.0 48.0 Q170.0 66.0 170.0 84.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><text x="180.0" y="72.0" text-anchor="start" font-size="21" class="h" fill="var(--yarn)">① expand the brackets</text><path d="M170.0 118.0 Q170.0 134.0 170.0 150.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><text x="180.0" y="140.0" text-anchor="start" font-size="21" class="h" fill="var(--yarn)">② collect like terms</text><text x="58.0" y="170.0" text-anchor="middle" font-size="17" class="h" fill="var(--marker-ink)">3x + 2x − x = 4x</text><text x="58.0" y="192.0" text-anchor="middle" font-size="17" class="h" fill="var(--marker-ink)">−3y + 2y = −y</text></svg></section><section class="box "><span class="n">4</span><h2>One counterexample is enough</h2><p>To show an equation is <b>not</b> an identity, one set of numbers where it fails is enough.</p><svg viewBox="0 0 340 180" class="viz" role="img" aria-label="(a + b)² ≠ a² + b²"><text x="57.2" y="38.0" font-size="26" class="d" fill="var(--ink)">(a + b)</text><text x="137.2" y="27.1" font-size="15.6" class="d" fill="var(--yarn)">2</text><text x="154.5" y="38.0" font-size="26" class="d" fill="var(--ink)">= a</text><text x="193.4" y="27.1" font-size="15.6" class="d" fill="var(--yarn)">2</text><text x="210.7" y="38.0" font-size="26" class="d" fill="var(--ink)">+ b</text><text x="251.3" y="27.1" font-size="15.6" class="d" fill="var(--yarn)">2</text><text x="268.6" y="38.0" font-size="26" class="d" fill="var(--hay)">?</text><text x="170.0" y="76.0" text-anchor="middle" font-size="22" class="h" fill="var(--muted)">try a = 1, b = 1</text><text x="90.0" y="120.0" text-anchor="middle" font-size="22" class="d" fill="var(--yarn)">(1 + 1)² = 4</text><text x="250.0" y="120.0" text-anchor="middle" font-size="22" class="d" fill="var(--plum)">1² + 1² = 2</text><text x="170.0" y="122.0" text-anchor="middle" font-size="30" class="d" fill="var(--bad)">≠</text><text x="170.0" y="166.0" text-anchor="middle" font-size="25" class="h" fill="var(--bad)">4 ≠ 2: not an identity!</text></svg><div class="say"><svg style="transform:scaleX(-1)" viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="74" cy="92" rx="58" ry="6" fill="var(--shadow)"/>
+<path d="M30 70 C6 66 4 36 20 26" stroke="#7D838B" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M14 60 L28 56 M8 46 L22 46 M12 32 L24 38" stroke="#2E3136" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="66" cy="68" rx="42" ry="24" fill="#9AA0A8"/>
+<ellipse cx="44" cy="89" rx="9" ry="5" fill="#2E3136"/><ellipse cx="88" cy="89" rx="9" ry="5" fill="#2E3136"/>
+<path d="M90 30 L94 14 L104 26 Z M118 26 L128 14 L130 30 Z" fill="#7D838B"/>
+<circle cx="110" cy="44" r="24" fill="#B4BAC2"/>
+<path d="M88 42 C96 34 124 34 132 42 C126 52 94 52 88 42 Z" fill="#2E3136"/>
+<circle cx="101" cy="43" r="4" fill="#fff"/><circle cx="119" cy="43" r="4" fill="#fff"/>
+<circle cx="101.5" cy="43.5" r="2.2" fill="#1d1a17"/><circle cx="119.5" cy="43.5" r="2.2" fill="#1d1a17"/>
+<ellipse cx="110" cy="58" rx="11" ry="7" fill="#F1EEE9"/><ellipse cx="110" cy="55" rx="4" ry="3" fill="#1d1a17"/>
+<path d="M104 61 Q110 66 116 61" stroke="#1d1a17" stroke-width="1.6" fill="none"/>
+</svg><p class="hand">I thought (a + b)² = a² + b². One example, and it’s clear!</p></div></section><section class="box "><span class="n">5</span><h2>Use the block</h2><p>Know the value of a whole "block"? Build the expression you need from it: multiply it or raise it to a power.</p><svg viewBox="0 0 340 198" class="viz" role="img" aria-label="2ab = 7"><rect x="110.0" y="14.0" width="120.0" height="44.0" rx="12" fill="var(--cell)" stroke="var(--hay)" stroke-width="3"/><text x="170.0" y="44.0" text-anchor="middle" font-size="22" class="d" fill="var(--hay)">2ab = 7</text><text x="90.0" y="112.0" text-anchor="middle" font-size="20" class="d" fill="var(--ink)">6ab = 3 × (2ab)</text><text x="90.0" y="146.0" text-anchor="middle" font-size="20" class="d" fill="var(--leaf)">= 3 × 7 = 21</text><text x="252.0" y="112.0" text-anchor="middle" font-size="20" class="d" fill="var(--ink)">4a²b² = (2ab)²</text><text x="252.0" y="146.0" text-anchor="middle" font-size="20" class="d" fill="var(--leaf)">= 7² = 49</text><path d="M140.0 60.0 Q115.2 70.0 100.0 92.0" stroke="var(--hay)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><path d="M200.0 60.0 Q225.8 69.7 242.0 92.0" stroke="var(--hay)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="170.0" y="186.0" text-anchor="middle" font-size="22" class="h" fill="var(--muted)">no need to find a and b!</text></svg><p class="tail">To spot the block, split the numbers: 4 = 2², 6 = 3 × 2.</p></section><section class="box wide two"><div><span class="n">6</span><h2>The smallest value</h2><p>A square (and any even power) is never negative: <b>x² ≥ 0</b>. So (x − 1)² + 3 ≥ 3.</p><p class="tail">The smallest value happens when the bracket is zero: x = 1.</p></div><svg viewBox="0 0 340 206" class="viz" role="img" aria-label="(x − 1)² + 3 ≥ 3"><line x1="30.0" y1="56.0" x2="320.0" y2="56.0" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><text x="18.0" y="40.0" text-anchor="start" font-size="18" class="d" fill="var(--plum)">(x − 1)²</text><line x1="50.0" y1="50.0" x2="50.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="50.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">0</text><line x1="92.0" y1="50.0" x2="92.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="92.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">1</text><line x1="134.0" y1="50.0" x2="134.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="134.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">2</text><line x1="176.0" y1="50.0" x2="176.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="176.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">3</text><line x1="218.0" y1="50.0" x2="218.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="218.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">4</text><line x1="260.0" y1="50.0" x2="260.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="260.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">5</text><line x1="302.0" y1="50.0" x2="302.0" y2="62.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="302.0" y="82.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">6</text><circle cx="50.0" cy="56.0" r="7.0" fill="var(--yarn)" stroke="var(--yarn)" stroke-width="0"/><path d="M50 56 H316" stroke="var(--yarn)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/><line x1="30.0" y1="130.0" x2="320.0" y2="130.0" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><text x="18.0" y="114.0" text-anchor="start" font-size="18" class="d" fill="var(--plum)">(x − 1)² + 3</text><line x1="50.0" y1="124.0" x2="50.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="50.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">0</text><line x1="92.0" y1="124.0" x2="92.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="92.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">1</text><line x1="134.0" y1="124.0" x2="134.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="134.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">2</text><line x1="176.0" y1="124.0" x2="176.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="176.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">3</text><line x1="218.0" y1="124.0" x2="218.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="218.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">4</text><line x1="260.0" y1="124.0" x2="260.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="260.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">5</text><line x1="302.0" y1="124.0" x2="302.0" y2="136.0" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><text x="302.0" y="156.0" text-anchor="middle" font-size="15" class="d" fill="var(--muted)">6</text><circle cx="176.0" cy="130.0" r="7.0" fill="var(--yarn)" stroke="var(--yarn)" stroke-width="0"/><path d="M176 130 H316" stroke="var(--yarn)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/><path d="M50.0 70.0 Q122.6 68.8 176.0 118.0" stroke="var(--hay)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-h)"/><text x="150.0" y="96.0" text-anchor="middle" font-size="22" class="h" fill="var(--hay)">+3</text><text x="170.0" y="196.0" text-anchor="middle" font-size="22" class="h" fill="var(--leaf)">smallest value 3, when x = 1</text></svg></section><section class="box "><span class="n">7</span><h2>Comparing powers</h2><p>Rewrite the powers with the <b>same index</b> (or the same base), and comparing becomes easy.</p><svg viewBox="0 0 340 204" class="viz" role="img" aria-label="2¹⁵ < 3¹⁰"><text x="107.3" y="40.0" font-size="30" class="d" fill="var(--plum)">2</text><text x="125.5" y="27.4" font-size="18" class="d" fill="var(--yarn)">15</text><text x="162.1" y="40.0" font-size="30" class="d" fill="var(--hay)">?</text><text x="196.1" y="40.0" font-size="30" class="d" fill="var(--plum)">3</text><text x="214.6" y="27.4" font-size="18" class="d" fill="var(--yarn)">10</text><text x="90.0" y="104.0" text-anchor="middle" font-size="22" class="d" fill="var(--ink)">(2³)⁵ = 8⁵</text><text x="250.0" y="104.0" text-anchor="middle" font-size="22" class="d" fill="var(--ink)">(3²)⁵ = 9⁵</text><path d="M126.0 50.0 Q111.8 63.8 104.0 82.0" stroke="var(--plum)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-p)"/><path d="M214.0 50.0 Q228.2 63.8 236.0 82.0" stroke="var(--plum)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-p)"/><text x="170.0" y="160.0" text-anchor="middle" font-size="30" class="d" fill="var(--leaf)">8⁵ &lt; 9⁵</text><text x="170.0" y="194.0" text-anchor="middle" font-size="21" class="h" fill="var(--muted)">same index? compare the bases</text></svg><p class="tail">So 2¹⁵ < 3¹⁰. Check: 32,768 < 59,049.</p></section><section class="box "><span class="n">8</span><h2>Proving divisibility</h2><p>The sum of three consecutive whole numbers is divisible by 3. We prove it for <b>any</b> n, not just a few examples.</p><svg viewBox="0 0 340 190" class="viz" role="img" aria-label="n + (n + 1) + (n + 2) = 3(n + 1)"><text x="66.2" y="40.0" font-size="24" class="d" fill="var(--plum)">n</text><text x="89.6" y="40.0" font-size="24" class="d" fill="var(--ink)">+</text><text x="109.7" y="40.0" font-size="24" class="d" fill="var(--plum)">(n + 1)</text><text x="182.9" y="40.0" font-size="24" class="d" fill="var(--ink)">+</text><text x="203.0" y="40.0" font-size="24" class="d" fill="var(--plum)">(n + 2)</text><path d="M170.0 52.0 Q170.0 68.0 170.0 84.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><text x="170.0" y="110.0" text-anchor="middle" font-size="26" class="d" fill="var(--ink)">= 3n + 3</text><path d="M170.0 120.0 Q170.0 134.0 170.0 148.0" stroke="var(--yarn)" stroke-width="2.6" fill="none" stroke-linecap="round" marker-end="url(#ah-y)"/><text x="107.7" y="176.0" font-size="30" class="d" fill="var(--ink)">=</text><text x="131.7" y="176.0" font-size="30" class="d" fill="var(--leaf)">3</text><text x="149.7" y="176.0" font-size="30" class="d" fill="var(--ink)">(n + 1)</text><text x="270.0" y="150.0" text-anchor="middle" font-size="23" class="h" fill="var(--leaf)">a factor of 3!</text></svg><p class="tail">We took out the common factor 3, so it divides by 3.</p></section><section class="box wide two"><div><span class="n">9</span><h2>Identities in real life</h2><p>A fence round a pen: you can go "length + width" twice, or add two lengths and two widths. Same answer: that’s an identity.</p><p class="tail">Identities let you choose the easier way and be sure the answer won’t change.</p></div><svg viewBox="0 0 340 190" class="viz" role="img" aria-label="P = 2(a + b) = 2a + 2b"><rect x="70.0" y="50.0" width="200.0" height="100.0" rx="8" fill="var(--cell)" stroke="var(--leaf)" stroke-width="3"/><text x="170.0" y="40.0" text-anchor="middle" font-size="22" class="d" fill="var(--plum)">a</text><text x="170.0" y="176.0" text-anchor="middle" font-size="22" class="d" fill="var(--plum)">a</text><text x="54.0" y="108.0" text-anchor="middle" font-size="22" class="d" fill="var(--sky)">b</text><text x="286.0" y="108.0" text-anchor="middle" font-size="22" class="d" fill="var(--sky)">b</text><text x="170.0" y="96.0" text-anchor="middle" font-size="22" class="d" fill="var(--yarn)">2(a + b)</text><text x="170.0" y="124.0" text-anchor="middle" font-size="22" class="d" fill="var(--yarn)">= 2a + 2b</text></svg></section></div>
+ <div class="say final"><svg viewBox="0 0 150 100" class="pig" aria-hidden="true">
+<ellipse cx="72" cy="91" rx="58" ry="6" fill="var(--shadow)"/>
+<polygon points="3.3,69.3 15.9,62.7 4.7,54.2 18.9,51.1 10.6,40.1 25.3,40.7 20.8,28.1 34.6,32.3 34.3,19.1 46.2,26.7 50.0,13.9 59.1,24.3 66.7,13.0 72.2,25.2 83.0,16.3 84.5,29.5 97.6,23.7 94.9,36.7 109.4,34.5 102.7,46.3 117.3,47.8 107.2,57.5 120.7,62.7" fill="#6B4A2E"/>
+<ellipse cx="62" cy="66" rx="50" ry="24" fill="#8A6542"/>
+<ellipse cx="40" cy="88" rx="9" ry="4.5" fill="#5A3E26"/><ellipse cx="86" cy="88" rx="9" ry="4.5" fill="#5A3E26"/>
+<path d="M92 46 C112 44 132 56 142 68 C132 80 112 88 94 86 Z" fill="#EBD3B0"/>
+<circle cx="143" cy="68" r="5" fill="#1d1a17"/>
+<circle cx="104" cy="47" r="6" fill="#D9B48A"/>
+<circle cx="117" cy="62" r="3.6" fill="#1d1a17"/><circle cx="118.2" cy="60.8" r="1.2" fill="#fff"/>
+<circle cx="117" cy="62" r="8" fill="none" stroke="#3E7FB8" stroke-width="2"/>
+<path d="M125 62 L133 64" stroke="#3E7FB8" stroke-width="2"/>
+<ellipse cx="124" cy="75" rx="5" ry="2.6" fill="#F2A7B4" opacity=".7"/>
+<path d="M58 14 L46 6 L46 22 Z M58 14 L70 6 L70 22 Z" fill="#D9486F"/><circle cx="58" cy="14" r="4" fill="#B8345A"/>
+</svg><p class="bubble">Check yourself: put one or two numbers into your answer. Don’t match? Look for the mistake. Match? Prove it by rewriting.</p></div>
+</div>
+<footer class="site-copy">© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine<small>This site keeps anonymous visit statistics: no cookies and no names.</small></footer>
+<script>
+(function(){
+  var cb=document.getElementById('copyReport');
+  if(!cb||typeof renderReport!=='function'||!navigator.share)return;
+  var uk=document.documentElement.lang==='uk';
+  var b=document.createElement('button');
+  b.type='button';b.className='btn';b.id='shareReport';b.style.background='var(--sky)';
+  b.textContent=uk?'Надіслати звіт':'Send my report';
+  cb.parentNode.insertBefore(b,cb);
+  b.onclick=function(){
+    renderReport();
+    var txt=document.getElementById('reportText').value, fb=document.getElementById('copyFb');
+    navigator.share({title:document.title,text:txt}).then(function(){
+      fb.className='fb good pop';
+      fb.textContent=uk?'Готово! Якщо застосунок ще відкритий, натисни там «Надіслати».':'Done! If the app is still open, tap Send there.';
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;
+      fb.className='fb bad';
+      fb.textContent=uk?'Меню «Поділитися» не відкрилось. Натисни «Скопіювати звіт» і встав текст у повідомлення.':'The share menu didn’t open. Tap "Copy my report" and paste it into a message.';
+    });
+  };
+})();
+</script>
+
+<script>
+(function(){
+  /* own devices: open the site with #nostats once to stop counting this browser, #stats to count again */
+  var SK='skipgc', skip=false;
+  try{
+    if(location.hash==='#nostats')localStorage.setItem(SK,'t');
+    if(location.hash==='#stats')localStorage.removeItem(SK);
+    skip=localStorage.getItem(SK)==='t';
+  }catch(e){}
+  var uk=document.documentElement.lang==='uk';
+  if(location.hash==='#nostats'||location.hash==='#stats'){
+    var n=document.createElement('div');
+    n.textContent=skip?(uk?'Статистику на цьому пристрої вимкнено. Ваші відвідування не рахуються.':'Statistics are off on this device. Your visits are not counted.')
+                      :(uk?'Статистику на цьому пристрої знову ввімкнено.':'Statistics are on again on this device.');
+    n.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;padding:12px 16px;border-radius:12px;background:#26301F;color:#fff;font:700 15px system-ui,sans-serif;text-align:center';
+    document.body.appendChild(n);setTimeout(function(){n.remove()},6000);
+  }
+  if(skip){
+    var f=document.querySelector('.site-copy');
+    if(f){var m=document.createElement('small');m.textContent=uk?'(цей пристрій не враховується)':'(this device is not counted)';f.appendChild(m)}
+    window.ponyaTrack=function(){};return;
+  }
+  var gs=document.createElement('script');gs.async=true;gs.src='//gc.zgo.at/count.js';
+  gs.setAttribute('data-goatcounter','https://varia-math.goatcounter.com/count');document.head.appendChild(gs);
+
+  var parts=location.pathname.replace(/\.html$/,'').split('/').filter(Boolean);
+  var page=parts.slice(-2).join('-')||'index';            // e.g. monomials-uk, math-index
+  var queue=[];
+  function send(name){window.goatcounter.count({path:page+'/'+name,title:name,event:true})}
+  function track(name){
+    try{if(window.goatcounter&&window.goatcounter.count)send(name);else queue.push(name)}catch(e){}
+  }
+  gs.onload=function(){var q=queue;queue=[];q.forEach(function(n){try{send(n)}catch(e){}})};
+  window.ponyaTrack=track;
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,a');if(!t)return;
+    if(t.classList.contains('tab')&&t.dataset.tab)track('tab-'+t.dataset.tab);
+    else if(t.id==='copyReport')track('report-copy');
+    else if(t.id==='shareReport')track('report-send');
+    else if(t.dataset&&t.dataset.w)track('world-'+t.dataset.w);
+    else if(t.tagName==='A'&&/\.pdf$/.test(t.getAttribute('href')||''))track('pdf-'+t.getAttribute('href').replace(/\W+/g,'-'));
+  },true);
+
+  /* every task: solved on the first try, solved after mistakes, and the wrong answers typed (numbers only) */
+  if(typeof window.rec==='function'&&typeof state==='object'&&state&&state.log){
+    var orig=window.rec, wrong={}, sentVals={};
+    function typed(){
+      var panel=document.querySelector('.panel:not([hidden])');if(!panel)return '';
+      var vals=[];
+      panel.querySelectorAll('input').forEach(function(i){
+        if(!i.offsetParent||vals.length>=6)return;
+        var v=String(i.value).trim().replace(/[−–]/g,'-').replace(',','.');
+        vals.push(v===''?'_':(/^-?\d{1,6}(\.\d{1,4})?$/.test(v)?v:'x'));
+      });
+      return vals.join(';');
+    }
+    window.rec=function(key,ok,hint){
+      var done=state.log[key]&&state.log[key].ok;
+      if(!done){
+        if(ok)track('task-'+key+(wrong[key]?'-after-mistakes':'-first-try'));
+        else{
+          if(!wrong[key])track('task-'+key+'-mistake');
+          wrong[key]=(wrong[key]||0)+1;
+          var v=typed();
+          if(v&&!sentVals[key+v]){sentVals[key+v]=1;track('typed-'+key+'/'+v)}
+        }
+      }
+      return orig.apply(this,arguments);
+    };
+  }
+
+  /* a level is finished when its star lights up; the diploma appears after all three */
+  document.querySelectorAll('.star').forEach(function(st){
+    new MutationObserver(function(){if(st.classList.contains('on')&&!st.dataset.seen){st.dataset.seen=1;track('level-done-'+st.id.replace('st-',''))}})
+      .observe(st,{attributes:true,attributeFilter:['class']});
+  });
+  var dip=document.getElementById('diploma');
+  if(dip)new MutationObserver(function(){if(!dip.hidden)track('diploma')}).observe(dip,{attributes:true,attributeFilter:['hidden']});
+})();
+</script>
+</body></html>

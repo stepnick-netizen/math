@@ -9,6 +9,9 @@
 | Відсотки | `percentages/uk.html`, `percentages/en.html` | — |
 | Пропорції | `proportions/uk.html`, `proportions/en.html` | `proportions/cheatsheet-*.html` і `.pdf` |
 | Одночлени | `monomials/uk.html`, `monomials/en.html` | `monomials/cheatsheet-*.html` і `.pdf` |
+| Степені | `powers/uk.html`, `powers/en.html` | `powers/cheatsheet-*.html` і `.pdf` |
+| Суміжні кути | `angles/uk.html`, `angles/en.html` | `angles/cheatsheet-*.html` і `.pdf` |
+| Тотожності й вирази | `identities/uk.html`, `identities/en.html` | `identities/cheatsheet-*.html` і `.pdf` |
 
 Головна сторінка — `index.html` (українською) і `index-en.html` (англійською).
 
