@@ -160,11 +160,11 @@ QUICK = {
     'uk': {'label': 'Розділи сайту', 'items': [
         ('toc', '9.1', 'Уроки', 'зміст і пошук', '#toc'),
         ('fun', '?!', 'Цікавинки', 'історії про математику', 'cikavynky.html'),
-        ('hist', '', 'Історія і культура', 'козаки, науковці, культура', 'education.html')]},
+        ('hist', '', 'Історія і культура', 'козаки, герої, науковці, митці', 'education.html')]},
     'en': {'label': 'Site sections', 'items': [
         ('toc', '9.1', 'Lessons', 'contents and search', '#toc'),
         ('fun', '?!', 'Curiosities', 'stories about maths', 'cikavynky-en.html'),
-        ('hist', '', 'History and culture', 'Cossacks, scientists, culture', 'education-en.html')]},
+        ('hist', '', 'History and culture', 'Cossacks, heroes, scientists, artists', 'education-en.html')]},
 }
 QUICK_CSS = ("/* quick */.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}"
              ".quick a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:9px 12px;box-shadow:0 2px 0 var(--shadow)}"
