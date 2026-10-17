@@ -3,7 +3,8 @@ Facts checked 17.10.2026: Orlyk constitution 5.04.1710 (telegraf.com.ua, histori
 settlements (Encyclopedia of Ukraine), Pokrova / Defenders Day / Cossack Day (Ukrinform), kharakternyky legends (telegraf.com.ua),
 Hinsley (British Academy), Korea (Library of Congress), Estonia (educationestonia.org), literacy 99.97% (2012), MESM 1950,
 Viazovska (Fields 2022), Brave1 (itc.ua), Valuev 1863 / Ems 1876 (Radio Svoboda), schools (Ukrinform, 5.09.2025).
-Also: Berestechko 1651 (zaxid.net), Budapest Memorandum 5.12.1994 (Wikipedia; third-largest arsenal; guarantors RU/US/UK)."""
+Also: Berestechko 1651 (zaxid.net), Budapest Memorandum 5.12.1994 (Wikipedia; third-largest arsenal; guarantors RU/US/UK).
+Rus: Nebelivka ~300 ha (zaxid.net), Danylo crowned 1253 Dorohychyn (zaxid.net), Moscow first mentioned 1147, Kyiv 482 tradition."""
 import math
 from svgkit import text, hand, line, rect, circle, path, svg, width, arrow
 from common import wrap
@@ -138,6 +139,66 @@ def content(lang):
         num[0] += 1
         return num[0]
     h = ''
+    # ---------- 0. Where Ukraine begins
+    h += band(t('Звідки починається Україна', 'Where Ukraine begins'),
+              t('Від трипільців до Київської Русі й короля Данила: наша історія налічує тисячі років.', 'From the Trypillians to Kyivan Rus and King Danylo: our history goes back thousands of years.'), 'b0')
+    h += '<div class="grid">'
+    b = path('M118 22 H202 C204 34 196 40 208 50 C236 70 240 104 220 126 C206 142 196 146 184 150 H136 C124 146 114 142 100 126 C80 104 84 70 112 50 C124 40 116 34 118 22 Z', 'i', 3, 'var(--cell)')
+    for k in range(3):
+        x = 116 + k * 32
+        b += path(f'M{x} 88 c 0 -12 16 -12 16 0 c 0 12 16 12 16 0', 'y', 4)
+        b += circle(x + 8, 86, 3.4, 'var(--yarn)', 'y', 0)
+    b += line(104, 64, 216, 64, 'i', 2) + line(100, 112, 220, 112, 'i', 2)
+    b += cap(160, 176, t('спіраль, що повторюється по колу', 'a spiral repeating all the way round'), 20, 'm')
+    h += card(nx(), '', t('Трипілля', 'Trypillia'),
+              t('Від семи до п’яти тисяч років тому на нашій землі жили трипільці. Вони будували величезні поселення: Небелівка на Кіровоградщині займала близько 300 гектарів — одне з найбільших поселень тодішньої Європи.',
+                'Between seven and five thousand years ago the Trypillians lived on our land. They built huge settlements: Nebelivka in the Kirovohrad region covered about 300 hectares, one of the largest settlements in Europe at the time.'),
+              svg(320, 186, b, t('трипільський глечик', 'Trypillian pot')),
+              t('Трипільці прикрашали глечики спіралями, що повторюються по колу. Повтор і симетрія — та сама математика, що й у вишиванці.',
+                'Trypillians decorated their pots with spirals that repeat all the way round. Repetition and symmetry: the same maths as in Ukrainian embroidery.'))
+    b = path('M30 92 C46 60 62 60 78 92 Z M64 92 C82 50 102 50 120 92 Z', 'i', 0, 'var(--ink)')
+    b += line(30, 100, 290, 100, 'i', 3) + circle(60, 100, 7, 'var(--yarn)', 'y', 0) + circle(276, 100, 7, 'var(--ink)', 'i', 0)
+    b += text(60, 128, '482', 20, 'y', 'd', 'middle') + text(276, 128, '1147', 20, 'i', 'd', 'middle')
+    b += cap(60, 150, t('Київ', 'Kyiv'), 18, 'm') + cap(276, 150, t('Москва', 'Moscow'), 18, 'm')
+    b += arrow(70, 86, 266, 86, 'y', -0.18, 2.6) + text(170, 40, t('665 років', '665 years'), 20, 'y', 'd', 'middle')
+    h += card(nx(), 'gold', t('Київ старший за Москву на 665 років', 'Kyiv is 665 years older than Moscow'),
+              t('За переказом, Київ заснували брати Кий, Щек і Хорив та їхня сестра Либідь. За традицією історію міста відлічують від 482 року: у 1982 році Київ святкував 1500-річчя.',
+                'Legend says Kyiv was founded by the brothers Kyi, Shchek and Khoryv and their sister Lybid. By tradition the city counts its history from 482: in 1982 Kyiv celebrated its 1,500th anniversary.'),
+              svg(320, 160, b, '1147 − 482 = 665'),
+              t('Москву вперше згадали в літописі в 1147 році. Порахуй: 1147 − 482 = 665. Тож Русь — це Київ, і її історія — наша історія.',
+                'Moscow was first mentioned in a chronicle in 1147. Work it out: 1147 − 482 = 665. So Rus is Kyiv, and its history is our history.'))
+    b = rect(76, 92, 168, 56, 'var(--ink)', 'i', 0, 2)
+    for x, w_, hgt in ((160, 30, 62), (110, 20, 44), (210, 20, 44), (88, 14, 30), (232, 14, 30)):
+        b += rect(x - w_ / 2, 92 - hgt + w_ / 2, w_, hgt - w_ / 2, 'var(--ink)', 'i', 0, 0) + circle(x, 92 - hgt + w_ / 2, w_ / 2, 'var(--hay)', 'i', 0)
+        b += line(x, 92 - hgt, x, 92 - hgt - 12, 'h', 2.5)
+    for x in range(96, 236, 22):
+        b += rect(x, 110, 8, 22, 'var(--cell)', 'i', 0, 4)
+    b += cap(160, 172, t('Софія Київська, XI століття', 'St Sophia’s, Kyiv, 11th century'), 20, 'm')
+    h += card(nx(), 'blue', t('Київська Русь і Ярослав Мудрий', 'Kyivan Rus and Yaroslav the Wise'),
+              t('Київська Русь була однією з найбільших держав Європи. У 988 році князь Володимир хрестив Русь, а його син Ярослав Мудрий дав їй «Руську правду» — перший писаний звід законів.',
+                'Kyivan Rus was one of the largest states in Europe. In 988 Prince Volodymyr baptised Rus, and his son Yaroslav the Wise gave it the Ruska Pravda, its first written code of laws.'),
+              svg(320, 182, b, t('Софія Київська', 'St Sophia’s Cathedral')),
+              t('Ярослав збудував Софійський собор і, за літописом, зібрав при ньому бібліотеку. Софія Київська стоїть уже майже тисячу років і внесена до Списку всесвітньої спадщини ЮНЕСКО.',
+                'Yaroslav built St Sophia’s Cathedral and, the chronicle says, gathered a library there. St Sophia’s has stood for almost a thousand years and is a UNESCO World Heritage Site.'))
+    b = text(160, 70, 'АНА РЪИНА', 34, 'i', 'd', 'middle') + line(60, 86, 260, 86, 'y', 4)
+    b += cap(160, 120, t('«Анна королева» — підпис кирилицею', '"Anna the queen", signed in Cyrillic'), 20, 'm')
+    h += card(nx(), '', t('Анна Ярославна — королева Франції', 'Anna of Kyiv, Queen of France'),
+              t('Дочка Ярослава Мудрого Анна вийшла заміж за короля Франції Генріха I і стала французькою королевою. На одній французькій грамоті вона підписалася кирилицею.',
+                'Yaroslav the Wise’s daughter Anna married King Henry I of France and became Queen of France. On one French charter she signed her name in Cyrillic.'),
+              svg(320, 134, b, 'АНА РЪИНА'),
+              t('Освічені київські князівни були бажаними нареченими в Європі: доньки Ярослава стали королевами Франції, Норвегії й Угорщини.',
+                'Educated princesses from Kyiv were sought-after brides across Europe: Yaroslav’s daughters became queens of France, Norway and Hungary.'))
+    b = path('M100 110 L92 52 L124 80 L160 40 L196 80 L228 52 L220 110 Z', 'i', 3, 'var(--hay)') + rect(96, 110, 128, 18, 'var(--ink)', 'i', 0, 3)
+    for x, c in ((92, 'var(--yarn)'), (160, 'var(--sky)'), (228, 'var(--yarn)')):
+        b += circle(x, 50 if x != 160 else 38, 7, c, 'i', 0)
+    b += text(160, 162, '1253', 24, 'y', 'd', 'middle') + cap(160, 188, t('король Русі', 'King of Rus'), 21, 'm')
+    h += card(nx(), 'gold wide', t('Данило — король Русі', 'Danylo, King of Rus'),
+              t('У 1253 році в Дорогичині князь Данило Романович отримав корону від папи римського й став королем Русі.',
+                'In 1253 in Dorohychyn, Prince Danylo Romanovych received a crown from the Pope and became King of Rus.'),
+              svg(320, 196, b, t('корона 1253', 'crown 1253')),
+              t('Галицько-Волинська держава берегла традиції Русі аж до середини XIV століття. Від неї тягнеться нитка до козаків, а від козаків — до нас.',
+                'The Galicia-Volhynia state kept the traditions of Rus alive until the middle of the 14th century. From it a thread runs to the Cossacks, and from the Cossacks to us.'))
+    h += '</div>'
     # ---------- I. Cossacks
     h += band(t('Козацький рід', 'Cossack roots'), t('Звідки ми і чому нам є ким пишатися.', 'Where we come from, and why we have people to be proud of.'), 'b1')
     h += '<div class="grid">'
@@ -463,7 +524,7 @@ def page(kind, lang, links):
     title = t('Ми — козацького роду · Математична пасіка', 'Of Cossack Kin · The Maths Apiary')
     lk = ' · '.join(f'<a href="{h}">{n}</a>' for n, h in links if h)
     body = (f'<div class="page">\n <header class="head"><div class="htext"><h1>{t("Ми — <span>козацького роду</span>", "Of <span>Cossack kin</span>")}</h1>'
-            f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, обіцянки, що нас не захистили, наша культура і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, promises that did not protect us, our culture, and why education has always been our strength.")}</p>'
+            f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: Трипілля й Київська Русь, козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, обіцянки, що нас не захистили, наша культура і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Trypillia and Kyivan Rus, Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, promises that did not protect us, our culture, and why education has always been our strength.")}</p>'
             f'<p class="links">{lk}</p></div>{kozak(uid='kz1')}</header>\n{content(lang)}\n</div>')
     html = wrap(kind, lang, title, [CSS], body, '')
     # this page has its own palette: drop the meadow site stylesheet colours by placing ours last, and add the display fonts

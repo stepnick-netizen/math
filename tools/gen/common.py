@@ -111,11 +111,11 @@ def hist_banner(href, lang):
     """the 'separate section' banner that leads to the history and culture page (styles: /* history banner */ in base.css)."""
     if lang == 'uk':
         k, t, s, c = ('Окремий розділ сайту', 'Історія і культура України',
-                      'Козаки й характерники, Будапештський меморандум, Корольов і Кондратюк, Шевченко, «Щедрик», Примаченко',
+                      'Трипілля й Київська Русь, козаки, Будапештський меморандум, Корольов, Шевченко, «Щедрик», Примаченко',
                       'Тисни і дізнайся')
     else:
         k, t, s, c = ('A separate section of this site', 'Ukraine’s history and culture',
-                      'Cossacks and kharakternyky, the Budapest Memorandum, Korolyov and Kondratyuk, Shevchenko, Shchedryk, Prymachenko',
+                      'Trypillia and Kyivan Rus, the Cossacks, the Budapest Memorandum, Korolyov, Shevchenko, Shchedryk, Prymachenko',
                       'Tap to find out')
     return (f'<a class="hist-banner" href="{href}"><span class="hb-medal" aria-hidden="true"></span><span class="hb-text">'
             f'<span class="hb-kicker">{k}</span><span class="hb-title">{t}</span><span class="hb-sub">{s}</span>'
