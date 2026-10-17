@@ -70,6 +70,10 @@ h1 span{color:var(--yarn)}
 .memrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 28px}.memrow .viz{flex:1 1 260px;max-width:340px}
 .vow{font-family:var(--display);font-size:clamp(24px,5.4vw,34px);line-height:1.25;margin:0;flex:0 1 auto}.vow span{color:#FF5A66}
 .big{font-family:var(--display);font-size:clamp(28px,6vw,40px);color:var(--yarn)}
+/* page sections: small chips under the header */
+.sec-nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.sec-nav span{font:800 13px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sec-nav a{font:700 14.5px var(--body);color:var(--ink);text-decoration:none;background:var(--paper);border:1.5px solid var(--line);border-left:4px solid var(--yarn);border-radius:10px;padding:6px 11px}
+.sec-nav a:hover{border-color:var(--yarn)}.band{scroll-margin-top:12px}
 .site-home{max-width:920px;margin:0 auto;padding-top:12px;font:700 15px var(--body)}.site-home a{color:var(--sky);text-decoration:none}
 .site-copy{max-width:920px;margin:0 auto;padding-block:14px 28px;border-top:1px solid var(--line);font:14px/1.5 var(--body);color:var(--muted);text-align:center}.site-copy small{display:block;font-size:12px;opacity:.8;margin-top:2px}
 """
@@ -128,7 +132,18 @@ def card(n, cls, h3, p, sv='', tail='', extra=''):
 
 
 def band(title, sub, uid):
-    return f'<div class="band wide">{ornament(uid)}<h2>{title}</h2><p>{sub}</p></div>'
+    return f'<div class="band wide" id="s-{uid}">{ornament(uid)}<h2>{title}</h2><p>{sub}</p></div>'
+
+
+SECNAV = [('b0', 'Початки', 'Beginnings'), ('b1', 'Козаки', 'Cossacks'), ('b2', 'Нас нищили', 'They tried to destroy us'),
+          ('b2b', 'Ми боролися', 'We fought back'), ('b3s', 'Науковці', 'Scientists'), ('b3c', 'Культура', 'Culture'),
+          ('b3e', 'Освіта', 'Education'), ('b4', 'Сучасні козаки', 'Cossacks today')]
+
+
+def secnav(lang):
+    t = (lambda uk, en: uk if lang == 'uk' else en)
+    return (f'<nav class="sec-nav" aria-label="{t("Розділи сторінки", "Sections of this page")}"><span>{t("Розділи:", "Sections:")}</span>'
+            + ''.join(f'<a href="#s-{u}">{uk if lang == "uk" else en}</a>' for u, uk, en in SECNAV) + '</nav>')
 
 
 def content(lang):
@@ -684,8 +699,8 @@ def page(kind, lang, links):
     title = t('Ми — козацького роду · Математична пасіка', 'Of Cossack Kin · The Maths Apiary')
     lk = ' · '.join(f'<a href="{h}">{n}</a>' for n, h in links if h)
     body = (f'<div class="page">\n <header class="head"><div class="htext"><h1>{t("Ми — <span>козацького роду</span>", "Of <span>Cossack kin</span>")}</h1>'
-            f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: Трипілля й Київська Русь, козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, обіцянки, що нас не захистили, наша культура і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Trypillia and Kyivan Rus, Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, promises that did not protect us, our culture, and why education has always been our strength.")}</p>'
-            f'<p class="links">{lk}</p></div>{kozak(uid='kz1')}</header>\n{content(lang)}\n</div>')
+            f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: Трипілля й Київська Русь, козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, і як ми боролися й перемагали, обіцянки, що нас не захистили, наша культура і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Trypillia and Kyivan Rus, Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy and how we fought back and won, promises that did not protect us, our culture, and why education has always been our strength.")}</p>'
+            f'<p class="links">{lk}</p></div>{kozak(uid='kz1')}</header>\n{secnav(lang)}\n{content(lang)}\n</div>')
     html = wrap(kind, lang, title, [CSS], body, '')
     # this page has its own palette: drop the meadow site stylesheet colours by placing ours last, and add the display fonts
     html = html.replace('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa', FONTS_EXTRA + '\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa', 1)

@@ -156,6 +156,24 @@ def put_css(s, css, marker):
     return s[:i] + css + s[i:]
 
 
+QUICK = {
+    'uk': {'label': 'Розділи сайту', 'items': [
+        ('toc', '9.1', 'Уроки', 'зміст і пошук', '#toc'),
+        ('fun', '?!', 'Цікавинки', 'історії про математику', 'cikavynky.html'),
+        ('hist', '★', 'Історія і культура', 'козаки, науковці, культура', 'education.html')]},
+    'en': {'label': 'Site sections', 'items': [
+        ('toc', '9.1', 'Lessons', 'contents and search', '#toc'),
+        ('fun', '?!', 'Curiosities', 'stories about maths', 'cikavynky-en.html'),
+        ('hist', '★', 'History and culture', 'Cossacks, scientists, culture', 'education-en.html')]},
+}
+QUICK_CSS = ("/* quick */.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}"
+             ".quick a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:9px 12px;box-shadow:0 2px 0 var(--shadow)}"
+             ".quick a:hover{border-color:var(--hay)}.quick b{display:block;font:700 16px var(--display)}.quick small{display:block;color:var(--muted);font:600 13px var(--body)}"
+             ".q-ic{flex:none;width:38px;height:43px;display:grid;place-items:center;font:700 14px var(--display);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}"
+             "@media (max-width:480px){.quick{gap:6px}.quick a{padding:6px 10px}.quick small{display:none}.q-ic{width:30px;height:34px;font-size:12px}}"
+             ".q-toc .q-ic{background:var(--hay);color:#2A1E00}.q-fun .q-ic{background:var(--marker);color:var(--marker-ink)}.q-hist .q-ic{background:#B3202E;color:#F2C94C;font-size:18px}")
+
+
 def do_index(lang):
     p = ROOT / ('index.html' if lang == 'uk' else 'index-en.html')
     s = p.read_text()
@@ -165,6 +183,15 @@ def do_index(lang):
     s = re.sub(r'\s*<section class="topics">.*?</section>', '', s, count=1, flags=re.S)
     k = s.index('</header>') + len('</header>')
     s = s[:k] + '\n ' + block + s[k:]
+    # small quick links right under the hero, so the separate sections are visible at once
+    s = re.sub(r'\s*<!--quick-->.*?<!--/quick-->', '', s, flags=re.S)
+    q = QUICK[lang]
+    quick = ('<!--quick--><nav class="quick" aria-label="' + q['label'] + '">'
+             + ''.join(f'<a href="{href}" class="q-{cls}"><span class="q-ic" aria-hidden="true">{ic}</span><span><b>{name}</b><small>{sub}</small></span></a>'
+                       for cls, ic, name, sub, href in q['items']) + '</nav><!--/quick-->')
+    k = s.index('</header>') + len('</header>')
+    s = s[:k] + '\n ' + quick + s[k:]
+    s = put_style(s, 'quick', QUICK_CSS, legacy=[])
     s = put_style(s, 'toc', CSS, legacy=['toc'])
     s = re.sub(r'<script>/\* toc \*/.*?</script>', '', s, flags=re.S)
     j = s.rindex('</body>')
