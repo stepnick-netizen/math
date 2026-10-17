@@ -64,6 +64,10 @@ h1 span{color:var(--yarn)}
 .tl{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:15.5px}.tl b{color:var(--yarn)}
 .anthem{font-family:var(--title);font-size:20px;line-height:1.4;border-left:4px solid var(--yarn);padding-left:14px;margin:4px 0}
 .final{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}.final .kozak{width:140px;margin:0}.final>div{flex:1 1 280px;min-width:0;display:grid;gap:8px}
+.box.mem{background:#1A1512;color:#F3EEE3;border-color:#1A1512;border-top:6px solid var(--yarn);--ink:#F3EEE3;--muted:#CDBFAA;--paper:#2A221B;--cell:#2A221B}
+.box.mem .tail{color:#E4D8C6}.box.mem .n{background:var(--yarn)}
+.memrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 28px}.memrow .viz{flex:1 1 260px;max-width:340px}
+.vow{font-family:var(--display);font-size:clamp(24px,5.4vw,34px);line-height:1.25;margin:0;flex:0 1 auto}.vow span{color:#FF5A66}
 .big{font-family:var(--display);font-size:clamp(28px,6vw,40px);color:var(--yarn)}
 .site-home{max-width:920px;margin:0 auto;padding-top:12px;font:700 15px var(--body)}.site-home a{color:var(--sky);text-decoration:none}
 .site-copy{max-width:920px;margin:0 auto;padding-block:14px 28px;border-top:1px solid var(--line);font:14px/1.5 var(--body);color:var(--muted);text-align:center}.site-copy small{display:block;font-size:12px;opacity:.8;margin-top:2px}
@@ -80,25 +84,31 @@ def ornament(uid='o'):
 
 
 def kozak(cls='kozak', uid='kz'):
-    """a stern Cossack medallion in linocut style: black profile bust with oseledets and long moustache,
-    a sabre behind, on a red disc in a gold ring; everything clipped to the circle so it works in dark mode too."""
-    ink = 'var(--sil)'
+    """a stern Cossack medallion in linocut style: black profile bust with oseledets and a long moustache drawn as
+    hair (red engraved strands), a sabre behind, on a red disc in a gold ring; clipped to the circle so it works in dark mode."""
+    ink, red = 'var(--sil)', 'var(--yarn)'
+    face = ("M100 36 C116 36 132 44 138 58 L142 70 L140 77 L157 97 C158 100 154 102 147 102 "
+            "C153 112 156 134 152 158 C151 166 149 172 146 180 C144 168 142 152 139 141 "
+            "C136 141 128 141 116 140 L118 152 L120 160 C140 164 166 172 180 190 C188 202 190 216 190 230 "
+            "L12 230 C12 214 14 196 26 182 C38 168 58 160 76 152 L74 120 C64 108 58 92 60 72 C62 50 80 36 100 36 Z")
+    lock = ("M104 40 C98 26 80 20 66 28 C54 36 50 52 54 66 C58 80 66 90 70 104 "
+            "C72 96 68 84 62 72 C58 60 60 44 70 38 C80 32 92 34 98 42 Z")
+    strands = ''.join(f'<path d="M{147 - k * 1.5} {104 + k * 2} C{151 - k * 2} 116 {152 - k * 2.5} 136 {148 - k * 2.5} {160 + k * 2}" '
+                      f'stroke="{red}" stroke-width="1.4" fill="none" opacity=".85"/>' for k in range(3))
     return (f'<svg viewBox="0 0 200 200" class="{cls}" role="img" aria-label="козак">'
             f'<defs><clipPath id="{uid}"><circle cx="100" cy="100" r="92"/></clipPath></defs>'
-            f'<circle cx="100" cy="100" r="96" fill="var(--hay)"/><circle cx="100" cy="100" r="92" fill="var(--yarn)"/>'
+            f'<circle cx="100" cy="100" r="96" fill="var(--hay)"/><circle cx="100" cy="100" r="92" fill="{red}"/>'
             f'<g clip-path="url(#{uid})" transform="translate(0 -8)">'
             f'<path d="M40 204 C18 146 20 76 60 14 C40 76 38 140 54 200 Z" fill="{ink}"/>'
             f'<path d="M30 204 L62 196" stroke="{ink}" stroke-width="7" stroke-linecap="round"/>'
-            f'<path fill="{ink}" d="M100 36 C116 36 132 44 138 58 L142 70 L140 77 L157 97 C158 100 154 101 146 101 L147 106 L143 110 L147 115 L148 128 C147 136 142 140 134 140 L114 139 L118 152 L120 160 C140 164 166 172 180 190 C188 202 190 216 190 230 L12 230 C12 214 14 196 26 182 C38 168 58 160 76 152 L74 120 C64 108 58 92 60 72 C62 50 80 36 100 36 Z"/>'
-            '<g fill="none" stroke-linecap="round">'
-            '<path d="M102 37 C92 22 66 22 58 42 C52 58 60 74 72 84 C80 90 84 96 82 106" stroke="var(--yarn)" stroke-width="12"/>'
-            f'<path d="M102 37 C92 22 66 22 58 42 C52 58 60 74 72 84 C80 90 84 96 82 106" stroke="{ink}" stroke-width="7"/></g>'
-            f'<path d="M146 101 C160 106 162 126 158 152 C156 164 152 174 148 182 C148 164 148 144 144 130 C141 120 136 114 130 112 Z" fill="{ink}" stroke="var(--yarn)" stroke-width="2" stroke-linejoin="round"/>'
-            '<path d="M112 66 L140 63" stroke="var(--yarn)" stroke-width="4" stroke-linecap="round"/>'
-            '<path d="M124 76 L136 75" stroke="var(--yarn)" stroke-width="2.6" stroke-linecap="round"/>'
-            '<path d="M98 84 C93 86 93 98 98 101" stroke="var(--yarn)" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
-            '<path d="M56 178 C76 200 100 206 124 202 C146 198 160 188 168 178" stroke="var(--hay)" stroke-width="4" fill="none"/>'
-            '<path d="M112 204 V230" stroke="var(--hay)" stroke-width="3"/></g></svg>')
+            f'<path fill="{ink}" d="{face}"/>'
+            f'<path d="M139 141 C141 128 140 116 142 106" stroke="{red}" stroke-width="2" fill="none" stroke-linecap="round"/>{strands}'
+            f'<path d="{lock}" fill="{ink}" stroke="{red}" stroke-width="2.4" stroke-linejoin="round"/>'
+            f'<path d="M98 40 C88 30 72 32 64 44 C58 56 60 70 66 82" stroke="{red}" stroke-width="1.3" fill="none" opacity=".8"/>'
+            f'<path d="M112 66 L140 63" stroke="{red}" stroke-width="4" stroke-linecap="round"/>'
+            f'<path d="M124 76 L136 75" stroke="{red}" stroke-width="2.6" stroke-linecap="round"/>'
+            f'<path d="M98 84 C93 86 93 98 98 101" stroke="{red}" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+            '<path d="M56 178 C76 200 100 206 124 202 C146 198 160 188 168 178" stroke="var(--hay)" stroke-width="4" fill="none"/></g></svg>')
 
 
 def big(num, label, col='y', w=320, sub=None):
@@ -258,12 +268,13 @@ def content(lang):
     b += path('M112 14 L150 60 L138 76 L182 104 L172 116 L210 138', 'y', 5)
     b += text(256, 92, '2014', 24, 'y', 'd', 'middle')
     b += cap(160, 164, t('підпис на папері сам не захищає', 'a signature on paper does not protect on its own'), 20, 'm')
-    h += card(nx(), 'wide', t('Будапештський меморандум, 1994', 'The Budapest Memorandum, 1994'),
+    vow = t('Нам обіцяли.<br>Нас заспокоювали.<br><span>Ми пам’ятаємо.</span>', 'They promised us.<br>They reassured us.<br><span>We remember.</span>')
+    h += card(nx(), 'wide mem', t('Будапештський меморандум: нам обіцяли', 'The Budapest Memorandum: they promised us'),
               t('5 грудня 1994 року Україна погодилася віддати ядерну зброю, яка лишилася на її землі від СРСР, — третій за розміром ядерний арсенал у світі. Натомість Росія, США й Велика Британія підписали обіцянку поважати незалежність і кордони України й не застосовувати проти неї силу.',
                 'On 5 December 1994 Ukraine agreed to give up the nuclear weapons left on its soil by the USSR, the third-largest nuclear arsenal in the world. In return, Russia, the US and the UK signed a promise to respect Ukraine’s independence and borders and not to use force against it.'),
-              svg(320, 176, b, t('Будапештський меморандум', 'Budapest Memorandum')),
-              t('У 2014 році Росія порушила свій підпис: окупувала Крим і почала війну на Донбасі. Висновок той самий, що й у козаків під Берестечком: підпис на папері сам не захищає. Захищають власна армія, власні інженери й власні знання.',
-                'In 2014 Russia broke its signature: it occupied Crimea and started the war in Donbas. The lesson is the same as the Cossacks learned at Berestechko: a signature on paper does not protect on its own. What protects us is our own army, our own engineers and our own knowledge.'))
+              f'<div class="memrow">{svg(320, 176, b, t("Будапештський меморандум", "Budapest Memorandum"))}<p class="vow">{vow}</p></div>',
+              t('Це були лише запевнення, а не обов’язок нас захищати: нас заспокоювали словами. У 2014 році Росія напала, хоча сама поставила підпис під цією обіцянкою, і жодна з держав, що підписали меморандум, не захистила наших кордонів. Висновок той самий, що й у козаків під Берестечком: підпис на папері сам не захищає. Захищають власна армія, власні інженери й власні знання. Ми пам’ятаємо.',
+                'These were only assurances, not a duty to defend us: we were reassured with words. In 2014 Russia attacked, although it had signed that very promise itself, and none of the states that signed the memorandum defended our borders. The lesson is the same as the Cossacks learned at Berestechko: a signature on paper does not protect on its own. What protects us is our own army, our own engineers and our own knowledge. We remember.'))
     h += '</div>'
     # ---------- III. Ukrainian scientists
     h += band(t('Українські науковці, що змінили світ', 'Ukrainian scientists who changed the world'),
@@ -317,6 +328,80 @@ def content(lang):
               t('Над тим, як найщільніше укласти кулі, математики думали понад 400 років, ще з часів Кеплера. Марина довела відповідь для 8-вимірного простору.',
                 'Mathematicians have wondered how to pack spheres as tightly as possible for over 400 years, since Kepler. Maryna proved the answer in 8 dimensions.'))
     h += '</div>'
+    # ---------- Culture
+    h += band(t('Наша культура — теж наша сила', 'Our culture is our strength too'),
+              t('Те, що створили українці, знає весь світ. Саме тому окупанти нищать наші музеї, бібліотеки й книжки.',
+                'The whole world knows what Ukrainians have created. That is exactly why the occupiers destroy our museums, libraries and books.'), 'b3c')
+    h += '<div class="grid">'
+    b = rect(96, 14, 104, 128, 'var(--cell)', 'i', 3, 4) + line(108, 14, 108, 142, 'i', 2)
+    b += text(152, 64, t('КОБЗАР', 'KOBZAR'), 17, 'i', 'd', 'middle') + text(152, 104, '1840', 22, 'y', 'd', 'middle')
+    b += path('M252 14 C236 40 222 80 214 136 C226 96 244 60 262 22 Z', 'i', 0, 'var(--ink)') + line(214, 136, 208, 150, 'i', 2.5)
+    b += cap(160, 172, t('1814: народився кріпаком · 1840: «Кобзар»', '1814: born a serf · 1840: Kobzar'), 20, 'm')
+    h += card(nx(), '', t('Тарас Шевченко', 'Taras Shevchenko'),
+              t('Народився кріпаком у 1814 році. У 1838 році друзі-митці викупили його на волю, а в 1840 році вийшов його «Кобзар». Шевченко був ще й художником.',
+                'He was born a serf in 1814. In 1838 artist friends bought his freedom, and in 1840 his Kobzar was published. Shevchenko was a painter too.'),
+              svg(320, 182, b, t('Кобзар 1840', 'Kobzar 1840')),
+              t('За вірші імперія відправила його на заслання в солдати й заборонила писати й малювати. Він однаково писав. Його слова й досі з нами: «Борітеся — поборете!»',
+                'For his poems the empire sent him into exile as a soldier and banned him from writing and painting. He wrote anyway. His words are still with us: "Fight on, and you will win!"'))
+    b = rect(70, 12, 180, 118, 'var(--sil)', 'i', 0, 8) + rect(150, 74, 20, 50, '#F3EEE3', 'i', 0, 2)
+    b += path('M160 72 C150 60 154 48 160 36 C166 48 170 60 160 72 Z', 'h', 0, 'var(--hay)')
+    b += ''.join(circle(x, y, 1.6, '#F3EEE3', 'i', 0) for x, y in ((92, 30), (118, 52), (214, 28), (232, 60), (200, 46), (96, 92)))
+    b += cap(160, 158, 'Contra spem spero!', 24, 'y')
+    h += card(nx(), 'blue', t('Леся Українка', 'Lesya Ukrainka'),
+              t('З дитинства тяжко хворіла, але знала багато мов, писала вірші, драми й переклади.',
+                'She was seriously ill from childhood, yet she knew many languages and wrote poems, plays and translations.'),
+              svg(320, 172, b, 'Contra spem spero'),
+              t('У 19 років вона написала вірш «Contra spem spero!» — «Без надії сподіваюсь!». Це про нас: навіть у темряві ми не здаємося.',
+                'At 19 she wrote the poem "Contra spem spero!", "Against hope I hope!". That is us: even in the dark, we do not give up.'))
+    b = ''.join(line(24, y, 296, y, 'm', 1.5) for y in (40, 50, 60, 70, 80))
+    for k, (dy) in enumerate([60, 65, 60, 70] * 2):
+        x = 52 + k * 32
+        b += f'<ellipse cx="{x}" cy="{dy}" rx="6.5" ry="5" transform="rotate(-20 {x} {dy})" fill="var(--ink)"/>' + line(x + 6, dy, x + 6, dy - 30, 'i', 2)
+    b += path('M40 98 H164', 'y', 3) + path('M168 98 H292', 'y', 3, dash='6 5')
+    b += cap(160, 126, t('чотири ноти по колу — як візерунок', 'four notes round and round, like a pattern'), 20, 'm')
+    b += text(160, 156, t('1916 Київ → 1922 Нью-Йорк', '1916 Kyiv → 1922 New York'), 16, 'y', 'd', 'middle')
+    h += card(nx(), 'gold', t('Микола Леонтович і «Щедрик»', 'Mykola Leontovych and Shchedryk'),
+              t('У 1916 році в Києві вперше прозвучав «Щедрик» Леонтовича. 5 жовтня 1922 року хор Олександра Кошиця заспівав його в Карнегі-Холі в Нью-Йорку.',
+                'In 1916 Leontovych’s Shchedryk was first performed in Kyiv. On 5 October 1922 Oleksandr Koshyts’s choir sang it at Carnegie Hall in New York.'),
+              svg(320, 166, b, t('ноти Щедрика', 'Shchedryk notes')),
+              t('Тепер увесь світ співає його на Різдво як «Carol of the Bells». А самого Леонтовича в 1921 році вбив агент радянської ЧК.',
+                'Now the whole world sings it at Christmas as "Carol of the Bells". Leontovych himself was killed in 1921 by an agent of the Soviet secret police, the Cheka.'))
+    b = rect(110, 8, 100, 100, '#F3EEE3', 'i', 2.5, 2) + rect(124, 22, 72, 72, '#1A1512', 'i', 0, 0)
+    b += text(160, 138, '1915', 22, 'i', 'd', 'middle') + cap(160, 166, t('квадрат — теж мистецтво', 'a square can be art'), 20, 'm')
+    h += card(nx(), '', t('Казимир Малевич', 'Kazimir Malevich'),
+              t('Народився в Києві у 1879 році. У 1915 році показав «Чорний квадрат» — картину, з якої почався новий напрям у мистецтві.',
+                'Born in Kyiv in 1879. In 1915 he showed his Black Square, the painting that started a new movement in art.'),
+              svg(320, 176, b, t('Чорний квадрат', 'Black Square')),
+              t('Він доводив, що з простих фігур — квадрата, кола, хреста — можна будувати цілі світи. Геометрія, яку ти вчиш, — теж мова мистецтва.',
+                'He showed that whole worlds can be built from simple shapes: a square, a circle, a cross. The geometry you learn is a language of art too.'))
+    b = rect(100, 10, 120, 96, 'var(--cell)', 'i', 4, 2) + line(160, 92, 160, 56, 'l', 3)
+    for k in range(6):
+        a_ = math.radians(k * 60)
+        b += f'<ellipse cx="{160 + 13 * math.cos(a_):.1f}" cy="{46 + 13 * math.sin(a_):.1f}" rx="9" ry="5" transform="rotate({k * 60} {160 + 13 * math.cos(a_):.1f} {46 + 13 * math.sin(a_):.1f})" fill="var(--yarn)"/>'
+    b += circle(160, 46, 6, 'var(--hay)', 'i', 0)
+    for x in (112, 140, 168, 196):
+        b += path(f'M{x} 136 C{x - 8} 126 {x - 2} 116 {x + 6} 108 C{x + 8} 118 {x + 18} 124 {x + 12} 136 Z', 'y', 0, 'var(--yarn)')
+        b += path(f'M{x + 3} 136 C{x} 130 {x + 3} 124 {x + 6} 120 C{x + 8} 126 {x + 11} 130 {x + 9} 136 Z', 'h', 0, 'var(--hay)')
+    b += cap(160, 164, t('25 лютого 2022: картини винесли з вогню', '25 February 2022: paintings carried out of the fire'), 20, 'm')
+    h += card(nx(), 'gold', t('Марія Примаченко', 'Maria Prymachenko'),
+              t('Художниця із села Болотня на Київщині, малювала дивовижних звірів і квіти. 2009 рік ЮНЕСКО оголосило роком Марії Примаченко.',
+                'An artist from the village of Bolotnia near Kyiv who painted wondrous beasts and flowers. UNESCO named 2009 the Year of Maria Prymachenko.'),
+              svg(320, 174, b, t('врятовані картини', 'rescued paintings')),
+              t('25 лютого 2022 року російський снаряд підпалив музей в Іванкові. Місцеві чоловіки виламали ґрати на вікні й винесли її картини з вогню. Нашу культуру намагаються спалити, а ми її рятуємо.',
+                'On 25 February 2022 a Russian shell set the museum in Ivankiv on fire. Local men broke the bars on a window and carried her paintings out of the flames. They try to burn our culture, and we save it.'))
+    cols = ['var(--yarn)', 'var(--sky)', 'var(--hay)', 'var(--leaf)', 'var(--ink)', 'var(--yarn)', 'var(--hay)', 'var(--sky)', 'var(--leaf)']
+    b = ''
+    for k in range(9):
+        x, y = 112 + (k % 3) * 34, 8 + (k // 3) * 34
+        b += rect(x, y, 30, 30, 'var(--cell)', 'i', 2, 2) + circle(x + 15, y + 15, 9, cols[k], 'i', 0)
+    b += text(160, 136, '3 × 3 = 3² = 9', 20, 'y', 'd', 'middle') + cap(160, 164, t('повтор — це множення', 'repeating is multiplying'), 20, 'm')
+    h += card(nx(), 'blue', t('Енді Воргол', 'Andy Warhol'),
+              t('Король поп-арту, народився в 1928 році в Піттсбурзі (США). Його батьки — русини з карпатського села Мікова (нині Словаччина), з тих самих Карпат, що й наші лемки.',
+                'The king of pop art, born in 1928 in Pittsburgh, USA. His parents were Rusyns from the Carpathian village of Miková (now in Slovakia), the same Carpathians as our Lemkos.'),
+              svg(320, 174, b, '3 x 3'),
+              t('Він повторював одне зображення рядами в різних кольорах: 3 рядки по 3 — це 9 картинок. Повтор і множення — та сама математика, що й у степенях.',
+                'He repeated one image in rows, in different colours: 3 rows of 3 make 9 pictures. Repeating and multiplying: the same maths as in powers.'))
+    h += '</div>'
     # ---------- III. Education makes nations strong
     h += band(t('Освіта робить країни сильними', 'Education makes nations strong'), t('Справжні історії з інших країн.', 'True stories from other countries.'), 'b3e')
     h += '<div class="grid">'
@@ -368,7 +453,7 @@ def content(lang):
     h += (f'<section class="box key wide"><span class="n">{nx()}</span><h3>{t("Ми — нащадки козаків", "We are the descendants of the Cossacks")}</h3>'
           f'<div class="final">{kozak(uid='kz2')}<div>'
           f'<p class="anthem">{anthem}</p><p class="tail">{t("Державний Гімн України, слова Павла Чубинського", "National Anthem of Ukraine, words by Pavlo Chubynsky")}</p>'
-          f'<p><b>{t("Нас намагалися знищити сотні років — а ми тут. Ми вижили. Ми є. Ми вчимося, творимо й захищаємо одне одного. Кожен урок, навіть в укритті чи онлайн, робить Україну сильнішою.", "They tried to destroy us for hundreds of years, and we are still here. We survived. We exist. We learn, create and protect one another. Every lesson, even in a shelter or online, makes Ukraine stronger.")}</b></p>'
+          f'<p><b>{t("Нас намагалися знищити сотні років, нам давали обіцянки, які нас не захистили, — а ми тут. Ми вижили. Ми є. Ми вчимося, творимо й захищаємо одне одного. Кожен урок, навіть в укритті чи онлайн, робить Україну сильнішою.", "They tried to destroy us for hundreds of years, they gave us promises that did not protect us, and we are still here. We survived. We exist. We learn, create and protect one another. Every lesson, even in a shelter or online, makes Ukraine stronger.")}</b></p>'
           f'<p class="big">{t("Україна була, є і буде!", "Ukraine was, is and will be!")}</p></div></div></section>')
     return h
 
@@ -378,7 +463,7 @@ def page(kind, lang, links):
     title = t('Ми — козацького роду', 'Of Cossack Kin')
     lk = ' · '.join(f'<a href="{h}">{n}</a>' for n, h in links if h)
     body = (f'<div class="page">\n <header class="head"><div class="htext"><h1>{t("Ми — <span>козацького роду</span>", "Of <span>Cossack kin</span>")}</h1>'
-            f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, and why education has always been our strength.")}</p>'
+            f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, обіцянки, що нас не захистили, наша культура і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, promises that did not protect us, our culture, and why education has always been our strength.")}</p>'
             f'<p class="links">{lk}</p></div>{kozak(uid='kz1')}</header>\n{content(lang)}\n</div>')
     html = wrap(kind, lang, title, [CSS], body, '')
     # this page has its own palette: drop the meadow site stylesheet colours by placing ours last, and add the display fonts
