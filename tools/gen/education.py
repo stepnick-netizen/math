@@ -548,7 +548,7 @@ if __name__ == '__main__':
         other = 'en' if lang == 'uk' else 'uk'
         site_links = [('English version' if lang == 'uk' else 'Українська версія', 'education-en.html' if lang == 'uk' else 'education.html')]
         (out / 'site' / ('education.html' if lang == 'uk' else 'education-en.html')).write_text(
-            page('site', lang, site_links).replace('href="../index.html"', 'href="index.html"' if lang == 'uk' else 'href="index-en.html"'))
+            page('site', lang, site_links).replace('href="../index.html"', 'href="index.html"' if lang == 'uk' else 'href="index-en.html"').replace('href="../favicon', 'href="favicon').replace('href="../apple-touch', 'href="apple-touch'))
         art_links = [('English version' if lang == 'uk' else 'Українська версія', arts.get(other, ''))]
         (out / 'art' / f'education-{lang}.html').write_text(page('art', lang, art_links))
     print('ok')
