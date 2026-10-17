@@ -1,6 +1,8 @@
 # Run from the repo root after building or changing topic pages: python3 tools/add_bug_button.py
 """Add a 'Spotted a mistake?' button to every topic page and cheat sheet; it opens the Google Form with the topic, tab, task number and expression prefilled."""
-import sys, re, glob
+import sys, re, glob, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _inject import put_style
 from pathlib import Path
 FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSclI7maoMiImANIDKjVunHHJG4Sk_i8yCumRAxyPL9OjDzocw/viewform'
 ENTRY = sys.argv[1] if len(sys.argv) > 1 else 'entry.649258102'
@@ -23,9 +25,8 @@ JS = ('<script>/* bug button */(function(){var F=%r,E=%r,uk=(document.documentEl
 files = [f for f in glob.glob('*/*.html')]
 for f in files:
     p = Path(f); s = p.read_text()
-    s = re.sub(r'/\* bug button \*/[^<]*?(?=</style>)', '', s, count=1)
+    s = put_style(s, 'bug', CSS, legacy=['bug button'])
     s = re.sub(r'<script>/\* bug button \*/.*?</script>', '', s, flags=re.S)
-    i = s.index('</style>'); s = s[:i] + CSS + s[i:]
     j = s.rindex('</body>'); s = s[:j] + JS + s[j:]
     p.write_text(s)
 print(len(files), 'pages; entry =', ENTRY or '(none)')

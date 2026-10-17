@@ -12,6 +12,7 @@ It (re)writes, idempotently:
   * «previous / next lesson» links at the bottom of every topic page.
 """
 import json, re, html
+from _inject import put_style
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -164,7 +165,7 @@ def do_index(lang):
     s = re.sub(r'\s*<section class="topics">.*?</section>', '', s, count=1, flags=re.S)
     k = s.index('</header>') + len('</header>')
     s = s[:k] + '\n ' + block + s[k:]
-    s = put_css(s, CSS, '/* toc */')
+    s = put_style(s, 'toc', CSS, legacy=['toc'])
     s = re.sub(r'<script>/\* toc \*/.*?</script>', '', s, flags=re.S)
     j = s.rindex('</body>')
     s = s[:j] + JS + s[j:]
@@ -199,7 +200,7 @@ def do_pages():
                               f'<a href="../{t["index"]}#{s["id"]}">{s[lang]}</a><span class="sep">›</span><span class="here">{esc(here)}</span></nav>')
                     x, n = re.subn(r'<nav class="site-home"[^>]*>.*?</nav>', lambda m: crumbs, x, count=1, flags=re.S)
                     assert n == 1, p
-                    x = put_css(x, NAV_CSS, '/* nav */')
+                    x = put_style(x, 'nav', NAV_CSS, legacy=['nav'])
                     x = re.sub(r'<nav class="lesson-nav".*?</nav>', '', x, flags=re.S)
                     if kind == 'game' and (prev or nxt):
                         nav = '<nav class="lesson-nav" aria-label="lessons">'

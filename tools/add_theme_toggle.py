@@ -11,6 +11,7 @@ The pages' CSS already understands :root[data-theme="light"|"dark"]; "auto" remo
 so the device setting decides. The choice is kept in localStorage under 'apiary-theme'.
 """
 import glob, re
+from _inject import put_style
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,11 +48,9 @@ def run():
         p = Path(f); s = p.read_text()
         s = re.sub(r'<script>/\* theme-head \*/.*?</script>', '', s, flags=re.S)
         s = re.sub(r'<script>/\* theme switch \*/.*?</script>', '', s, flags=re.S)
-        s = re.sub(r'/\* theme switch \*/.*?(?=</style>)', '', s, count=1, flags=re.S)
+        s = put_style(s, 'theme', CSS, legacy=['theme switch'])
         i = s.index('</title>') + len('</title>')
         s = s[:i] + HEAD + s[i:]
-        i = s.index('</style>')
-        s = s[:i] + CSS + s[i:]
         j = s.rindex('</body>')
         s = s[:j] + JS + s[j:]
         p.write_text(s)
