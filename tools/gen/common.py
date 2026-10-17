@@ -107,11 +107,25 @@ def rights_js(pool, lang):
             'panels.forEach(function(panel,i){place(panel,i);new MutationObserver(function(){place(panel,i)}).observe(panel,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden"]})});})();</script>')
 
 
+def hist_banner(href, lang):
+    """the 'separate section' banner that leads to the history and culture page (styles: /* history banner */ in base.css)."""
+    if lang == 'uk':
+        k, t, s, c = ('Окремий розділ сайту', 'Історія і культура України',
+                      'Козаки й характерники, Будапештський меморандум, Корольов і Кондратюк, Шевченко, «Щедрик», Примаченко',
+                      'Тисни і дізнайся')
+    else:
+        k, t, s, c = ('A separate section of this site', 'Ukraine’s history and culture',
+                      'Cossacks and kharakternyky, the Budapest Memorandum, Korolyov and Kondratyuk, Shevchenko, Shchedryk, Prymachenko',
+                      'Tap to find out')
+    return (f'<a class="hist-banner" href="{href}"><span class="hb-medal" aria-hidden="true"></span><span class="hb-text">'
+            f'<span class="hb-kicker">{k}</span><span class="hb-title">{t}</span><span class="hb-sub">{s}</span>'
+            f'<span class="hb-cta">{c} <i>→</i></span></span></a>')
+
+
 def why_js(why, lang, more=''):
     head = 'Навіщо це мені?' if lang == 'uk' else 'Why does this matter?'
     lis = ''.join(f'<li><b>{t}</b> {d}</li>' for t, d in why['items'])
-    ml = ('Ми — козацького роду: наша історія →' if lang == 'uk' else 'Of Cossack kin: our story →')
-    mp = f'<p class="why-more"><a href="{more}">{ml}</a></p>' if more else ''
+    mp = hist_banner(more, lang) if more else ''
     card = f'<div class="card why-card"><h3>{head}</h3><ul>{lis}</ul>{mp}</div>'
     return ('<script>(function(){var box=document.getElementById("p-learn");if(box){var go=box.querySelectorAll("[data-go]"),last=go[go.length-1];'
             'var host=last?last.parentElement:null;while(host&&host.parentElement!==box)host=host.parentElement;var c=document.createElement("div");'
