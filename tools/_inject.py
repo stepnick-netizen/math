@@ -7,7 +7,7 @@ script can never remove another script's styles. Older pages had the CSS appende
 """
 import re
 
-MARKERS = ['toc', 'nav', 'bug button', 'theme switch', 'fun banner', 'history banner', 'history button', 'fun']
+MARKERS = ['toc', 'nav', 'bug button', 'theme switch', 'fun banner', 'history banner', 'history button', 'fun', 'funlinks']
 _NEXT = r'(?=</style>|/\* (?:' + '|'.join(re.escape(m) for m in MARKERS) + r') \*/)'
 
 

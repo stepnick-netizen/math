@@ -332,9 +332,51 @@ def index_banner(lang):
     p.write_text(s)
 
 
+# ---------------------------------------------------------------- «curiosities for this lesson» on topic pages
+ALSO = {'monomials': ['googol', '1089'], 'proportions': ['pizza']}   # extra related cards for lessons without a direct link
+LINKS_CSS = ('/* funlinks */.funlinks{max-width:920px;margin:24px auto 0;background:var(--paper,#fff);border:2px dashed var(--hay,#D99A1E);border-radius:16px;padding:14px 16px;display:grid;gap:8px}'
+             '.funlinks h2{font:700 19px var(--display,sans-serif);margin:0;display:flex;align-items:center;gap:10px}'
+             '.funlinks h2::before{content:"?!";display:grid;place-items:center;width:34px;height:38px;background:var(--hay,#D99A1E);color:#2A1E00;font-size:14px;'
+             'clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}'
+             '.funlinks ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}.funlinks a{font:700 16px var(--body,sans-serif);color:var(--sky,#3E7FB8)}'
+             '.funlinks small{color:var(--muted,#666);font:700 13px var(--body,sans-serif)}')
+
+
+def lesson_links():
+    import glob
+    lk_folder = {k: v[0] for k, v in L.items()}
+    by = {}
+    for n, (cid, cat, pk, link, uk, en) in enumerate(ITEMS, 1):
+        if link:
+            by.setdefault(lk_folder[link], []).append((n, cid, uk[0], en[0]))
+    num = {cid: (n, uk[0], en[0]) for n, (cid, cat, pk, link, uk, en) in enumerate(ITEMS, 1)}
+    for folder, ids in ALSO.items():
+        for cid in ids:
+            n, tu, te = num[cid]
+            by.setdefault(folder, []).append((n, cid, tu, te))
+    for folder in {f for f in (Path(x).parent.name for x in glob.glob(str(ROOT / '*' / 'uk.html')))}:
+        for lang in ('uk', 'en'):
+            p = ROOT / folder / f'{lang}.html'
+            s = p.read_text()
+            s = re.sub(r'<!--funlinks-->.*?<!--/funlinks-->\n?', '', s, flags=re.S)
+            items = sorted(by.get(folder, []))
+            if items:
+                head = 'Цікавинки до цього уроку' if lang == 'uk' else 'Curiosities for this lesson'
+                page = 'cikavynky.html' if lang == 'uk' else 'cikavynky-en.html'
+                lis = ''.join(f'<li><a href="../{page}#{cid}">{html.escape(tu if lang == "uk" else te)} →</a> <small>№{n}</small></li>' for n, cid, tu, te in items)
+                block = f'<!--funlinks--><aside class="funlinks"><h2>{head}</h2><ul>{lis}</ul></aside><!--/funlinks-->\n'
+                k = s.find('<nav class="lesson-nav"')
+                if k < 0:
+                    k = s.index('<footer class="site-copy"')
+                s = s[:k] + block + s[k:]
+                s = put_style(s, 'funlinks', LINKS_CSS, legacy=['funlinks'])
+            p.write_text(s)
+
+
 if __name__ == '__main__':
     build('uk')
     build('en')
     index_banner('uk')
     index_banner('en')
+    lesson_links()
     print('ok')
