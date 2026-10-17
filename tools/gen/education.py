@@ -418,8 +418,8 @@ def content(lang):
         b += rect(x - 12, 70, 24, 64, '#F3EEE3', 'i', 2, 3) + path(f'M{x} 66 C{x - 12} 52 {x - 4} 38 {x} 26 C{x + 4} 38 {x + 12} 52 {x} 66 Z', 'h', 0, 'var(--hay)')
     b += cap(160, 164, t('«Прощаємо і просимо прощення»', '“We forgive and ask for forgiveness”'), 19, 'm')
     h += card(nx(), 'gold', t('Волинь, 1943: пам’ять і примирення', 'Volhynia, 1943: remembrance and reconciliation'),
-              t('У цій історії є й болюча сторінка. У 1943 році на Волині спалахнула жорстока війна між українцями й поляками. Загинули десятки тисяч мирних людей з обох боків, найбільше — поляків.',
-                'This story has a painful page too. In 1943 a brutal conflict between Ukrainians and Poles broke out in Volhynia. Tens of thousands of civilians on both sides were killed, most of them Poles.'),
+              t('У цій історії є й болюча сторінка. У 1943 році на Волині спалахнула жорстока війна між українцями й поляками. Загинули десятки тисяч мирних людей з обох боків.',
+                'This story has a painful page too. In 1943 a brutal conflict between Ukrainians and Poles broke out in Volhynia. Tens of thousands of civilians on both sides were killed.'),
               svg(320, 176, b, t('дві свічки', 'two candles')),
               t('Українські й польські церковні лідери знайшли слова для примирення: «Прощаємо і просимо прощення». Сьогодні Україна й Польща — союзники, і Польща прийняла мільйони українців, які рятувалися від війни. Пам’ятати правду й простягати руку — теж сила.',
                 'Ukrainian and Polish church leaders found the words for reconciliation: “We forgive and ask for forgiveness.” Today Ukraine and Poland are allies, and Poland took in millions of Ukrainians fleeing the war. Remembering the truth and holding out a hand is strength too.'))
