@@ -21,6 +21,8 @@ RESET = ('<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(
          'img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>')
 COPY = {'uk': '© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Зробив Микола Степанов для доньки Варі</small><small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small>',
         'en': '© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine<small>Made by Mykola Stepanov for his daughter Varia</small><small>This site keeps anonymous visit statistics: no cookies and no names.</small>'}
+ICONS = ('<link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="icon" href="../favicon.ico" sizes="48x48">'
+         '<link rel="apple-touch-icon" href="../apple-touch-icon.png"><meta name="theme-color" content="#E8A317">')
 HOME = {'uk': '← Математична пасіка: усі теми', 'en': '← The Maths Apiary: all topics'}
 
 GAME_CSS = """
@@ -139,7 +141,7 @@ def wrap(kind, lang, title, styles, body, tail, desc=''):
     css = ''.join(f'<style>\n{s}\n</style>' for s in styles)
     if kind == 'site':
         return (f'<!doctype html>\n<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">{RESET}\n'
-                f'<title>{title}</title>\n{FONTS}\n{css}<style>{SITE_CSS}</style></head>\n'
+                f'<title>{title}</title>\n{ICONS}\n{FONTS}\n{css}<style>{SITE_CSS}</style></head>\n'
                 f'<body><nav class="site-home"><a href="../index.html">{HOME[lang]}</a></nav>\n{DEFS}\n{body}\n'
                 f'<footer class="site-copy">{COPY[lang]}</footer>\n<script>{SHARE_JS}</script>\n{tail}\n<script>{STATS_JS}</script>\n</body></html>\n')
     return (f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n{FONTS}\n{css}\n{DEFS}\n{body}\n{tail}\n'
