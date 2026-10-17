@@ -2,19 +2,36 @@
 Facts checked 17.10.2026: Orlyk constitution 5.04.1710 (telegraf.com.ua, historian), Hetmanate schools 766 in 1740–47 for 1,099
 settlements (Encyclopedia of Ukraine), Pokrova / Defenders Day / Cossack Day (Ukrinform), kharakternyky legends (telegraf.com.ua),
 Hinsley (British Academy), Korea (Library of Congress), Estonia (educationestonia.org), literacy 99.97% (2012), MESM 1950,
-Viazovska (Fields 2022), Brave1 (itc.ua), Valuev 1863 / Ems 1876 (Radio Svoboda), schools (Ukrinform, 5.09.2025)."""
-from svgkit import text, hand, line, rect, circle, path, svg, width
+Viazovska (Fields 2022), Brave1 (itc.ua), Valuev 1863 / Ems 1876 (Radio Svoboda), schools (Ukrinform, 5.09.2025).
+Also: Berestechko 1651 (zaxid.net), Budapest Memorandum 5.12.1994 (Wikipedia; third-largest arsenal; guarantors RU/US/UK)."""
+import math
+from svgkit import text, hand, line, rect, circle, path, svg, width, arrow
 from common import wrap
+
+from fontTools.ttLib import TTFont as _TT
+_K = _TT('/root/.fonts/Kurale-Regular.ttf')
+_KC, _KM, _KU = _K.getBestCmap(), _K['hmtx'].metrics, _K['head'].unitsPerEm
+
+
+def kw(s, size):
+    return sum(_KM[_KC.get(ord(c)) or _KC[ord('?')]][0] for c in s) * size / _KU
+
+
+def cap(x, y, s, size=22, col='m', maxw=300):
+    """caption in Kurale (a serious book face), shrunk to fit maxw."""
+    size = min(size, size * maxw / max(kw(s, size), 1))
+    return hand(x, y, s, round(size, 1), col)
+
 
 CSS = """
 /* Layout: parchment page with an embroidered band; numbered cards in sections with banner headings */
 :root{--bg:#F3EEE3;--paper:#FFFDF8;--ink:#1F1A16;--muted:#5E554A;--line:#DDD3C2;--shadow:rgba(40,28,16,.12);
---yarn:#B3202E;--plum:#1F4E99;--hay:#C9971A;--leaf:#2F6B3A;--sky:#1F4E99;--bad:#B3202E;--good:#2F6B3A;--marker:#F2C94C;--marker-ink:#2A1E00;--cell:#F6F0E4;--skin:#E8B98E;--hair:#2B2118;
+--yarn:#B3202E;--plum:#1F4E99;--hay:#C9971A;--leaf:#2F6B3A;--sky:#1F4E99;--bad:#B3202E;--good:#2F6B3A;--marker:#F2C94C;--marker-ink:#2A1E00;--cell:#F6F0E4;--skin:#E8B98E;--hair:#2B2118;--sil:#1A1512;
 --display:'Ruslan Display','Comfortaa',serif;--title:'Kurale','Nunito',serif;--body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;--hand:'Caveat','Comic Sans MS',cursive}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17130F;--paper:#221C16;--ink:#F1E9DC;--muted:#B9AC98;--line:#3E342A;--shadow:rgba(0,0,0,.4);
---yarn:#E5525E;--plum:#7FA7EA;--hay:#E9BE4E;--leaf:#78B884;--sky:#7FA7EA;--bad:#E5525E;--good:#78B884;--marker:#C9A43A;--marker-ink:#1C1400;--cell:#2C251D;--skin:#D9A77C;--hair:#0F0B08;color-scheme:dark}}
+--yarn:#E5525E;--plum:#7FA7EA;--hay:#E9BE4E;--leaf:#78B884;--sky:#7FA7EA;--bad:#E5525E;--good:#78B884;--marker:#C9A43A;--marker-ink:#1C1400;--cell:#2C251D;--skin:#D9A77C;--hair:#0F0B08;--sil:#0B0806;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#17130F;--paper:#221C16;--ink:#F1E9DC;--muted:#B9AC98;--line:#3E342A;--shadow:rgba(0,0,0,.4);
---yarn:#E5525E;--plum:#7FA7EA;--hay:#E9BE4E;--leaf:#78B884;--sky:#7FA7EA;--bad:#E5525E;--good:#78B884;--marker:#C9A43A;--marker-ink:#1C1400;--cell:#2C251D;--skin:#D9A77C;--hair:#0F0B08;color-scheme:dark}
+--yarn:#E5525E;--plum:#7FA7EA;--hay:#E9BE4E;--leaf:#78B884;--sky:#7FA7EA;--bad:#E5525E;--good:#78B884;--marker:#C9A43A;--marker-ink:#1C1400;--cell:#2C251D;--skin:#D9A77C;--hair:#0F0B08;--sil:#0B0806;color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));margin:0}
 .page{max-width:920px;margin:0 auto;padding-block:20px 40px;display:grid;gap:18px}
@@ -40,7 +57,7 @@ h1 span{color:var(--yarn)}
 .box.key .n{background:var(--yarn)}
 .viz{width:100%;height:auto;max-width:440px;justify-self:center;overflow:visible}
 .viz .d{font-family:var(--display);font-weight:400}
-.viz .h{font-family:var(--hand);font-weight:600}
+.viz .h{font-family:var(--title);font-weight:400}
 .tail{font-size:15px;color:var(--muted)}
 .key .tail{color:var(--marker-ink)}
 .more{background:var(--cell);border-radius:10px;padding:8px 12px;font-size:15.5px}
@@ -62,34 +79,36 @@ def ornament(uid='o'):
             f'<rect width="100%" height="22" fill="url(#{uid})"/></svg>')
 
 
-def kozak(cls='kozak'):
-    """an original Cossack bust: oseledets, long moustache, red zhupan with gold trim."""
-    return (f'<svg viewBox="0 0 200 230" class="{cls}" role="img" aria-label="козак">'
-            '<path d="M14 230 Q22 160 100 150 Q178 160 186 230 Z" fill="var(--yarn)"/>'
-            '<path d="M100 152 L84 230 M100 152 L116 230" stroke="var(--hay)" stroke-width="5"/>'
-            '<circle cx="100" cy="178" r="4" fill="var(--hay)"/><circle cx="100" cy="198" r="4" fill="var(--hay)"/><circle cx="100" cy="218" r="4" fill="var(--hay)"/>'
-            '<path d="M14 230 Q26 186 60 168" stroke="var(--sky)" stroke-width="8" fill="none" opacity=".9"/>'
-            '<rect x="86" y="126" width="28" height="30" rx="8" fill="var(--skin)"/>'
-            '<ellipse cx="56" cy="92" rx="9" ry="13" fill="var(--skin)"/><ellipse cx="144" cy="92" rx="9" ry="13" fill="var(--skin)"/>'
-            '<ellipse cx="100" cy="88" rx="44" ry="52" fill="var(--skin)"/>'
-            '<path d="M100 38 C122 28 150 40 140 64 C134 78 122 70 126 58" stroke="var(--hair)" stroke-width="9" fill="none" stroke-linecap="round"/>'
-            '<path d="M84 74 Q92 68 98 74 M102 74 Q108 68 116 74" stroke="var(--hair)" stroke-width="4" fill="none" stroke-linecap="round"/>'
-            '<circle cx="91" cy="84" r="3.6" fill="var(--hair)"/><circle cx="109" cy="84" r="3.6" fill="var(--hair)"/>'
-            '<path d="M100 86 Q96 100 100 104" stroke="var(--hair)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".6"/>'
-            '<path d="M99 108 C86 104 72 112 68 138" stroke="var(--hair)" stroke-width="8" fill="none" stroke-linecap="round"/>'
-            '<path d="M101 108 C114 104 128 112 132 138" stroke="var(--hair)" stroke-width="8" fill="none" stroke-linecap="round"/>'
-            '<path d="M92 118 Q100 122 108 118" stroke="#9A4A3A" stroke-width="2.5" fill="none" stroke-linecap="round"/>'
-            '</svg>')
+def kozak(cls='kozak', uid='kz'):
+    """a stern Cossack medallion in linocut style: black profile bust with oseledets and long moustache,
+    a sabre behind, on a red disc in a gold ring; everything clipped to the circle so it works in dark mode too."""
+    ink = 'var(--sil)'
+    return (f'<svg viewBox="0 0 200 200" class="{cls}" role="img" aria-label="козак">'
+            f'<defs><clipPath id="{uid}"><circle cx="100" cy="100" r="92"/></clipPath></defs>'
+            f'<circle cx="100" cy="100" r="96" fill="var(--hay)"/><circle cx="100" cy="100" r="92" fill="var(--yarn)"/>'
+            f'<g clip-path="url(#{uid})" transform="translate(0 -8)">'
+            f'<path d="M40 204 C18 146 20 76 60 14 C40 76 38 140 54 200 Z" fill="{ink}"/>'
+            f'<path d="M30 204 L62 196" stroke="{ink}" stroke-width="7" stroke-linecap="round"/>'
+            f'<path fill="{ink}" d="M100 36 C116 36 132 44 138 58 L142 70 L140 77 L157 97 C158 100 154 101 146 101 L147 106 L143 110 L147 115 L148 128 C147 136 142 140 134 140 L114 139 L118 152 L120 160 C140 164 166 172 180 190 C188 202 190 216 190 230 L12 230 C12 214 14 196 26 182 C38 168 58 160 76 152 L74 120 C64 108 58 92 60 72 C62 50 80 36 100 36 Z"/>'
+            '<g fill="none" stroke-linecap="round">'
+            '<path d="M102 37 C92 22 66 22 58 42 C52 58 60 74 72 84 C80 90 84 96 82 106" stroke="var(--yarn)" stroke-width="12"/>'
+            f'<path d="M102 37 C92 22 66 22 58 42 C52 58 60 74 72 84 C80 90 84 96 82 106" stroke="{ink}" stroke-width="7"/></g>'
+            f'<path d="M146 101 C160 106 162 126 158 152 C156 164 152 174 148 182 C148 164 148 144 144 130 C141 120 136 114 130 112 Z" fill="{ink}" stroke="var(--yarn)" stroke-width="2" stroke-linejoin="round"/>'
+            '<path d="M112 66 L140 63" stroke="var(--yarn)" stroke-width="4" stroke-linecap="round"/>'
+            '<path d="M124 76 L136 75" stroke="var(--yarn)" stroke-width="2.6" stroke-linecap="round"/>'
+            '<path d="M98 84 C93 86 93 98 98 101" stroke="var(--yarn)" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+            '<path d="M56 178 C76 200 100 206 124 202 C146 198 160 188 168 178" stroke="var(--hay)" stroke-width="4" fill="none"/>'
+            '<path d="M112 204 V230" stroke="var(--hay)" stroke-width="3"/></g></svg>')
 
 
-def big(num, cap, col='y', w=320, sub=None):
+def big(num, label, col='y', w=320, sub=None):
     b = text(w / 2, 78, num, 54 if width(num, 54) < w - 20 else 38, col, 'd', 'middle')
-    b += hand(w / 2, 118, cap, 24, 'm')
+    b += cap(w / 2, 118, label, 24, 'm')
     h = 130
     if sub:
-        b += hand(w / 2, 142, sub, 20, 'm')
+        b += cap(w / 2, 142, sub, 20, 'm')
         h = 152
-    return svg(w, h, b, f'{num} {cap}')
+    return svg(w, h, b, f'{num} {label}')
 
 
 def card(n, cls, h3, p, sv='', tail='', extra=''):
@@ -112,20 +131,37 @@ def content(lang):
     # ---------- I. Cossacks
     h += band(t('Козацький рід', 'Cossack roots'), t('Звідки ми і чому нам є ким пишатися.', 'Where we come from, and why we have people to be proud of.'), 'b1')
     h += '<div class="grid">'
-    b = (path('M60 120 L150 30', 'h', 7) + circle(152, 28, 20, 'var(--hay)', 'h', 0)
-         + ''.join(path(f'M152 28 L{152 + 26 * dx} {28 + 26 * dy}', 'h', 6) for dx, dy in ((1, 0), (0, -1), (-.7, -.7), (.7, -.7), (.7, .7))))
-    b += hand(220, 120, t('булава — знак гетьмана', 'the mace: the hetman’s sign'), 22, 'm')
+    def sabre(x0, y0, x1, y1, bow=0.18):
+        """a curved Cossack sabre as a filled ink blade from hilt (x0,y0) to tip (x1,y1), with guard and grip."""
+        dx, dy = x1 - x0, y1 - y0
+        L = (dx * dx + dy * dy) ** .5
+        nx_, ny_ = -dy / L, dx / L
+        cx, cy = x0 + dx * .55 + nx_ * L * bow, y0 + dy * .55 + ny_ * L * bow
+        w = 6
+        d = (f'M{x0 + nx_ * w:.1f} {y0 + ny_ * w:.1f} Q{cx + nx_ * w:.1f} {cy + ny_ * w:.1f} {x1:.1f} {y1:.1f} '
+             f'Q{cx - nx_ * w * .2:.1f} {cy - ny_ * w * .2:.1f} {x0 - nx_ * w:.1f} {y0 - ny_ * w:.1f} Z')
+        g = path(d, 'i', 0, 'var(--ink)')
+        g += line(x0 + nx_ * 14, y0 + ny_ * 14, x0 - nx_ * 14, y0 - ny_ * 14, 'i', 5)
+        g += line(x0, y0, x0 - dx / L * 26, y0 - dy / L * 26, 'i', 7)
+        return g
+    b = sabre(86, 122, 262, 20, -.12)
+    b += line(250, 124, 112, 34, 'i', 7)
+    for k in range(8):
+        a_ = math.radians(k * 45)
+        b += line(104 + 10 * math.cos(a_), 28 + 10 * math.sin(a_), 104 + 21 * math.cos(a_), 28 + 21 * math.sin(a_), 'h', 6, cap='butt')
+    b += circle(104, 28, 11, 'var(--hay)', 'i', 2.5)
+    b += cap(170, 158, t('булава і шабля — влада й сила', 'the mace and the sabre: power and strength'), 21, 'm')
     h += card(nx(), '', t('Запорозька Січ', 'The Zaporozhian Sich'),
               t('У середині XVI століття за дніпровськими порогами постала Запорозька Січ — вільне козацьке військо. Отамана й гетьмана обирали самі козаки на раді.',
                 'In the middle of the 16th century, the Zaporozhian Sich grew up beyond the Dnipro rapids: a free Cossack army. The Cossacks themselves chose their otaman and hetman at a council.'),
-              svg(340, 136, b, t('булава', 'mace')),
+              svg(340, 168, b, t('булава і шабля', 'mace and sabre')),
               t('Велику раду козаки скликали на Покрову, 14 жовтня. Тепер цього дня Україна вшановує захисників і захисниць — сучасних козаків — і відзначає День українського козацтва.',
                 'Cossacks held their great council on the feast of Pokrova, 14 October. Today on that day Ukraine honours its defenders, the Cossacks of our time, and celebrates Ukrainian Cossack Day.'))
     b = rect(70, 14, 200, 120, 'var(--cell)', 'h', 3, 10) + path('M70 22 Q60 14 70 6 M270 22 Q280 14 270 6', 'h', 3)
     for k, lab in enumerate([t('закони', 'laws'), t('гетьман', 'hetman'), t('суд', 'courts')]):
         x = 106 + k * 64
-        b += rect(x - 29, 64, 58, 52, 'var(--paper)', 'y', 2.5, 6) + hand(x, 96, lab, 16, 'y')
-    b += text(170, 46, '1710', 26, 'y', 'd', 'middle') + hand(170, 156, t('влада поділена на три гілки', 'power split into three branches'), 21, 'm')
+        b += rect(x - 29, 64, 58, 52, 'var(--paper)', 'y', 2.5, 6) + cap(x, 96, lab, 16, 'y', 50)
+    b += text(170, 46, '1710', 26, 'y', 'd', 'middle') + cap(170, 156, t('влада поділена на три гілки', 'power split into three branches'), 21, 'm')
     h += card(nx(), 'gold', t('Конституція Пилипа Орлика', 'Pylyp Orlyk’s Constitution'),
               t('5 квітня 1710 року козаки ухвалили Конституцію Пилипа Орлика. Дослідники вважають її однією з перших конституцій у Європі.',
                 'On 5 April 1710 the Cossacks adopted Pylyp Orlyk’s Constitution. Historians consider it one of the first constitutions in Europe.'),
@@ -139,27 +175,37 @@ def content(lang):
         b += path(f'M{x} 70 L{x + 12} 56 L{x + 24} 70 Z', 'y' if on else 'm', 0, 'var(--yarn)' if on else 'var(--line)')
         b += rect(x + 2, 70, 20, 22, 'var(--paper)', 'y' if on else 'var(--line)', 2, 2)
     b += text(160, 40, '766 : 1099 ≈ 0,7' if lang == 'uk' else '766 : 1099 ≈ 0.7', 22, 'y', 'd', 'middle')
-    b += hand(160, 122, t('школа — приблизно в 7 поселеннях із 10', 'a school in about 7 settlements out of 10'), 21, 'm')
+    b += cap(160, 122, t('школа — приблизно в 7 поселеннях із 10', 'a school in about 7 settlements out of 10'), 21, 'm')
     h += card(nx(), 'blue', t('Козацькі школи', 'Cossack schools'),
               t('У 1740–1747 роках у семи полках Гетьманщини працювало 766 шкіл на 1099 сіл і міст.',
                 'In 1740–1747 the seven regiments of the Cossack Hetmanate had 766 schools for 1,099 villages and towns.'),
               svg(320, 134, b, '766 / 1099'),
               t('Козаки знали: грамотний народ — сильний народ. А в 1632 році в Києві постала Києво-Могилянська колегія, майбутня академія.',
                 'The Cossacks knew that a people who can read is a strong people. And in 1632 the Kyiv-Mohyla College, later an academy, was founded in Kyiv.'))
-    b = ''
-    import math
-    for k in range(7):
-        a = math.radians(-90 + k * 360 / 7)
-        b += circle(160 + 70 * math.cos(a), 70 + 46 * math.sin(a), 3, 'var(--hay)', 'h', 0)
-    pts = ''.join(f'{"M" if q == 0 else "L"}{160 + (26 if q % 2 == 0 else 11) * math.cos(math.radians(-90 + q * 36)):.1f} {70 + (26 if q % 2 == 0 else 11) * math.sin(math.radians(-90 + q * 36)):.1f} ' for q in range(10))
-    b += path(pts + 'Z', 'h', 0, 'var(--hay)')
-    b += hand(160, 140, t('справжні чари — знання й сміливість', 'the real magic: knowledge and courage'), 22, 'm')
+    pts = ''.join(f'{"M" if q == 0 else "L"}{160 + (30 if q % 2 == 0 else 13) * math.cos(math.radians(-90 + q * 22.5)):.1f} {34 + (30 if q % 2 == 0 else 13) * math.sin(math.radians(-90 + q * 22.5)):.1f} ' for q in range(16))
+    b = sabre(100, 124, 236, 62, -.1) + sabre(220, 124, 84, 62, .1)
+    b += path(pts + 'Z', 'i', 1.5, 'var(--hay)')
+    b += cap(160, 162, t('справжні чари — знання й сміливість', 'the real magic: knowledge and courage'), 22, 'm')
     h += card(nx(), '', t('Характерники', 'The kharakternyky'),
               t('У легендах козаки-характерники заговорювали кулі, мали дев’ять життів і могли перекидатися на звірів.',
                 'In legends, the kharakternyky were Cossacks who could charm bullets, had nine lives and could turn into animals.'),
-              svg(320, 150, b, t('зоря', 'star')),
+              svg(320, 172, b, t('зоря і шаблі', 'star and sabres')),
               t('Це легенди. Але вороги так боялися козацької вправності, що пояснювали її чарами. Справжня «магія» козаків — сміливість, знання й уміння. Цього можна навчитися: щодня, з кожною розв’язаною задачею.',
                 'These are legends. But enemies feared Cossack skill so much that they explained it with magic. The Cossacks’ real "magic" was courage, knowledge and skill. And you can learn those, every day, with every problem you solve.'))
+    b = ''
+    for y in (44, 64, 84, 104):
+        b += path(f'M16 {y} q 14 -7 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0', 's', 2)
+    for k in range(8):
+        b += rect(118, 116 - k * 12, 54, 9, 'var(--ink)', 'i', 0, 1)
+    b += line(16, 124, 304, 124, 'i', 4) + line(16, 24, 304, 24, 'i', 4)
+    b += arrow(200, 118, 200, 30, 'y', 0, 3.4)
+    b += cap(160, 154, t('гать через болото: вози, дерево, мішки', 'a causeway over the marsh: wagons, timber, sacks'), 19, 'm')
+    h += card(nx(), 'wide', t('Берестечко, 1651: союзник зрадив — козаки вистояли', 'Berestechko, 1651: an ally betrayed them, the Cossacks held on'),
+              t('Посеред битви під Берестечком союзник козаків, кримський хан, пішов із поля бою й захопив у полон гетьмана Богдана Хмельницького. Козацьке військо опинилося в оточенні біля болота.',
+                'In the middle of the battle of Berestechko, the Cossacks’ ally, the Crimean khan, left the battlefield and took Hetman Bohdan Khmelnytsky prisoner. The Cossack army was surrounded beside a marsh.'),
+              svg(320, 164, b, t('гать через болото', 'causeway over the marsh')),
+              t('Козаки не здалися. Вони обрали ватажком Івана Богуна й почали будувати гаті через болото й річку Пляшівку з возів, дерева, одягу й мішків. Частина війська вирвалася з оточення. Урок на всі часи: союзник може піти, а власна сила, власний розум і побратими поруч лишаються з тобою.',
+                'The Cossacks did not give up. They chose Ivan Bohun as their leader and began building causeways across the marsh and the Pliashivka river from wagons, timber, clothes and sacks. Part of the army broke out. A lesson for all time: an ally may leave, but your own strength, your own mind and your comrades beside you stay with you.'))
     h += '</div>'
     # ---------- II. They tried to destroy us
     h += band(t('Нас намагалися знищити — а ми є', 'They tried to destroy us, and we are still here'),
@@ -168,17 +214,17 @@ def content(lang):
     ev = [('1863', t('Валуєвський', 'Valuev'), t('циркуляр', 'circular')), ('1876', t('Емський', 'Ems'), t('указ', 'decree')),
           ('1932–33', t('Голодомор', 'Holodomor'), ''), ('1937', t('Великий', 'Great'), t('терор', 'Terror')),
           ('1941', t('нацистська', 'Nazi'), t('окупація', 'occupation')), ('1944', t('депортація', 'deportation of'), t('кримських татар', 'Crimean Tatars')),
-          ('2014', t('Крим', 'Crimea'), t('і Донбас', 'and Donbas')), ('2022', t('повномасштабне', 'full-scale'), t('вторгнення', 'invasion'))]
+          ('1994', t('Будапештський', 'Budapest'), t('меморандум', 'Memorandum')), ('2014', t('Крим', 'Crimea'), t('і Донбас', 'and Donbas')), ('2022', t('повномасштабне', 'full-scale'), t('вторгнення', 'invasion'))]
     b = ''
-    for row in range(2):
-        y = 50 + row * 112
+    for row in range(3):
+        y = 46 + row * 100
         b += line(20, y, 400, y, 'i', 3)
-        for k in range(4):
-            yr, c1, c2 = ev[row * 4 + k]
-            x = 58 + k * 102
+        for k in range(3):
+            yr, c1, c2 = ev[row * 3 + k]
+            x = 76 + k * 134
             b += circle(x, y, 8, 'var(--yarn)', 'y', 0) + text(x, y - 18, yr, 16 if len(yr) == 4 else 14, 'y', 'd', 'middle')
-            b += hand(x, y + 28, c1, 17, 'm') + (hand(x, y + 46, c2, 17, 'm') if c2 else '')
-    b += hand(210, 270, t('а ми — тут, вчимося й живемо', 'and we are still here, learning and living'), 23, 'l')
+            b += cap(x, y + 28, c1, 17, 'm', 128) + (cap(x, y + 46, c2, 17, 'm', 128) if c2 else '')
+    b += cap(210, 330, t('а ми — тут, вчимося й живемо', 'and we are still here, learning and living'), 23, 'l')
     tl = ''.join(f'<li>{x}</li>' for x in [
         t('<b>1863.</b> Міністр Валуєв підписав циркуляр, де йшлося, що окремої української мови «не було, немає і бути не може», і заборонив друкувати нею підручники та книжки для народу.',
           '<b>1863.</b> Minister Valuev signed a circular claiming that a separate Ukrainian language had never existed and could not exist, and stopped schoolbooks and books for ordinary people being printed in Ukrainian.'),
@@ -191,6 +237,8 @@ def content(lang):
           '<b>1941–1944.</b> Nazi occupation. Snyder estimates that Nazi policies killed about 3.5 million civilians in Ukraine; counting those who died at the front, Ukraine lost about 6.5 million people. In September 1941, at Babyn Yar in Kyiv, the Nazis shot tens of thousands of Jews in two days.'),
         t('<b>1944.</b> Радянська влада за кілька днів вивезла з Криму весь кримськотатарський народ. Багато людей загинули в дорозі й на засланні.',
           '<b>1944.</b> In a few days the Soviet regime deported the whole Crimean Tatar people from Crimea. Many died on the way and in exile.'),
+        t('<b>1994.</b> Будапештський меморандум: Україна віддала ядерну зброю, а Росія, США й Велика Британія пообіцяли поважати її незалежність і кордони. Через 20 років Росія порушила цю обіцянку.',
+          '<b>1994.</b> The Budapest Memorandum: Ukraine gave up its nuclear weapons, and Russia, the US and the UK promised to respect its independence and borders. Twenty years later Russia broke that promise.'),
         t('<b>2014.</b> Після Революції Гідності Росія напала на Україну: окупувала Крим і розв’язала війну на Донбасі. Відтоді Україна захищається.',
           '<b>2014.</b> After the Revolution of Dignity, Russia attacked Ukraine: it occupied Crimea and started the war in Donbas. Ukraine has been defending itself ever since.'),
         t('<b>2022.</b> 24 лютого Росія почала повномасштабне вторгнення. За даними МОН на серпень 2025 року, 1779 шкіл пошкоджено, а 226 зруйновано.',
@@ -200,15 +248,30 @@ def content(lang):
     h += '<div class="grid">' + card(nx(), 'wide', t('Чому саме мова й школи?', 'Why language and schools?'),
                                      t('Бо освічений народ, який знає свою історію, не скориш. Тому навчання для нас — це теж захист.',
                                        'Because a people that is educated and knows its history cannot be conquered. That is why learning is also a way to defend ourselves.'),
-                                     svg(420, 286, b, t('спроби знищити Україну', 'attempts to destroy Ukraine')), '',
-                                     f'<p class="more">{snyder}</p><ul class="tl">{tl}</ul>') + '</div>'
+                                     svg(420, 346, b, t('спроби знищити Україну', 'attempts to destroy Ukraine')), '',
+                                     f'<p class="more">{snyder}</p><ul class="tl">{tl}</ul>')
+    b = rect(100, 12, 120, 126, 'var(--paper)', 'i', 3, 4) + text(160, 44, '1994', 24, 'i', 'd', 'middle')
+    for y in (62, 74, 86):
+        b += line(118, y, 202, y, 'm', 2)
+    for x in (122, 160, 198):
+        b += path(f'M{x - 14} 118 q 6 -10 10 0 t 10 0 t 8 -4', 'i', 2)
+    b += path('M112 14 L150 60 L138 76 L182 104 L172 116 L210 138', 'y', 5)
+    b += text(256, 92, '2014', 24, 'y', 'd', 'middle')
+    b += cap(160, 164, t('підпис на папері сам не захищає', 'a signature on paper does not protect on its own'), 20, 'm')
+    h += card(nx(), 'wide', t('Будапештський меморандум, 1994', 'The Budapest Memorandum, 1994'),
+              t('5 грудня 1994 року Україна погодилася віддати ядерну зброю, яка лишилася на її землі від СРСР, — третій за розміром ядерний арсенал у світі. Натомість Росія, США й Велика Британія підписали обіцянку поважати незалежність і кордони України й не застосовувати проти неї силу.',
+                'On 5 December 1994 Ukraine agreed to give up the nuclear weapons left on its soil by the USSR, the third-largest nuclear arsenal in the world. In return, Russia, the US and the UK signed a promise to respect Ukraine’s independence and borders and not to use force against it.'),
+              svg(320, 176, b, t('Будапештський меморандум', 'Budapest Memorandum')),
+              t('У 2014 році Росія порушила свій підпис: окупувала Крим і почала війну на Донбасі. Висновок той самий, що й у козаків під Берестечком: підпис на папері сам не захищає. Захищають власна армія, власні інженери й власні знання.',
+                'In 2014 Russia broke its signature: it occupied Crimea and started the war in Donbas. The lesson is the same as the Cossacks learned at Berestechko: a signature on paper does not protect on its own. What protects us is our own army, our own engineers and our own knowledge.'))
+    h += '</div>'
     # ---------- III. Ukrainian scientists
     h += band(t('Українські науковці, що змінили світ', 'Ukrainian scientists who changed the world'),
               t('Декого з них переслідували — а вони відкривали людям космос, небо й нові знання.', 'Some of them were persecuted, yet they opened up space, the sky and new knowledge for everyone.'), 'b3s')
     h += '<div class="grid">'
     b = circle(120, 86, 34, 'var(--sky)', 's', 0, ) + path('M70 120 Q160 20 260 60', 'h', 2.5, dash='6 6') + circle(260, 60, 7, 'var(--hay)', 'h', 0)
     b += path('M254 52 L266 46 M268 66 L278 72 M262 70 L258 82', 'h', 2.5)
-    b += hand(160, 146, t('1957: перший супутник', '1957: first satellite'), 20, 'm') + hand(160, 168, t('1961: перша людина в космосі', '1961: first person in space'), 20, 'm')
+    b += cap(160, 146, t('1957: перший супутник', '1957: first satellite'), 20, 'm') + cap(160, 168, t('1961: перша людина в космосі', '1961: first person in space'), 20, 'm')
     h += card(nx(), 'blue', t('Сергій Корольов', 'Serhiy Korolyov'),
               t('Народився в Житомирі у 1907 році, вчився в Київському політехнічному інституті. Головний конструктор, під чиїм керівництвом запустили перший супутник Землі й першу людину в космос.',
                 'Born in Zhytomyr in 1907, he studied at the Kyiv Polytechnic Institute. He was the chief designer who led the launch of the first Earth satellite and the first person in space.'),
@@ -217,7 +280,7 @@ def content(lang):
                 'In 1938 the Soviet regime arrested him; he was even sent to a gold mine in Kolyma. He survived and led humanity into space. At the time his name was kept secret.'))
     b = circle(70, 90, 30, 'var(--sky)', 's', 0) + circle(250, 80, 16, 'var(--line)', 'm', 2)
     b += path('M100 90 C150 30 220 40 250 56 C280 70 270 106 250 104 C220 102 160 120 100 96', 'y', 2.5, dash='6 5')
-    b += hand(160, 150, t('траса Кондратюка до Місяця', 'Kondratyuk’s route to the Moon'), 21, 'm')
+    b += cap(160, 150, t('траса Кондратюка до Місяця', 'Kondratyuk’s route to the Moon'), 21, 'm')
     h += card(nx(), 'gold', t('Юрій Кондратюк', 'Yuri Kondratyuk'),
               t('Народився в Полтаві у 1897 році. Ще до польотів у космос розрахував, як долетіти до Місяця: корабель лишається на орбіті, а на Місяць спускається маленький модуль.',
                 'Born in Poltava in 1897. Long before spaceflight, he calculated how to reach the Moon: the ship stays in orbit while a small lander goes down to the Moon.'),
@@ -246,7 +309,7 @@ def content(lang):
               svg(320, 160, b, t('Академія наук', 'Academy of Sciences')),
               t('Навіть у буремні роки українці будували науку, бо знали: без неї держава не встоїть.', 'Even in stormy years Ukrainians built science, because they knew a state cannot stand without it.'))
     b = circle(160, 70, 52, 'var(--marker)', 'h', 4) + text(160, 64, '2022', 26, 'k', 'd', 'middle') + text(160, 94, t('Філдс', 'Fields'), 18, 'k', 'd', 'middle')
-    b += hand(160, 150, t('найвища нагорода математиків', 'the highest prize in maths'), 22, 'm')
+    b += cap(160, 150, t('найвища нагорода математиків', 'the highest prize in maths'), 22, 'm')
     h += card(nx(), 'blue', t('Марина В’язовська', 'Maryna Viazovska'),
               t('Народилася в Києві у 1984 році. У 2022 році отримала Філдсівську премію — другою жінкою в історії.',
                 'Born in Kyiv in 1984. In 2022 she won the Fields Medal, only the second woman ever to do so.'),
@@ -266,7 +329,7 @@ def content(lang):
     b = rect(70, 104 - 22 * 0.9, 60, 22 * 0.9, 'var(--yarn)', 'y', 0, 4) + rect(190, 104 - 88 * 0.9, 60, 88 * 0.9, 'var(--sky)', 's', 0, 4)
     b += line(50, 104, 270, 104, 'i', 2) + text(100, 74, '22 %', 20, 'y', 'd', 'middle') + text(220, 16, '≈ 88 %', 20, 's', 'd', 'middle')
     b += text(100, 126, '1945', 18, 'm', 'd', 'middle') + text(220, 126, '1970', 18, 'm', 'd', 'middle')
-    b += hand(160, 152, t('дорослі, що вміють читати', 'adults who can read'), 21, 'm')
+    b += cap(160, 152, t('дорослі, що вміють читати', 'adults who can read'), 21, 'm')
     h += card(nx(), '', t('Із бідності — до лідерства', 'From poverty to the top'),
               t('Південна Корея, зруйнована війною. У 1945 році читати вмів лише кожен п’ятий дорослий. Країна вклалася в школи.',
                 'South Korea, wrecked by war. In 1945 only one adult in five could read. The country invested in schools.'),
@@ -274,9 +337,9 @@ def content(lang):
               t('За 25 років читати вміли майже 9 із 10. Сьогодні Корея — одна з найрозвиненіших технологічних країн світу.',
                 'Within 25 years almost 9 in 10 could read. Today Korea is one of the world’s most advanced technology countries.'))
     b = line(30, 70, 290, 70, 'i', 3)
-    for x, yr, cap in ((40, '1996', t('старт', 'start')), (180, '2000', t('комп’ютери', 'computers')), (280, '2001', t('інтернет', 'internet'))):
-        b += circle(x, 70, 9, 'var(--sky)', 's', 0) + text(x, 50, yr, 18, 's', 'd', 'middle') + hand(x, 100, cap, 20, 'm')
-    b += hand(160, 136, t('у кожній школі країни', 'in every school in the country'), 22, 'l')
+    for x, yr, lab_ in ((40, '1996', t('старт', 'start')), (180, '2000', t('комп’ютери', 'computers')), (280, '2001', t('інтернет', 'internet'))):
+        b += circle(x, 70, 9, 'var(--sky)', 's', 0) + text(x, 50, yr, 18, 's', 'd', 'middle') + cap(x, 100, lab_, 20, 'm', 120)
+    b += cap(160, 136, t('у кожній школі країни', 'in every school in the country'), 22, 'l')
     h += card(nx(), 'gold wide', t('Маленька країна, великий стрибок', 'A small country, a big leap'),
               t('Естонія, 1996 рік. Програма «Стрибок тигра»: за п’ять років усі школи отримали комп’ютери й інтернет.',
                 'Estonia, 1996. The Tiger Leap programme: within five years every school had computers and the internet.'),
@@ -303,7 +366,7 @@ def content(lang):
                'We will give our soul and body for our freedom,<br>and show that we, brothers, are of Cossack kin.')
     h += ornament('b5')
     h += (f'<section class="box key wide"><span class="n">{nx()}</span><h3>{t("Ми — нащадки козаків", "We are the descendants of the Cossacks")}</h3>'
-          f'<div class="final">{kozak()}<div>'
+          f'<div class="final">{kozak(uid='kz2')}<div>'
           f'<p class="anthem">{anthem}</p><p class="tail">{t("Державний Гімн України, слова Павла Чубинського", "National Anthem of Ukraine, words by Pavlo Chubynsky")}</p>'
           f'<p><b>{t("Нас намагалися знищити сотні років — а ми тут. Ми вижили. Ми є. Ми вчимося, творимо й захищаємо одне одного. Кожен урок, навіть в укритті чи онлайн, робить Україну сильнішою.", "They tried to destroy us for hundreds of years, and we are still here. We survived. We exist. We learn, create and protect one another. Every lesson, even in a shelter or online, makes Ukraine stronger.")}</b></p>'
           f'<p class="big">{t("Україна була, є і буде!", "Ukraine was, is and will be!")}</p></div></div></section>')
@@ -316,7 +379,7 @@ def page(kind, lang, links):
     lk = ' · '.join(f'<a href="{h}">{n}</a>' for n, h in links if h)
     body = (f'<div class="page">\n <header class="head"><div class="htext"><h1>{t("Ми — <span>козацького роду</span>", "Of <span>Cossack kin</span>")}</h1>'
             f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, and why education has always been our strength.")}</p>'
-            f'<p class="links">{lk}</p></div>{kozak()}</header>\n{content(lang)}\n</div>')
+            f'<p class="links">{lk}</p></div>{kozak(uid='kz1')}</header>\n{content(lang)}\n</div>')
     html = wrap(kind, lang, title, [CSS], body, '')
     # this page has its own palette: drop the meadow site stylesheet colours by placing ours last, and add the display fonts
     html = html.replace('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa', FONTS_EXTRA + '\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa', 1)
