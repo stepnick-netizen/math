@@ -21,7 +21,7 @@ RESET = ('<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(
          'img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>')
 COPY = {'uk': '© 2026 Пасіка Ігор Петрович, Ліцей №157, м. Київ, Україна<small>Зробив Микола Степанов для доньки Варі</small><small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small>',
         'en': '© 2026 Ihor Petrovych Pasika, Lyceum No. 157, Kyiv, Ukraine<small>Made by Mykola Stepanov for his daughter Varia</small><small>This site keeps anonymous visit statistics: no cookies and no names.</small>'}
-HOME = {'uk': '← Усі теми', 'en': '← All topics'}
+HOME = {'uk': '← Математична пасіка: усі теми', 'en': '← The Maths Apiary: all topics'}
 
 GAME_CSS = """
 /* engine: task steps, choice tiles, equation rows, ordering cards, stage drawings */

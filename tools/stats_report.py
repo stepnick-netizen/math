@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Teacher report from GoatCounter statistics of the "Maths with Ponya and Bulya" site.
+"""Teacher report from GoatCounter statistics of the "The Maths Apiary" (Математична пасіка) site.
 
 Usage:
   GC_TOKEN=... python3 tools/stats_report.py --out report.html [--json summary.json] [--start 2026-10-16]

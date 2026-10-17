@@ -29,6 +29,8 @@ def build(topic, out):
                 links = {'other': arts.get(f'game-{other}', '#'), 'sheet': arts.get(f'sheet-{lang}', ''), 'edu': json.loads(p.read_text()).get('education', {}).get(lang, '') if p.exists() else ''}
                 sheet_links = {'game': arts.get(f'game-{lang}', ''), 'other': arts.get(f'sheet-{other}', ''), 'pdf': ''}
             title = TITLE[topic][0 if lang == 'uk' else 1]
+            if kind == 'site':
+                title = title.replace(' з Понею і Булею', ' · Математична пасіка').replace(' with Ponya and Bulya', ' · The Maths Apiary')
             html = common.game_page(kind, lang, edition, title, m.lesson(lang), m.texts(lang, edition), m.levels(lang, edition),
                                     m.STAGE_JS, links, m.KEY, m.rights(), m.why(lang), getattr(m, 'EXTRA_CSS', ''))
             name = f'{lang}.html' if kind == 'site' else f'game-{lang}.html'

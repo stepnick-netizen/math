@@ -460,7 +460,7 @@ def content(lang):
 
 def page(kind, lang, links):
     t = lambda uk, en: uk if lang == 'uk' else en
-    title = t('Ми — козацького роду', 'Of Cossack Kin')
+    title = t('Ми — козацького роду · Математична пасіка', 'Of Cossack Kin · The Maths Apiary')
     lk = ' · '.join(f'<a href="{h}">{n}</a>' for n, h in links if h)
     body = (f'<div class="page">\n <header class="head"><div class="htext"><h1>{t("Ми — <span>козацького роду</span>", "Of <span>Cossack kin</span>")}</h1>'
             f'<p class="lead">{t("Україна була, є і буде. Ось наша історія: козаки, які обирали гетьмана й писали конституцію, люди, яких намагалися знищити, обіцянки, що нас не захистили, наша культура і чому освіта завжди була нашою силою.", "Ukraine was, is and will be. Here is our story: Cossacks who elected their hetman and wrote a constitution, a people others tried to destroy, promises that did not protect us, our culture, and why education has always been our strength.")}</p>'
