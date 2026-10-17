@@ -4,7 +4,7 @@ settlements (Encyclopedia of Ukraine), Pokrova / Defenders Day / Cossack Day (Uk
 Hinsley (British Academy), Korea (Library of Congress), Estonia (educationestonia.org), literacy 99.97% (2012), MESM 1950,
 Viazovska (Fields 2022), Brave1 (itc.ua), Valuev 1863 / Ems 1876 (Radio Svoboda), schools (Ukrinform, 5.09.2025).
 Also: Berestechko 1651 (zaxid.net), Budapest Memorandum 5.12.1994 (Wikipedia; third-largest arsenal; guarantors RU/US/UK).
-Fight: Kruty >500 vs ~4000, 5 h, delay (fakty.com.ua); Khotyn 2–28.09.1621, Cossacks > half (armyinform); Konotop 1659 (armyinform); 6.3 mln vs Nazism, armies list (texty.org.ua); Norilsk 1953 >20k (Radio Svoboda); Franko 14 langs, 48, 50 vols, 3 arrests, Vienna 1893, Nobel (armyinform).\nRus: Nebelivka ~300 ha (zaxid.net), Danylo crowned 1253 Dorohychyn (zaxid.net), Moscow first mentioned 1147, Kyiv 482 tradition."""
+Fight: Kruty >500 vs ~4000, 5 h, delay (fakty.com.ua); Khotyn 2–28.09.1621, Cossacks > half (armyinform); Konotop 1659 (armyinform); 6.3 mln vs Nazism, armies list (texty.org.ua); Norilsk 1953 >20k (Radio Svoboda); Franko 14 langs, 48, 50 vols, 3 arrests, Vienna 1893, Nobel (armyinform).\nUPA: 14.10.1942 symbolic, vs Nazis & Bolsheviks, >100k over time, Shukhevych 5.03.1950 (Ukrinform); Volhynia formula 2002 Huzar & Yavorsky (NV, Hrytsak 2016).\nRus: Nebelivka ~300 ha (zaxid.net), Danylo crowned 1253 Dorohychyn (zaxid.net), Moscow first mentioned 1147, Kyiv 482 tradition."""
 import math
 from svgkit import text, hand, line, rect, circle, path, svg, width, arrow
 from common import wrap
@@ -400,6 +400,29 @@ def content(lang):
               svg(320, 166, b, t('понад 6 мільйонів', 'over 6 million')),
               t('Найрезультативнішим льотчиком-винищувачем усієї антигітлерівської коаліції був українець із Сумщини Іван Кожедуб: понад 60 збитих літаків.',
                 'The highest-scoring fighter pilot of all the Allied forces was Ivan Kozhedub, a Ukrainian from the Sumy region: over 60 aircraft shot down.'))
+    # UPA: forest and mountains, two empires pressing from both sides
+    b = path('M20 120 L80 52 L120 92 L170 34 L230 96 L262 66 L300 120 Z', 'i', 0, 'var(--ink)')
+    for x in range(40, 290, 22):
+        b += path(f'M{x} 120 L{x + 8} 98 L{x + 16} 120 Z', 'l', 0, 'var(--leaf)')
+    b += path('M6 20 L46 40 L6 60 Z', 'y', 0, 'var(--muted)') + path('M314 20 L274 40 L314 60 Z', 'y', 0, 'var(--muted)')
+    b += cap(160, 154, t('проти двох імперій', 'against two empires'), 20, 'm')
+    h += card(nx(), 'blue', t('УПА: проти двох імперій', 'The UPA: against two empires'),
+              t('У 1942 році постала Українська повстанська армія. Вона воювала одночасно проти двох імперій — нацистської Німеччини й Радянського Союзу — за незалежну Україну. За весь час у її лавах воювали понад 100 тисяч людей.',
+                'In 1942 the Ukrainian Insurgent Army was formed. It fought two empires at once, Nazi Germany and the Soviet Union, for an independent Ukraine. Over 100,000 people fought in its ranks over the years.'),
+              svg(320, 164, b, t('ліси й гори', 'forests and mountains')),
+              t('Після війни повстанці ще роками боролися з радянською владою в лісах і горах. Головнокомандувач УПА Роман Шухевич загинув у бою 5 березня 1950 року під Львовом, не здавшись. Символічною датою створення УПА вважають 14 жовтня, Покрову, — цього дня Україна вшановує своїх захисників і захисниць.',
+                'After the war the insurgents fought the Soviet regime for years in the forests and mountains. The UPA commander-in-chief Roman Shukhevych was killed in battle near Lviv on 5 March 1950, refusing to surrender. 14 October, the feast of Pokrova, is regarded as the symbolic founding day of the UPA, and on that day Ukraine honours its defenders.'))
+    # Volhynia: two candles of remembrance
+    b = ''
+    for x in (120, 200):
+        b += rect(x - 12, 70, 24, 64, '#F3EEE3', 'i', 2, 3) + path(f'M{x} 66 C{x - 12} 52 {x - 4} 38 {x} 26 C{x + 4} 38 {x + 12} 52 {x} 66 Z', 'h', 0, 'var(--hay)')
+    b += cap(160, 164, t('«Прощаємо і просимо прощення»', '“We forgive and ask for forgiveness”'), 19, 'm')
+    h += card(nx(), 'gold', t('Волинь, 1943: пам’ять і примирення', 'Volhynia, 1943: remembrance and reconciliation'),
+              t('У цій історії є й болюча сторінка. У 1943 році на Волині спалахнула жорстока війна між українцями й поляками. Загинули десятки тисяч мирних людей з обох боків, найбільше — поляків.',
+                'This story has a painful page too. In 1943 a brutal conflict between Ukrainians and Poles broke out in Volhynia. Tens of thousands of civilians on both sides were killed, most of them Poles.'),
+              svg(320, 176, b, t('дві свічки', 'two candles')),
+              t('Українські й польські церковні лідери знайшли слова для примирення: «Прощаємо і просимо прощення». Сьогодні Україна й Польща — союзники, і Польща прийняла мільйони українців, які рятувалися від війни. Пам’ятати правду й простягати руку — теж сила.',
+                'Ukrainian and Polish church leaders found the words for reconciliation: “We forgive and ask for forgiveness.” Today Ukraine and Poland are allies, and Poland took in millions of Ukrainians fleeing the war. Remembering the truth and holding out a hand is strength too.'))
     # Gulag uprisings: broken barbed wire
     b = line(30, 40, 290, 40, 'i', 3) + line(30, 70, 140, 70, 'i', 3) + line(180, 70, 290, 70, 'i', 3) + line(30, 100, 290, 100, 'i', 3)
     for x in range(40, 290, 24):
