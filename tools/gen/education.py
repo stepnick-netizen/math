@@ -4,7 +4,7 @@ settlements (Encyclopedia of Ukraine), Pokrova / Defenders Day / Cossack Day (Uk
 Hinsley (British Academy), Korea (Library of Congress), Estonia (educationestonia.org), literacy 99.97% (2012), MESM 1950,
 Viazovska (Fields 2022), Brave1 (itc.ua), Valuev 1863 / Ems 1876 (Radio Svoboda), schools (Ukrinform, 5.09.2025).
 Also: Berestechko 1651 (zaxid.net), Budapest Memorandum 5.12.1994 (Wikipedia; third-largest arsenal; guarantors RU/US/UK).
-Rus: Nebelivka ~300 ha (zaxid.net), Danylo crowned 1253 Dorohychyn (zaxid.net), Moscow first mentioned 1147, Kyiv 482 tradition."""
+Fight: Kruty >500 vs ~4000, 5 h, delay (fakty.com.ua); Khotyn 2–28.09.1621, Cossacks > half (armyinform); Konotop 1659 (armyinform); 6.3 mln vs Nazism, armies list (texty.org.ua); Norilsk 1953 >20k (Radio Svoboda); Franko 14 langs, 48, 50 vols, 3 arrests, Vienna 1893, Nobel (armyinform).\nRus: Nebelivka ~300 ha (zaxid.net), Danylo crowned 1253 Dorohychyn (zaxid.net), Moscow first mentioned 1147, Kyiv 482 tradition."""
 import math
 from svgkit import text, hand, line, rect, circle, path, svg, width, arrow
 from common import wrap
@@ -337,6 +337,125 @@ def content(lang):
               t('Це були лише запевнення, а не обов’язок нас захищати: нас заспокоювали словами. У 2014 році Росія напала, хоча сама поставила підпис під цією обіцянкою, і жодна з держав, що підписали меморандум, не захистила наших кордонів. Висновок той самий, що й у козаків під Берестечком: підпис на папері сам не захищає. Захищають власна армія, власні інженери й власні знання. Ми пам’ятаємо.',
                 'These were only assurances, not a duty to defend us: we were reassured with words. In 2014 Russia attacked, although it had signed that very promise itself, and none of the states that signed the memorandum defended our borders. The lesson is the same as the Cossacks learned at Berestechko: a signature on paper does not protect on its own. What protects us is our own army, our own engineers and our own knowledge. We remember.'))
     h += '</div>'
+    # ---------- II-b. We fought back
+    h += band(t('Ми не тільки вистояли — ми боролися', 'We did not just survive: we fought back'),
+              t('Сміливість, наполегливість і характер: українці раз у раз боронили свою свободу й перемагали.',
+                'Courage, persistence and character: again and again Ukrainians defended their freedom, and won.'), 'b2b')
+    h += '<div class="grid">'
+    h += card(nx(), 'wide more-card', t('Брама Європи', 'The Gates of Europe'),
+              t('Історик Гарвардського університету Сергій Плохій назвав свою книжку про історію України «Брама Європи». Наша земля віками стояла на перехресті імперій. І щоразу знаходилися люди, які не корилися: козаки, повстанці, солдати, поети, студенти, волонтери.',
+                'Harvard historian Serhii Plokhy called his book on Ukraine’s history “The Gates of Europe”. For centuries our land stood at the crossroads of empires. And every time there were people who would not give in: Cossacks, insurgents, soldiers, poets, students, volunteers.'))
+    # Khotyn / Kaffa: a Cossack chaika boat
+    b = path('M40 92 Q160 128 280 92 L262 104 Q160 132 58 104 Z', 'i', 0, 'var(--ink)')
+    for x in range(78, 250, 26):
+        b += line(x, 104, x - 14, 128, 'i', 3)
+    b += line(160, 92, 160, 26, 'i', 4) + path('M160 30 L212 52 L160 74 Z', 'y', 0, 'var(--yarn)')
+    b += cap(160, 158, t('козацька чайка', 'a Cossack chaika boat'), 20, 'm')
+    h += card(nx(), '', t('Хотин, 1621: козаки зупинили імперію', 'Khotyn, 1621: the Cossacks stopped an empire'),
+              t('Восени 1621 року під Хотином величезна армія Османської імперії майже місяць штурмувала табір польського й козацького війська. Козаки гетьмана Петра Сагайдачного становили більшу частину захисників — і табір вистояв. Наступ імперії на Європу зупинили.',
+                'In the autumn of 1621, at Khotyn, the huge army of the Ottoman Empire stormed the camp of the Polish and Cossack forces for almost a month. Hetman Petro Sahaidachny’s Cossacks were most of the defenders, and the camp held. The empire’s advance into Europe was stopped.'),
+              svg(320, 168, b, t('чайка', 'chaika')),
+              t('А ще раніше, у 1616 році, козаки Сагайдачного на легких човнах-чайках перепливли море, взяли фортецю Кафу в Криму й визволили з невільничого ринку бранців.',
+                'Even earlier, in 1616, Sahaidachny’s Cossacks crossed the sea in light chaika boats, took the fortress of Kaffa in Crimea and freed captives from its slave market.'))
+    # Konotop: a war banner
+    b = line(110, 150, 110, 18, 'i', 5) + path('M110 22 L226 30 L206 62 L226 94 L110 86 Z', 'y', 0, 'var(--yarn)')
+    b += cap(160, 176, '1659', 22, 'i')
+    h += card(nx(), 'gold', t('Конотоп, 1659: перемога над московським військом', 'Konotop, 1659: victory over the Muscovite army'),
+              t('Влітку 1659 року біля Конотопа військо гетьмана Івана Виговського разом із кримськими союзниками розбило велике московське військо, яке прийшло підкорити Гетьманщину.',
+                'In the summer of 1659, near Konotop, Hetman Ivan Vyhovsky’s army and its Crimean allies defeated a large Muscovite army that had come to subdue the Hetmanate.'),
+              svg(320, 186, b, t('корогва', 'banner')),
+              t('Це одна з найбільших перемог козацької доби. Вона показала: українці можуть перемагати навіть набагато сильнішого ворога.',
+                'It was one of the greatest victories of the Cossack age. It showed that Ukrainians can win even against a much stronger enemy.'))
+    # Kruty: 500 vs 4000
+    b = ''
+    for k in range(8):
+        b += rect(30 + k * 34, 38, 28, 28, 'var(--ink)', 'i', 0, 3)
+    b += rect(30, 96, 28, 28, 'var(--yarn)', 'y', 0, 3)
+    b += text(30, 28, t('≈ 4000 більшовиків', '≈ 4,000 Bolsheviks'), 15, 'i', 'd', 'start') + text(70, 116, t('500+ оборонців', '500+ defenders'), 15, 'y', 'd', 'start')
+    b += cap(160, 158, t('кожен квадрат — 500 вояків', 'each square is 500 soldiers'), 19, 'm')
+    h += card(nx(), '', t('Крути, 1918: юнаки проти армії', 'Kruty, 1918: young men against an army'),
+              t('29 січня 1918 року біля станції Крути понад 500 юних добровольців — студентів, гімназистів, курсантів — стали проти більшовицької армії Муравйова: близько 4000 вояків із бронепоїздом і гарматами.',
+                'On 29 January 1918, near Kruty station, over 500 young volunteers, students, schoolboys and cadets, stood against Muravyov’s Bolshevik army: about 4,000 soldiers with an armoured train and artillery.'),
+              svg(320, 168, b, '500 / 4000'),
+              t('Вони трималися понад п’ять годин, а відступаючи, підірвали колії й затримали наступ на кілька днів. Ворог переважав їх приблизно у 8 разів (4000 : 500 = 8). Сьогодні 29 січня — День пам’яті Героїв Крут.',
+                'They held out for over five hours and, as they withdrew, blew up the tracks and delayed the advance by several days. The enemy outnumbered them about 8 to 1 (4,000 ÷ 500 = 8). Today 29 January is the Day of Remembrance of the Heroes of Kruty.'))
+    # Kholodny Yar: dark forest
+    b = ''
+    for x, hh in ((40, 70), (78, 96), (118, 80), (160, 104), (202, 84), (242, 96), (280, 72)):
+        b += path(f'M{x} {124 - hh} L{x + 22} 124 L{x - 22} 124 Z', 'i', 0, 'var(--ink)')
+    b += line(20, 124, 300, 124, 'i', 3) + path('M150 30 h40 v26 h-40 z', 'i', 0, 'var(--yarn)') + line(150, 30, 150, 70, 'i', 3)
+    b += cap(160, 156, t('«Воля України — або смерть»', '“Freedom for Ukraine, or death”'), 19, 'm')
+    h += card(nx(), 'blue', t('Холодний Яр: повстанці не здалися', 'Kholodny Yar: the insurgents did not surrender'),
+              t('У 1919–1922 роках у лісах Холодного Яру на Черкащині селяни й колишні вояки створили повстанську республіку. Роками вони боролися проти більшовицької влади, коли інші землі вже були окуповані.',
+                'In 1919–1922, in the forests of Kholodny Yar in the Cherkasy region, peasants and former soldiers created an insurgent republic. For years they fought the Bolshevik regime, when other lands were already occupied.'),
+              svg(320, 166, b, t('Холодний Яр', 'Kholodny Yar')),
+              t('На їхньому прапорі було написано «Воля України — або смерть».', 'Their flag read “Freedom for Ukraine, or death”.'))
+    # WW2: a fighter plane + 6 million
+    b = path('M60 70 L250 62 L268 70 L250 78 Z', 'i', 0, 'var(--ink)') + path('M140 68 L120 28 L150 28 L176 68 Z M140 72 L120 112 L150 112 L176 72 Z', 'i', 0, 'var(--ink)')
+    b += path('M64 70 L52 50 L70 50 L84 68 Z M64 70 L52 90 L70 90 L84 72 Z', 'i', 0, 'var(--ink)') + circle(268, 70, 4, 'var(--yarn)', 'y', 0)
+    b += text(160, 150, t('понад 6 000 000', 'over 6,000,000'), 22, 'y', 'd', 'middle')
+    h += card(nx(), 'gold', t('Проти нацизму', 'Against Nazism'),
+              t('У Другій світовій війні понад 6 мільйонів українців воювали проти нацизму в різних арміях: у Червоній армії, у військах Польщі, США, Канади, Франції, Чехословаччини.',
+                'In the Second World War over 6 million Ukrainians fought against Nazism in different armies: the Red Army and the forces of Poland, the USA, Canada, France and Czechoslovakia.'),
+              svg(320, 166, b, t('понад 6 мільйонів', 'over 6 million')),
+              t('Найрезультативнішим льотчиком-винищувачем усієї антигітлерівської коаліції був українець із Сумщини Іван Кожедуб: понад 60 збитих літаків.',
+                'The highest-scoring fighter pilot of all the Allied forces was Ivan Kozhedub, a Ukrainian from the Sumy region: over 60 aircraft shot down.'))
+    # Gulag uprisings: broken barbed wire
+    b = line(30, 40, 290, 40, 'i', 3) + line(30, 70, 140, 70, 'i', 3) + line(180, 70, 290, 70, 'i', 3) + line(30, 100, 290, 100, 'i', 3)
+    for x in range(40, 290, 24):
+        for y in (40, 100):
+            b += path(f'M{x - 5} {y - 5} L{x + 5} {y + 5} M{x + 5} {y - 5} L{x - 5} {y + 5}', 'i', 2)
+    b += path('M140 70 L150 60 M180 70 L170 80', 'y', 3) + cap(160, 140, t('Норильськ, 1953: понад 20 000 в’язнів', 'Norilsk, 1953: over 20,000 prisoners'), 19, 'm')
+    h += card(nx(), '', t('Повстання в радянських таборах', 'Uprisings in the Soviet camps'),
+              t('Навіть у таборах ГУЛАГу українці не корилися. Влітку 1953 року в Норильську повстали понад 20 тисяч в’язнів, і серед організаторів були українці. Повстання жорстоко придушили.',
+                'Even in the Gulag camps Ukrainians did not submit. In the summer of 1953 over 20,000 prisoners rose up in Norilsk, and Ukrainians were among the organisers. The uprising was brutally crushed.'),
+              svg(320, 150, b, t('колючий дріт', 'barbed wire')),
+              t('Історики вважають, що такі повстання підточили саму систему радянських таборів.', 'Historians believe that uprisings like this undermined the whole Soviet camp system.'))
+    # Dissidents: a pen against a wall
+    b = rect(40, 30, 120, 100, 'var(--cell)', 'i', 3, 2)
+    for y in range(46, 126, 16):
+        b += line(40, y, 160, y, 'i', 1.5)
+    b += path('M196 128 L262 30 L276 40 L210 138 Z', 'i', 0, 'var(--ink)') + path('M196 128 L192 146 L210 138 Z', 'y', 0, 'var(--yarn)')
+    b += cap(160, 166, t('слово проти системи', 'words against a system'), 20, 'm')
+    h += card(nx(), 'blue', t('Дисиденти: слово сильніше за страх', 'Dissidents: words stronger than fear'),
+              t('У 1976 році в Києві постала Українська Гельсінська група: вона розповідала світові, як радянська влада порушує права людей. Її учасників за це кидали до таборів.',
+                'In 1976 the Ukrainian Helsinki Group was founded in Kyiv: it told the world how the Soviet regime violated people’s rights. Its members were sent to prison camps for it.'),
+              svg(320, 176, b, t('перо', 'pen')),
+              t('Поет Василь Стус провів у неволі багато років, але не відмовився від своїх переконань. Він загинув у таборі в 1985 році. Сьогодні його вірші вчать у школі.',
+                'The poet Vasyl Stus spent many years in captivity but never gave up his beliefs. He died in a camp in 1985. Today his poems are studied at school.'))
+    # 1990-1991: bar 90.32 %
+    b = rect(30, 50, 260, 34, 'var(--cell)', 'i', 2, 6) + rect(30, 50, 260 * 0.9032, 34, 'var(--sky)', 's', 0, 6)
+    b += text(150, 74, '90,32 % «так»' if lang == 'uk' else '90.32% “yes”', 17, 'w', 'd', 'middle')
+    b += cap(160, 120, t('референдум 1 грудня 1991 року', 'referendum of 1 December 1991'), 20, 'm')
+    h += card(nx(), 'gold', t('Студенти на граніті — і незалежність', 'Students on the granite, and independence'),
+              t('У жовтні 1990 року студенти поставили намети в центрі Києва й оголосили голодування. Влада поступилася: голова уряду пішов у відставку. Це назвали Революцією на граніті.',
+                'In October 1990 students pitched tents in the centre of Kyiv and went on hunger strike. The authorities gave in: the head of government resigned. It became known as the Revolution on Granite.'),
+              svg(320, 132, b, '90.32%'),
+              t('24 серпня 1991 року Україна проголосила незалежність, а 1 грудня на референдумі її підтримали 90,32 % тих, хто голосував, — це понад 9 із кожних 10.',
+                'On 24 August 1991 Ukraine declared independence, and on 1 December 90.32% of those who voted backed it in a referendum: more than 9 in every 10.'))
+    # Maidan
+    b = ''
+    for k in range(9):
+        x = 40 + k * 30
+        b += path(f'M{x} 110 Q{x + 6} {84 - (k % 3) * 8} {x} {60 - (k % 3) * 8} Q{x - 6} {84 - (k % 3) * 8} {x} 110 Z', 'y', 0, 'var(--yarn)')
+        b += path(f'M{x} 104 Q{x + 3} 92 {x} 80 Q{x - 3} 92 {x} 104 Z', 'h', 0, 'var(--hay)')
+    b += line(20, 112, 300, 112, 'i', 3) + cap(160, 146, t('Майдан, 2013–2014', 'Maidan, 2013–2014'), 20, 'm')
+    h += card(nx(), 'wide', t('Революція Гідності', 'The Revolution of Dignity'),
+              t('Взимку 2013–2014 років сотні тисяч українців вийшли на Майдан у Києві й на площі по всій країні, щоб відстояти свій вибір — жити вільно, за правилами, у Європі. Люди стояли на морозі тижнями.',
+                'In the winter of 2013–2014 hundreds of thousands of Ukrainians took to the Maidan in Kyiv and to squares across the country to defend their choice: to live freely, by the rules, in Europe. People stood in the cold for weeks.'),
+              svg(320, 156, b, t('Майдан', 'Maidan')),
+              t('Понад сто людей загинули — їх називають Небесною сотнею. Але народ переміг.', 'More than a hundred people were killed; they are called the Heavenly Hundred. But the people won.'))
+    # 2022: shield
+    b = path('M160 18 L232 40 V88 C232 122 196 142 160 152 C124 142 88 122 88 88 V40 Z', 'i', 0, 'var(--sky)')
+    b += path('M160 52 V120 M136 66 V96 Q148 112 160 120 Q172 112 184 96 V66', 'h', 5)
+    b += cap(160, 178, t('Київ вистояв', 'Kyiv stood firm'), 20, 'm')
+    h += card(nx(), 'blue wide', t('2022: світ побачив, які ми', '2022: the world saw who we are'),
+              t('У лютому 2022 року Росія розраховувала захопити Київ за кілька днів. Київ вистояв, і вже на початку квітня ворожі війська відступили з Київщини, Чернігівщини й Сумщини. Восени Україна звільнила більшу частину Харківщини, а 11 листопада — Херсон.',
+                'In February 2022 Russia expected to take Kyiv in a few days. Kyiv stood firm, and by early April the enemy had withdrawn from the Kyiv, Chernihiv and Sumy regions. In the autumn Ukraine liberated most of the Kharkiv region, and on 11 November, Kherson.'),
+              svg(320, 192, b, t('щит', 'shield')),
+              t('14 квітня 2022 року флагман російського Чорноморського флоту крейсер «Москва» затонув після удару українських ракет «Нептун», створених українськими інженерами. Сила, характер і знання — ось наша зброя.',
+                'On 14 April 2022 the flagship of Russia’s Black Sea Fleet, the cruiser Moskva, sank after being hit by Ukrainian Neptune missiles designed by Ukrainian engineers. Strength, character and knowledge: those are our weapons.'))
+    h += '</div>'
     # ---------- III. Ukrainian scientists
     h += band(t('Українські науковці, що змінили світ', 'Ukrainian scientists who changed the world'),
               t('Декого з них переслідували — а вони відкривали людям космос, небо й нові знання.', 'Some of them were persecuted, yet they opened up space, the sky and new knowledge for everyone.'), 'b3s')
@@ -404,6 +523,22 @@ def content(lang):
               svg(320, 182, b, t('Кобзар 1840', 'Kobzar 1840')),
               t('За вірші імперія відправила його на заслання в солдати й заборонила писати й малювати. Він однаково писав. Його слова й досі з нами: «Борітеся — поборете!»',
                 'For his poems the empire sent him into exile as a soldier and banned him from writing and painting. He wrote anyway. His words are still with us: "Fight on, and you will win!"'))
+    b = path('M70 150 L110 96 L170 104 L228 82 L262 150 Z', 'i', 0, 'var(--ink)') + path('M150 104 L178 120 L160 136', 'm', 2)
+    import math as _m
+    cx, cy, dx_, dy_ = 212.0, 62.0, -_m.sqrt(.5), _m.sqrt(.5)          # head centre, handle direction (towards the stone)
+    px_, py_ = _m.sqrt(.5), _m.sqrt(.5)
+    pts = [(cx + px_ * a + dx_ * c, cy + py_ * a + dy_ * c) for a, c in ((-22, -10), (22, -10), (22, 10), (-22, 10))]
+    b += line(cx, cy, cx + 62 * _m.sqrt(.5), cy - 62 * _m.sqrt(.5), 'h', 7)
+    b += path('M' + ' L'.join(f'{x:.1f} {y:.1f}' for x, y in pts) + ' Z', 'i', 2, 'var(--muted)')
+    for dx, dy in ((-20, -8), (-10, -20), (-24, 8), (2, -16)):
+        b += line(172, 100, 172 + dx, 100 + dy, 'y', 2.5)
+    b += cap(160, 178, t('Каменяр: 14 мов, 50 томів творів', 'The Stonebreaker: 14 languages, 50 volumes'), 19, 'm')
+    h += card(nx(), 'gold', t('Іван Франко — «академія в одній особі»', 'Ivan Franko, “an academy in one person”'),
+              t('Народився 1856 року в селі Нагуєвичі на Львівщині, у родині коваля. Знав 14 мов і перекладав із 48. Сорок років писав так, що новий твір з’являвся в середньому що два дні: вірші, повісті, казки, наукові праці. Зібрання його творів — 50 томів, і це лише частина написаного.',
+                'He was born in 1856 in the village of Nahuievychi near Lviv, the son of a blacksmith. He knew 14 languages and translated from 48. For forty years he wrote so much that a new work appeared on average every two days: poems, stories, fairy tales and scholarly works. His collected works fill 50 volumes, and that is only part of what he wrote.'),
+              svg(320, 188, b, t('молот і камінь', 'hammer and stone')),
+              t('Австрійська влада тричі кидала його до в’язниці, а він писав далі. У 1893 році захистив докторську дисертацію у Відні, а наприкінці життя його висунули на Нобелівську премію. Його називають Каменярем: він ламав скелю несправедливості словом. Дітям він подарував «Лиса Микиту» й «Захара Беркута».',
+                'The Austrian authorities jailed him three times, and he kept writing. In 1893 he earned a doctorate in Vienna, and near the end of his life he was nominated for the Nobel Prize. He is called the Stonebreaker: he broke the rock of injustice with words. For children he wrote “Fox Mykyta” and “Zakhar Berkut”.'))
     b = rect(70, 12, 180, 118, 'var(--sil)', 'i', 0, 8) + rect(150, 74, 20, 50, '#F3EEE3', 'i', 0, 2)
     b += path('M160 72 C150 60 154 48 160 36 C166 48 170 60 160 72 Z', 'h', 0, 'var(--hay)')
     b += ''.join(circle(x, y, 1.6, '#F3EEE3', 'i', 0) for x, y in ((92, 30), (118, 52), (214, 28), (232, 60), (200, 46), (96, 92)))
@@ -458,7 +593,7 @@ def content(lang):
         b += rect(x, y, 30, 30, 'var(--cell)', 'i', 2, 2) + f'<ellipse cx="{ex}" cy="{ey}" rx="9" ry="12" fill="{cols[k]}"/>'
         b += path(f'M{ex - 9} {ey} q 4.5 -3 9 0 t 9 0', 'w', 1.6) + line(ex - 8, ey - 6, ex + 8, ey - 6, 'w', 1.2) + line(ex - 8, ey + 6, ex + 8, ey + 6, 'w', 1.2)
     b += text(160, 136, '3 × 3 = 3² = 9', 20, 'y', 'd', 'middle') + cap(160, 164, t('писанки рядами: повтор — це множення', 'pysanky in rows: repeating is multiplying'), 20, 'm')
-    h += card(nx(), 'blue', t('Енді Воргол — Андрій Вархола', 'Andy Warhol, born Andrii Varkhola'),
+    h += card(nx(), 'blue wide', t('Енді Воргол — Андрій Вархола', 'Andy Warhol, born Andrii Varkhola'),
               t('Справжнє ім’я короля поп-арту — Андрій Вархола. Він народився в 1928 році в Піттсбурзі (США) в родині лемків із карпатського села Мікова біля Меджилабірців. Лемки — карпатська гілка українського народу. Коли кордони переділили, їхні села опинилися в Польщі й Словаччині.',
                 'The real name of the king of pop art was Andrii Varkhola. He was born in 1928 in Pittsburgh, USA, into a Lemko family from the Carpathian village of Miková near Medzilaborce. The Lemkos are the Carpathian branch of the Ukrainian people. When borders were redrawn, their villages ended up in Poland and Slovakia.'),
               svg(320, 174, b, '3 x 3'),
