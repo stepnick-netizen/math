@@ -160,18 +160,20 @@ QUICK = {
     'uk': {'label': 'Розділи сайту', 'items': [
         ('toc', '9.1', 'Уроки', 'зміст і пошук', '#toc'),
         ('fun', '?!', 'Цікавинки', 'історії про математику', 'cikavynky.html'),
-        ('hist', '', 'Історія і культура', 'козаки, герої, науковці, митці', 'education.html')]},
+        ('hist', '', 'Історія і культура', 'козаки, герої, науковці, митці', 'education.html'),
+        ('civ', 'Ми', 'Наша держава', 'як ти можеш змінювати життя', 'civic.html')]},
     'en': {'label': 'Site sections', 'items': [
         ('toc', '9.1', 'Lessons', 'contents and search', '#toc'),
         ('fun', '?!', 'Curiosities', 'stories about maths', 'cikavynky-en.html'),
-        ('hist', '', 'History and culture', 'Cossacks, heroes, scientists, artists', 'education-en.html')]},
+        ('hist', '', 'History and culture', 'Cossacks, heroes, scientists, artists', 'education-en.html'),
+        ('civ', 'We', 'Our country', 'how you can change things', 'civic-en.html')]},
 }
-QUICK_CSS = ("/* quick */.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}"
+QUICK_CSS = ("/* quick */.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:10px}"
              ".quick a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:9px 12px;box-shadow:0 2px 0 var(--shadow)}"
              ".quick a:hover{border-color:var(--hay)}.quick b{display:block;font:700 16px var(--display)}.quick small{display:block;color:var(--muted);font:600 13px var(--body)}"
              ".q-ic{flex:none;width:38px;height:43px;display:grid;place-items:center;font:700 14px var(--display);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}"
              "@media (max-width:480px){.quick{gap:6px}.quick a{padding:6px 10px}.quick small{display:none}.q-ic{width:30px;height:34px;font-size:12px}}"
-             ".q-toc .q-ic{background:var(--hay);color:#2A1E00}.q-fun .q-ic{background:var(--marker);color:var(--marker-ink)}.q-hist .q-ic{background:linear-gradient(#0057B7 0 50%,#FFD700 50% 100%)}")
+             ".q-toc .q-ic{background:var(--hay);color:#2A1E00}.q-fun .q-ic{background:var(--marker);color:var(--marker-ink)}.q-hist .q-ic{background:linear-gradient(#0057B7 0 50%,#FFD700 50% 100%)}.q-civ .q-ic{background:var(--sky);color:#fff}")
 
 
 def do_index(lang):
