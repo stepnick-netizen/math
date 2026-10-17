@@ -454,14 +454,16 @@ def content(lang):
     b = ''
     for k in range(9):
         x, y = 112 + (k % 3) * 34, 8 + (k // 3) * 34
-        b += rect(x, y, 30, 30, 'var(--cell)', 'i', 2, 2) + circle(x + 15, y + 15, 9, cols[k], 'i', 0)
-    b += text(160, 136, '3 × 3 = 3² = 9', 20, 'y', 'd', 'middle') + cap(160, 164, t('повтор — це множення', 'repeating is multiplying'), 20, 'm')
-    h += card(nx(), 'blue', t('Енді Воргол', 'Andy Warhol'),
-              t('Король поп-арту, народився в 1928 році в Піттсбурзі (США). Його батьки — русини з карпатського села Мікова (нині Словаччина), з тих самих Карпат, що й наші лемки.',
-                'The king of pop art, born in 1928 in Pittsburgh, USA. His parents were Rusyns from the Carpathian village of Miková (now in Slovakia), the same Carpathians as our Lemkos.'),
+        ex, ey = x + 15, y + 15
+        b += rect(x, y, 30, 30, 'var(--cell)', 'i', 2, 2) + f'<ellipse cx="{ex}" cy="{ey}" rx="9" ry="12" fill="{cols[k]}"/>'
+        b += path(f'M{ex - 9} {ey} q 4.5 -3 9 0 t 9 0', 'w', 1.6) + line(ex - 8, ey - 6, ex + 8, ey - 6, 'w', 1.2) + line(ex - 8, ey + 6, ex + 8, ey + 6, 'w', 1.2)
+    b += text(160, 136, '3 × 3 = 3² = 9', 20, 'y', 'd', 'middle') + cap(160, 164, t('писанки рядами: повтор — це множення', 'pysanky in rows: repeating is multiplying'), 20, 'm')
+    h += card(nx(), 'blue', t('Енді Воргол — Андрій Вархола', 'Andy Warhol, born Andrii Varkhola'),
+              t('Справжнє ім’я короля поп-арту — Андрій Вархола. Він народився в 1928 році в Піттсбурзі (США) в родині лемків із карпатського села Мікова біля Меджилабірців. Лемки — карпатська гілка українського народу. Коли кордони переділили, їхні села опинилися в Польщі й Словаччині.',
+                'The real name of the king of pop art was Andrii Varkhola. He was born in 1928 in Pittsburgh, USA, into a Lemko family from the Carpathian village of Miková near Medzilaborce. The Lemkos are the Carpathian branch of the Ukrainian people. When borders were redrawn, their villages ended up in Poland and Slovakia.'),
               svg(320, 174, b, '3 x 3'),
-              t('Він повторював одне зображення рядами в різних кольорах: 3 рядки по 3 — це 9 картинок. Повтор і множення — та сама математика, що й у степенях.',
-                'He repeated one image in rows, in different colours: 3 rows of 3 make 9 pictures. Repeating and multiplying: the same maths as in powers.'))
+              t('Родина берегла свої звичаї: ходила до греко-католицької церкви, а мама щороку на Великдень розписувала з Андрієм писанки. Згодом він повторював одне зображення рядами в різних кольорах: 3 рядки по 3 — це 9 картинок. Повтор і множення — та сама математика, що й у степенях.',
+                'The family kept its traditions: they went to the Greek Catholic church, and every Easter his mother painted pysanky, decorated eggs, with Andrii. Later he repeated one image in rows, in different colours: 3 rows of 3 make 9 pictures. Repeating and multiplying: the same maths as in powers.'))
     h += '</div>'
     # ---------- III. Education makes nations strong
     h += band(t('Освіта робить країни сильними', 'Education makes nations strong'), t('Справжні історії з інших країн.', 'True stories from other countries.'), 'b3e')
