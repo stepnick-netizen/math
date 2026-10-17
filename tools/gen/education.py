@@ -163,32 +163,99 @@ def content(lang):
     h += '</div>'
     # ---------- II. They tried to destroy us
     h += band(t('Нас намагалися знищити — а ми є', 'They tried to destroy us, and we are still here'),
-              t('Російська імперія, а потім радянська влада не раз намагалися стерти українців: мову, школи, учених і саме життя.',
-                'The Russian Empire, and later the Soviet regime, tried again and again to wipe out Ukrainians: our language, schools, scholars and our very lives.'), 'b2')
-    ev = [(1863, t('Валуєвський циркуляр', 'Valuev circular')), (1876, t('Емський указ', 'Ems decree')),
-          (1933, t('Голодомор', 'Holodomor')), (1937, t('Розстріляне відродження', 'Executed Renaissance')), (2022, t('велика війна', 'full-scale war'))]
-    b = line(20, 60, 400, 60, 'i', 3)
-    for (yr, cap), x in zip(ev, [40, 122, 205, 290, 375]):
-        b += circle(x, 60, 8, 'var(--yarn)', 'y', 0) + text(x, 40, str(yr) if yr != 1933 else '1932–33', 15 if yr != 1933 else 13, 'y', 'd', 'middle')
-        w = cap.split(' ', 1)
-        b += hand(x, 88, w[0], 17, 'm') + (hand(x, 106, w[1], 17, 'm') if len(w) > 1 else '')
-    b += hand(210, 146, t('а ми — тут, вчимося й живемо', 'and we are still here, learning and living'), 23, 'l')
+              t('Російська імперія, радянська влада, нацистська окупація, а тепер знову Росія — Україну не раз намагалися стерти: мову, школи, учених і саме життя.',
+                'The Russian Empire, the Soviet regime, Nazi occupation and now Russia again: over and over, others tried to wipe Ukraine out: its language, schools, scholars and very lives.'), 'b2')
+    ev = [('1863', t('Валуєвський', 'Valuev'), t('циркуляр', 'circular')), ('1876', t('Емський', 'Ems'), t('указ', 'decree')),
+          ('1932–33', t('Голодомор', 'Holodomor'), ''), ('1937', t('Великий', 'Great'), t('терор', 'Terror')),
+          ('1941', t('нацистська', 'Nazi'), t('окупація', 'occupation')), ('1944', t('депортація', 'deportation of'), t('кримських татар', 'Crimean Tatars')),
+          ('2014', t('Крим', 'Crimea'), t('і Донбас', 'and Donbas')), ('2022', t('повномасштабне', 'full-scale'), t('вторгнення', 'invasion'))]
+    b = ''
+    for row in range(2):
+        y = 50 + row * 112
+        b += line(20, y, 400, y, 'i', 3)
+        for k in range(4):
+            yr, c1, c2 = ev[row * 4 + k]
+            x = 58 + k * 102
+            b += circle(x, y, 8, 'var(--yarn)', 'y', 0) + text(x, y - 18, yr, 16 if len(yr) == 4 else 14, 'y', 'd', 'middle')
+            b += hand(x, y + 28, c1, 17, 'm') + (hand(x, y + 46, c2, 17, 'm') if c2 else '')
+    b += hand(210, 270, t('а ми — тут, вчимося й живемо', 'and we are still here, learning and living'), 23, 'l')
     tl = ''.join(f'<li>{x}</li>' for x in [
         t('<b>1863.</b> Міністр Валуєв підписав циркуляр, де йшлося, що окремої української мови «не було, немає і бути не може», і заборонив друкувати нею підручники та книжки для народу.',
           '<b>1863.</b> Minister Valuev signed a circular claiming that a separate Ukrainian language had never existed and could not exist, and stopped schoolbooks and books for ordinary people being printed in Ukrainian.'),
         t('<b>1876.</b> Емський указ заборонив навіть ноти з українськими словами й вистави українською.', '<b>1876.</b> The Ems decree banned even sheet music with Ukrainian words and plays in Ukrainian.'),
         t('<b>1932–1933.</b> Голодомор: штучний голод, влаштований радянською владою, забрав життя мільйонів українців. Україна визнала його геноцидом українського народу.',
           '<b>1932–1933.</b> The Holodomor: a famine engineered by the Soviet regime killed millions of Ukrainians. Ukraine recognises it as genocide of the Ukrainian people.'),
-        t('<b>1930-ті.</b> Радянська влада знищила сотні українських письменників, учених і вчителів. Це покоління називають «Розстріляним відродженням».',
-          '<b>1930s.</b> The Soviet regime killed hundreds of Ukrainian writers, scholars and teachers. This generation is called the Executed Renaissance.'),
-        t('<b>Від 2022.</b> Росія веде повномасштабну війну проти України. За даними МОН на серпень 2025 року, 1779 шкіл пошкоджено, а 226 зруйновано.',
-          '<b>Since 2022.</b> Russia has been waging a full-scale war against Ukraine. According to Ukraine’s Ministry of Education, by August 2025 1,779 schools had been damaged and 226 destroyed.')])
+        t('<b>1937–1938.</b> Великий терор: радянська влада розстріляла й ув’язнила сотні тисяч людей, серед них українських письменників, учених і вчителів. Це покоління називають «Розстріляним відродженням».',
+          '<b>1937–1938.</b> The Great Terror: the Soviet regime shot or imprisoned hundreds of thousands of people, among them Ukrainian writers, scholars and teachers. That generation is called the Executed Renaissance.'),
+        t('<b>1941–1944.</b> Нацистська окупація. За оцінкою Снайдера, політика нацистів убила близько 3,5 мільйона мирних жителів України, а разом із загиблими на фронті Україна втратила близько 6,5 мільйона людей. У вересні 1941 року в Бабиному Яру в Києві нацисти за два дні розстріляли десятки тисяч євреїв.',
+          '<b>1941–1944.</b> Nazi occupation. Snyder estimates that Nazi policies killed about 3.5 million civilians in Ukraine; counting those who died at the front, Ukraine lost about 6.5 million people. In September 1941, at Babyn Yar in Kyiv, the Nazis shot tens of thousands of Jews in two days.'),
+        t('<b>1944.</b> Радянська влада за кілька днів вивезла з Криму весь кримськотатарський народ. Багато людей загинули в дорозі й на засланні.',
+          '<b>1944.</b> In a few days the Soviet regime deported the whole Crimean Tatar people from Crimea. Many died on the way and in exile.'),
+        t('<b>2014.</b> Після Революції Гідності Росія напала на Україну: окупувала Крим і розв’язала війну на Донбасі. Відтоді Україна захищається.',
+          '<b>2014.</b> After the Revolution of Dignity, Russia attacked Ukraine: it occupied Crimea and started the war in Donbas. Ukraine has been defending itself ever since.'),
+        t('<b>2022.</b> 24 лютого Росія почала повномасштабне вторгнення. За даними МОН на серпень 2025 року, 1779 шкіл пошкоджено, а 226 зруйновано.',
+          '<b>2022.</b> On 24 February Russia launched its full-scale invasion. According to Ukraine’s Ministry of Education, by August 2025 1,779 schools had been damaged and 226 destroyed.')])
+    snyder = t('Американський історик Тімоті Снайдер з Єльського університету показує: у 1933–1945 роках Україна опинилася в серці «кривавих земель» між Гітлером і Сталіном, де загинули близько 14 мільйонів мирних людей. Україну хотіли зробити колонією й житницею для чужих.',
+               'American historian Timothy Snyder of Yale University shows that in 1933–1945 Ukraine lay at the heart of the "bloodlands" between Hitler and Stalin, where about 14 million civilians were killed. Others wanted to turn Ukraine into a colony and a breadbasket for themselves.')
     h += '<div class="grid">' + card(nx(), 'wide', t('Чому саме мова й школи?', 'Why language and schools?'),
                                      t('Бо освічений народ, який знає свою історію, не скориш. Тому навчання для нас — це теж захист.',
                                        'Because a people that is educated and knows its history cannot be conquered. That is why learning is also a way to defend ourselves.'),
-                                     svg(420, 158, b, t('спроби знищити Україну', 'attempts to destroy Ukraine')), '', f'<ul class="tl">{tl}</ul>') + '</div>'
+                                     svg(420, 286, b, t('спроби знищити Україну', 'attempts to destroy Ukraine')), '',
+                                     f'<p class="more">{snyder}</p><ul class="tl">{tl}</ul>') + '</div>'
+    # ---------- III. Ukrainian scientists
+    h += band(t('Українські науковці, що змінили світ', 'Ukrainian scientists who changed the world'),
+              t('Декого з них переслідували — а вони відкривали людям космос, небо й нові знання.', 'Some of them were persecuted, yet they opened up space, the sky and new knowledge for everyone.'), 'b3s')
+    h += '<div class="grid">'
+    b = circle(120, 86, 34, 'var(--sky)', 's', 0, ) + path('M70 120 Q160 20 260 60', 'h', 2.5, dash='6 6') + circle(260, 60, 7, 'var(--hay)', 'h', 0)
+    b += path('M254 52 L266 46 M268 66 L278 72 M262 70 L258 82', 'h', 2.5)
+    b += hand(160, 146, t('1957: перший супутник', '1957: first satellite'), 20, 'm') + hand(160, 168, t('1961: перша людина в космосі', '1961: first person in space'), 20, 'm')
+    h += card(nx(), 'blue', t('Сергій Корольов', 'Serhiy Korolyov'),
+              t('Народився в Житомирі у 1907 році, вчився в Київському політехнічному інституті. Головний конструктор, під чиїм керівництвом запустили перший супутник Землі й першу людину в космос.',
+                'Born in Zhytomyr in 1907, he studied at the Kyiv Polytechnic Institute. He was the chief designer who led the launch of the first Earth satellite and the first person in space.'),
+              svg(320, 176, b, t('супутник', 'satellite')),
+              t('У 1938 році радянська влада його заарештувала, він працював навіть на золотій копальні на Колимі. Вижив — і повів людство в космос. Його ім’я тоді тримали в таємниці.',
+                'In 1938 the Soviet regime arrested him; he was even sent to a gold mine in Kolyma. He survived and led humanity into space. At the time his name was kept secret.'))
+    b = circle(70, 90, 30, 'var(--sky)', 's', 0) + circle(250, 80, 16, 'var(--line)', 'm', 2)
+    b += path('M100 90 C150 30 220 40 250 56 C280 70 270 106 250 104 C220 102 160 120 100 96', 'y', 2.5, dash='6 5')
+    b += hand(160, 150, t('траса Кондратюка до Місяця', 'Kondratyuk’s route to the Moon'), 21, 'm')
+    h += card(nx(), 'gold', t('Юрій Кондратюк', 'Yuri Kondratyuk'),
+              t('Народився в Полтаві у 1897 році. Ще до польотів у космос розрахував, як долетіти до Місяця: корабель лишається на орбіті, а на Місяць спускається маленький модуль.',
+                'Born in Poltava in 1897. Long before spaceflight, he calculated how to reach the Moon: the ship stays in orbit while a small lander goes down to the Moon.'),
+              svg(320, 160, b, t('траса до Місяця', 'route to the Moon')),
+              t('Саме цю ідею використали інженери програми «Аполлон», коли люди вперше висадилися на Місяць. Це математика траєкторій — та сама, що й у наших кутах і пропорціях.',
+                'Apollo engineers used this very idea when people first landed on the Moon. It is the mathematics of trajectories: the same maths behind our angles and ratios.'))
+    b = rect(110, 80, 100, 36, 'var(--cell)', 's', 3, 18) + path('M160 80 V58 M90 56 H230', 's', 4) + path('M210 98 H270 M270 88 V108', 's', 3)
+    b += text(160, 140, '1939', 22, 's', 'd', 'middle')
+    h += card(nx(), '', t('Ігор Сікорський', 'Igor Sikorsky'),
+              t('Народився в Києві у 1889 році, вчився в Київському політехнічному інституті. У 1939 році створив гелікоптер VS-300 — перший практичний гелікоптер.',
+                'Born in Kyiv in 1889, he studied at the Kyiv Polytechnic Institute. In 1939 he built the VS-300, the first practical helicopter.'),
+              svg(320, 152, b, t('гелікоптер', 'helicopter')),
+              t('Компанія Sikorsky досі будує гелікоптери, які рятують людей у горах, на морі й під час пожеж.', 'The Sikorsky company still builds helicopters that rescue people in the mountains, at sea and in fires.'))
+    b = line(20, 90, 300, 90, 'h', 6) + ''.join(line(x, 90, x, 128, 'h', 4) for x in range(40, 300, 52)) + path('M20 128 Q160 140 300 128', 's', 3)
+    b += text(160, 60, '1543 м' if lang == 'uk' else '1,543 m', 24, 'h', 'd', 'middle')
+    h += card(nx(), 'gold', t('Євген Патон', 'Yevhen Paton'),
+              t('У 1953 році в Києві відкрили міст Патона завдовжки 1543 метри — один із перших у світі суцільнозварних мостів.',
+                'In 1953 the Paton Bridge opened in Kyiv: 1,543 metres long and one of the first all-welded bridges in the world.'),
+              svg(320, 150, b, t('міст Патона', 'Paton Bridge')),
+              t('Київська школа зварювання Патонів і сьогодні відома на весь світ.', 'The Paton school of welding in Kyiv is still famous around the world.'))
+    b = circle(160, 76, 46, 'none', 'p', 3) + circle(160, 76, 30, 'none', 'p', 2) + circle(160, 76, 8, 'var(--plum)', 'p', 0)
+    b += text(160, 150, '1918', 24, 'p', 'd', 'middle')
+    h += card(nx(), '', t('Володимир Вернадський', 'Volodymyr Vernadsky'),
+              t('У 1918 році постала Українська академія наук, і першим її президентом обрали Володимира Вернадського.',
+                'In 1918 the Ukrainian Academy of Sciences was founded, and Volodymyr Vernadsky was elected its first president.'),
+              svg(320, 160, b, t('Академія наук', 'Academy of Sciences')),
+              t('Навіть у буремні роки українці будували науку, бо знали: без неї держава не встоїть.', 'Even in stormy years Ukrainians built science, because they knew a state cannot stand without it.'))
+    b = circle(160, 70, 52, 'var(--marker)', 'h', 4) + text(160, 64, '2022', 26, 'k', 'd', 'middle') + text(160, 94, t('Філдс', 'Fields'), 18, 'k', 'd', 'middle')
+    b += hand(160, 150, t('найвища нагорода математиків', 'the highest prize in maths'), 22, 'm')
+    h += card(nx(), 'blue', t('Марина В’язовська', 'Maryna Viazovska'),
+              t('Народилася в Києві у 1984 році. У 2022 році отримала Філдсівську премію — другою жінкою в історії.',
+                'Born in Kyiv in 1984. In 2022 she won the Fields Medal, only the second woman ever to do so.'),
+              svg(320, 160, b, 'Fields Medal 2022'),
+              t('Над тим, як найщільніше укласти кулі, математики думали понад 400 років, ще з часів Кеплера. Марина довела відповідь для 8-вимірного простору.',
+                'Mathematicians have wondered how to pack spheres as tightly as possible for over 400 years, since Kepler. Maryna proved the answer in 8 dimensions.'))
+    h += '</div>'
     # ---------- III. Education makes nations strong
-    h += band(t('Освіта робить країни сильними', 'Education makes nations strong'), t('Справжні історії з інших країн.', 'True stories from other countries.'), 'b3')
+    h += band(t('Освіта робить країни сильними', 'Education makes nations strong'), t('Справжні історії з інших країн.', 'True stories from other countries.'), 'b3e')
     h += '<div class="grid">'
     h += card(nx(), 'blue', t('Математики скоротили війну', 'Mathematicians shortened a war'),
               t('Британія, 1939–1945. У Блечлі-Парку математики, серед них Алан Тюрінг, зламали німецький шифр «Енігма».',
@@ -216,23 +283,15 @@ def content(lang):
               svg(320, 148, b, 'Tiger Leap 1996–2001'),
               t('Ці діти виросли й побудували одну з найцифровіших держав світу.', 'Those children grew up and built one of the most digital countries in the world.'))
     h += '</div>'
-    # ---------- IV. Today's Cossacks
-    h += band(t('Сучасні козаки', 'The Cossacks of our time'), t('Українці, якими пишаємось сьогодні.', 'Ukrainians we are proud of today.'), 'b4')
+    # ---------- V. Today's Cossacks
+    h += band(t('Сучасні козаки', 'The Cossacks of our time'), t('Країна, яка вчиться й захищається.', 'A country that learns and defends itself.'), 'b4')
     h += '<div class="grid">'
     h += card(nx(), 'blue', t('Україна — країна, яка вчиться', 'Ukraine is a country that learns'),
               t('Читати й писати в Україні вміють майже всі дорослі.', 'Almost every adult in Ukraine can read and write.'),
               big('99,97 %' if lang == 'uk' else '99.97%', t('дорослих грамотні', 'of adults can read'), 's', sub=t('за даними 2012 року', 'figure for 2012')),
               t('А в Києві в 1950 році запрацювала МЕСМ — одна з перших електронних обчислювальних машин у Європі. Її створила команда Сергія Лебедєва.',
                 'And in Kyiv in 1950 MESM started working: one of the first electronic computers in Europe, built by Serhiy Lebedev’s team.'))
-    b = circle(160, 70, 52, 'var(--marker)', 'h', 4) + text(160, 64, '2022', 26, 'k', 'd', 'middle') + text(160, 94, t('Філдс', 'Fields'), 18, 'k', 'd', 'middle')
-    b += hand(160, 150, t('найвища нагорода математиків', 'the highest prize in maths'), 22, 'm')
-    h += card(nx(), 'gold', t('Українка — серед найкращих математиків світу', 'A Ukrainian among the world’s best mathematicians'),
-              t('Марина В’язовська народилася в Києві у 1984 році. У 2022 році вона отримала Філдсівську премію — другою жінкою в історії.',
-                'Maryna Viazovska was born in Kyiv in 1984. In 2022 she won the Fields Medal, only the second woman ever to do so.'),
-              svg(320, 160, b, 'Fields Medal 2022'),
-              t('Над тим, як найщільніше укласти кулі, математики думали понад 400 років, ще з часів Кеплера. Марина довела відповідь для 8-вимірного простору. А почалося все з математичних олімпіад у Києві.',
-                'Mathematicians have wondered how to pack spheres as tightly as possible for over 400 years, since Kepler. Maryna proved the answer in 8 dimensions. It all started with maths olympiads in Kyiv.'))
-    h += card(nx(), 'wide', t('Інженери-захисники', 'Engineers who defend us'),
+    h += card(nx(), '', t('Інженери-захисники', 'Engineers who defend us'),
               t('У 2023 році в Україні запрацював оборонний кластер Brave1. Інженери й програмісти приносять туди свої винаходи.',
                 'In 2023 Ukraine launched the Brave1 defence tech cluster. Engineers and programmers bring their inventions there.'),
               big('1671', t('розробка за перший рік', 'inventions in the first year')),
