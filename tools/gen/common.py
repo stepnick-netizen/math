@@ -21,6 +21,9 @@ RESET = ('<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(
          'img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>')
 COPY = {'uk': '© 2026 Пасіка Ігор Петрович, учитель математики, Ліцей №157, м. Київ, Україна<small>Побудовано на його презентаціях і уроках. Зробив Микола Степанов для доньки Варі</small><small>Сайт рахує анонімну статистику відвідувань: без cookies і без імен.</small>',
         'en': '© 2026 Ihor Petrovych Pasika, maths teacher, Lyceum No. 157, Kyiv, Ukraine<small>Built on his slides and lessons. Made by Mykola Stepanov for his daughter Varia</small><small>This site keeps anonymous visit statistics: no cookies and no names.</small>'}
+# шпаргалки (і їхні PDF): лише вчитель, без підпису Миколи й Варі
+SHEET_COPY = {k: v.replace(' Зробив Микола Степанов для доньки Варі', '').replace(' Made by Mykola Stepanov for his daughter Varia', '')
+              for k, v in COPY.items()}
 ICONS = ('<link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="icon" href="../favicon.ico" sizes="48x48">'
          '<link rel="apple-touch-icon" href="../apple-touch-icon.png"><meta name="theme-color" content="#E8A317">')
 HOME = {'uk': '← Математична пасіка: усі теми', 'en': '← The Maths Apiary: all topics'}
@@ -136,14 +139,14 @@ def why_js(why, lang, more=''):
             + json.dumps(why['dip'], ensure_ascii=False) + ';dip.appendChild(p);}})();</script>')
 
 
-def wrap(kind, lang, title, styles, body, tail, desc=''):
+def wrap(kind, lang, title, styles, body, tail, desc='', copy=None):
     """kind: 'site' -> full document with home link, footer and site scripts; 'art' -> artifact fragment."""
     css = ''.join(f'<style>\n{s}\n</style>' for s in styles)
     if kind == 'site':
         return (f'<!doctype html>\n<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">{RESET}\n'
                 f'<title>{title}</title>\n{ICONS}\n{FONTS}\n{css}<style>{SITE_CSS}</style></head>\n'
                 f'<body><nav class="site-home"><a href="../index.html">{HOME[lang]}</a></nav>\n{DEFS}\n{body}\n'
-                f'<footer class="site-copy">{COPY[lang]}</footer>\n<script>{SHARE_JS}</script>\n{tail}\n<script>{STATS_JS}</script>\n</body></html>\n')
+                f'<footer class="site-copy">{(copy or COPY)[lang]}</footer>\n<script>{SHARE_JS}</script>\n{tail}\n<script>{STATS_JS}</script>\n</body></html>\n')
     return (f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n{FONTS}\n{css}\n{DEFS}\n{body}\n{tail}\n'
             f'<script>document.documentElement.lang={json.dumps(lang)}</script>\n')
 
@@ -219,7 +222,7 @@ def sheet_page(kind, lang, title, h1, bubble, cast_svgs, cards_html, final_svg, 
     body = (f'<div class="sheet">\n <header class="head">\n  <div class="htext"><h1>{h1}</h1><p class="bubble">{bubble}</p>'
             f'<p class="links">{links_html}</p></div>\n  <div class="cast">{"".join(cast_svgs)}</div>\n </header>\n'
             f' <div class="grid">{cards_html}</div>\n <div class="say final">{final_svg}<p class="bubble">{final_text}</p></div>\n</div>')
-    return wrap(kind, lang, title, [card_css(), SHEET_CSS + GAME_CSS + extra_css], body, '')
+    return wrap(kind, lang, title, [card_css(), SHEET_CSS + GAME_CSS + extra_css], body, '', copy=SHEET_COPY)
 
 
 def pig(svg_markup, flip=False):
