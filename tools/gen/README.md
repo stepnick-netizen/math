@@ -3,5 +3,5 @@
 - `engine.js` — спільний рушій гри (профіль і світи, рівні з кроками `choice` / `num` / `order`, підказки, звіт, події статистики `err-…`).
 - `topic_*.py` — зміст теми: картки уроку й шпаргалки (SVG через `svgkit.py`), задачі трьох рівнів, тексти трьох світів, права, «Навіщо це мені?».
 - `common.py` — збирання сторінок: `site` (сайт, видання school) і `art` (артефакт, видання home).
-- `python3 build.py powers /tmp/out` — збирає сторінки теми; `render_sheets.py` — PNG і PDF шпаргалок; `play.py` — автоматичне проходження всіх рівнів у Playwright.
+- `python3 build.py powers /tmp/out` — збирає сторінки теми; `render_sheets.py` — PNG і PDF шпаргалок для артефактів (домашнє видання); PDF для сайту — `python3 tools/render_site_pdfs.py [тема]` з кореня репозиторію (з копірайтом учителя внизу); `play.py` — автоматичне проходження всіх рівнів у Playwright.
 - Шрифти Comfortaa, Nunito, Caveat мають лежати в `~/.fonts` (ofl з google/fonts).
